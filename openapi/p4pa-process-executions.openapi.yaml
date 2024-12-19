@@ -1,31 +1,98 @@
-openapi: 3.1.0
+openapi: 3.0.1
 info:
   title: p4pa-process-executions
   description: Api and Models
-  version: "1.0.0"
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
 paths:
-  /api/v1/greet:
-    get:
-      summary: "Hello World"
-      description: "Sample endpoint that return greetings"
+  /:
+    post:
+      summary: create-ingestion-flow-file
+      tags:
+        - ingestion-flow-file-controller
+      operationId: createIngestionFlowFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestionFlowFileDTO'
+        required: true
       responses:
         '200':
-          description: "Success"
+          description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Hello, World!"
-        '500':
-          description: "Internal Server Error"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal Server Error"
+                $ref: '#/components/schemas/IngestionFlowFileDTO'
+components:
+  schemas:
+    IngestionFlowFileDTO:
+      type: object
+      required:
+        - organizationId
+        - status
+        - flowIdentifierCode
+        - flagActive
+        - operatorExternalUserId
+      properties:
+        ingestionFlowFileId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          format: int32
+        organizationId:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - UPLOADED
+            - PROCESSING
+            - COMPLETED
+            - ERROR
+        flowIdentifierCode:
+          type: string
+        numTotalRows:
+          type: integer
+          format: int64
+        numCorrectlyImportedRows:
+          type: integer
+          format: int64
+        creationDate:
+          type: string
+          format: date-time
+        lastUpdateDate:
+          type: string
+          format: date-time
+        flagActive:
+          type: boolean
+        operatorExternalUserId:
+          type: string
+        flagSpontaneous:
+          type: boolean
+        filePath:
+          type: string
+        fileName:
+          type: string
+        pdfGenerated:
+          type: integer
+          format: int64
+        codRequestToken:
+          type: string
+        codError:
+          type: string
+        pspIdentifier:
+          type: string
+        flowDateTime:
+          type: string
+          format: date-time
+        fileSize:
+          type: integer
+          format: int64
+        fileSourceCode:
+          type: string
+        discardFileName:
+          type: string
