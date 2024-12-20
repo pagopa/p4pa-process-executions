@@ -35,7 +35,6 @@ components:
         - status
         - flowIdentifierCode
         - flagActive
-        - operatorExternalUserId
       properties:
         ingestionFlowFileId:
           type: integer
