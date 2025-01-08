@@ -32,9 +32,6 @@ components:
       type: object
       required:
         - organizationId
-        - status
-        - flowIdentifierCode
-        - flagActive
       properties:
         ingestionFlowFileId:
           type: integer
