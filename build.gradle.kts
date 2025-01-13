@@ -40,6 +40,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("io.micrometer:micrometer-tracing-bridge-otel:$micrometerVersion")
+  implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("org.openapitools:jackson-databind-nullable:$openApiToolsVersion")
@@ -88,7 +89,16 @@ configurations {
 }
 
 tasks.compileJava {
-	dependsOn("openApiGenerate")
+  dependsOn("dependenciesBuild")
+}
+
+tasks.register("dependenciesBuild") {
+  group = "AutomaticallyGeneratedCode"
+  description = "grouping all together automatically generate code tasks"
+
+  dependsOn(
+    "openApiGenerate"
+  )
 }
 
 configure<SourceSetContainer> {
@@ -113,8 +123,9 @@ openApiGenerate {
     "useSpringBoot3" to "true",
     "interfaceOnly" to "true",
     "useTags" to "true",
-    "generateConstructorWithAllArgs" to "false",
+    "useBeanValidation" to "true",
+    "generateConstructorWithAllArgs" to "true",
     "generatedConstructorWithRequiredArgs" to "true",
-    "additionalModelTypeAnnotations" to "@lombok.Builder @lombok.AllArgsConstructor"
+    "additionalModelTypeAnnotations" to "@lombok.Builder"
   ))
 }
