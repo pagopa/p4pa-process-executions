@@ -32,6 +32,7 @@ val springDocOpenApiVersion = "2.7.0"
 val openApiToolsVersion = "0.2.6"
 val micrometerVersion = "1.4.1"
 val bouncycastleVersion = "1.79"
+val postgresJdbcVersion = "42.7.4"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -39,6 +40,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+  implementation("org.springframework.boot:spring-boot-starter-data-rest")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("io.micrometer:micrometer-tracing-bridge-otel:$micrometerVersion")
   implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiVersion")
@@ -51,10 +54,14 @@ dependencies {
   //security
   implementation("org.bouncycastle:bcprov-jdk18on:$bouncycastleVersion")
 
+  //postgres jdbc
+  implementation("org.postgresql:postgresql:$postgresJdbcVersion")
+
   //	Testing
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.mockito:mockito-core")
 	testImplementation ("org.projectlombok:lombok")
+  testImplementation("com.h2database:h2")
 }
 
 tasks.withType<Test> {

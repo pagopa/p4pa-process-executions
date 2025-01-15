@@ -65,6 +65,10 @@ microservice-chart:
   envSecret:
     APPLICATIONINSIGHTS_CONNECTION_STRING: appinsights-connection-string
     JWT_TOKEN_PUBLIC_KEY: jwt-public-key
+    PROCESS_EXECUTIONS_DB_HOST: db-host
+    PROCESS_EXECUTIONS_DB_USER: db-piattaforma-unitaria-login-username
+    PROCESS_EXECUTIONS_DB_PASSWORD: db-piattaforma-unitaria-login-password
+
 
   # nodeSelector: {}
 
