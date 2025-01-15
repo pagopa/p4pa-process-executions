@@ -9,6 +9,16 @@ spring:
     threads:
       virtual:
         enabled: "\${VIRTUAL_THREADS_ENABLED:true}"
+    jpa:
+      show-sql: "\${SHOW_SQL:false}"
+    datasource:
+      url: "\${PROCESS_EXECUTIONS_DB_URL:jdbc:postgresql://\${PROCESS_EXECUTIONS_DB_HOST:localhost}:\${PROCESS_EXECUTIONS_DB_PORT:5432}/\${PROCESS_EXECUTIONS_DB_NAME:payhub}?currentSchema=process_executions}"
+      username: "\${PROCESS_EXECUTIONS_DB_USER}"
+      password: "\${PROCESS_EXECUTIONS_DB_PASSWORD}"
+      driverClassName: org.postgresql.Driver
+    data:
+      rest:
+        basePath: crud
 
 management:
     endpoints:
