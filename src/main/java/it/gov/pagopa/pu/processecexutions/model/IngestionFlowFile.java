@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "ingestion_flow_file")
@@ -35,7 +35,7 @@ public class IngestionFlowFile implements Serializable {
   private Long numCorrectlyImportedRows;
   private Long pdfGenerated;
   private String pspIdentifier;
-  private LocalDateTime flowDateTime;
-  private String fileSourceCode;
+  private OffsetDateTime flowDateTime;
+  private String fileOrigin;
 
 }

@@ -35,7 +35,7 @@ class IngestionFlowFileEntityExtendedControllerTest {
     long ingestionFlowFileId = 1L;
     String codError = "CODERROR";
     String discardFilename = "DISCARDFILENAME";
-    IngestionFlowFileStatus status = IngestionFlowFileStatus.TO_ELAB;
+    IngestionFlowFileStatus status = IngestionFlowFileStatus.PROCESSING;
     int expectedResult = 1;
 
     Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, status, codError, discardFilename))
