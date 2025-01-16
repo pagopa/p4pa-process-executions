@@ -488,7 +488,7 @@
         }
       },
       "IngestionFlowFileRequestDTO" : {
-        "required" : [ "fileName", "filePathName", "fileSize", "flowFileType", "organizationId" ],
+        "required" : [ "fileName", "fileOrigin", "filePathName", "fileSize", "flowFileType", "organizationId" ],
         "type" : "object",
         "properties" : {
           "organizationId" : {
@@ -517,8 +517,7 @@
             "type" : "string"
           },
           "fileOrigin" : {
-            "type" : "string",
-            "enum" : [ "portal", "sil", "pagopa" ]
+            "type" : "string"
           }
         }
       },

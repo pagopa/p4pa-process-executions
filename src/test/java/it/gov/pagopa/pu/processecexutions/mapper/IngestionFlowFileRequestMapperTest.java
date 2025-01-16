@@ -25,7 +25,7 @@ class IngestionFlowFileRequestMapperTest {
       .flowFileType(IngestionFlowFileRequestDTO.FlowFileTypeEnum.PAYMENTS_REPORTING)
       .flowDateTime(OffsetDateTime.MIN)
       .pspIdentifier("PSPIDENTIFIER")
-      .fileOrigin(IngestionFlowFileRequestDTO.FileOriginEnum.PORTAL)
+      .fileOrigin("portal")
       .build();
 
     // When
@@ -42,7 +42,7 @@ class IngestionFlowFileRequestMapperTest {
     Assertions.assertEquals(IngestionFlowFileStatus.UPLOADED, result.getStatus());
     Assertions.assertSame(dto.getFlowDateTime(), result.getFlowDateTime());
     Assertions.assertEquals(dto.getPspIdentifier(), result.getPspIdentifier());
-    Assertions.assertEquals(IngestionFlowFileRequestDTO.FileOriginEnum.PORTAL.name(), result.getFileOrigin());
+    Assertions.assertEquals("portal", result.getFileOrigin());
 
     TestUtils.checkNotNullFields(result,
       "ingestionFlowFileId",
