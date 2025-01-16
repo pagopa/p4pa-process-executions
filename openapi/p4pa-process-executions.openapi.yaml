@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8080
     description: Generated server url
 paths:
-  /ingestionflowfiles:
+  /ingestion-flow-files:
     post:
       summary: create-ingestion-flow-file
       tags:
@@ -17,15 +17,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/IngestionFlowFileDTO'
+              $ref: '#/components/schemas/IngestionFlowFileRequestDTO'
         required: true
       responses:
-        '200':
+        '201':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/IngestionFlowFileDTO'
 security:
   - BearerAuth: []
 components:
@@ -34,67 +30,42 @@ components:
       type: http
       scheme: bearer
   schemas:
-    IngestionFlowFileDTO:
+    IngestionFlowFileRequestDTO:
       type: object
       required:
         - organizationId
+        - filePathName
+        - fileName
+        - fileSize
+        - flowFileType
       properties:
-        ingestionFlowFileId:
-          type: integer
-          format: int64
-        version:
-          type: integer
-          format: int32
         organizationId:
           type: integer
           format: int64
-        status:
-          type: string
-          enum:
-            - UPLOADED
-            - PROCESSING
-            - COMPLETED
-            - ERROR
-        flowIdentifierCode:
-          type: string
-        numTotalRows:
-          type: integer
-          format: int64
-        numCorrectlyImportedRows:
-          type: integer
-          format: int64
-        creationDate:
-          type: string
-          format: date-time
-        lastUpdateDate:
-          type: string
-          format: date-time
-        flagActive:
-          type: boolean
-        operatorExternalUserId:
-          type: string
-        flagSpontaneous:
-          type: boolean
-        filePath:
+        filePathName:
           type: string
         fileName:
           type: string
-        pdfGenerated:
-          type: integer
-          format: int64
-        codRequestToken:
-          type: string
-        codError:
-          type: string
-        pspIdentifier:
-          type: string
-        flowDateTime:
-          type: string
-          format: date-time
         fileSize:
           type: integer
           format: int64
-        fileSourceCode:
+        flowFileType:
           type: string
-        discardFileName:
+          enum:
+            - RECEIPT
+            - PAYMENTS_REPORTING
+            - TREASURY_OPI
+            - TREASURY_CSV
+            - TREASURY_XLS
+            - TREASURY_POSTE
+        flowDateTime:
           type: string
+          format: date-time
+        pspIdentifier:
+          type: string
+        fileOrigin:
+          type: string
+          enum:
+            - portal
+            - sil
+            - pagopa

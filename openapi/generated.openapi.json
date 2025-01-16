@@ -94,7 +94,7 @@
           "in" : "query",
           "schema" : {
             "type" : "string",
-            "enum" : [ "UPLOADED", "TO_ELAB", "COMPLETE" ]
+            "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
           }
         }, {
           "name" : "codError",
@@ -224,7 +224,7 @@
         }
       }
     },
-    "/ingestionflowfiles" : {
+    "/ingestion-flow-files" : {
       "post" : {
         "tags" : [ "ingestion-flow-file-controller" ],
         "summary" : "create-ingestion-flow-file",
@@ -233,22 +233,15 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/IngestionFlowFileDTO"
+                "$ref" : "#/components/schemas/IngestionFlowFileRequestDTO"
               }
             }
           },
           "required" : true
         },
         "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/IngestionFlowFileDTO"
-                }
-              }
-            }
+          "201" : {
+            "description" : "OK"
           }
         },
         "security" : [ {
@@ -274,7 +267,7 @@
           "required" : true,
           "schema" : {
             "type" : "string",
-            "enum" : [ "UPLOADED", "TO_ELAB", "COMPLETE" ]
+            "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
           }
         }, {
           "name" : "codError",
@@ -416,7 +409,7 @@
           },
           "status" : {
             "type" : "string",
-            "enum" : [ "UPLOADED", "TO_ELAB", "COMPLETE" ]
+            "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
           },
           "codError" : {
             "type" : "string"
@@ -443,7 +436,7 @@
             "type" : "string",
             "format" : "date-time"
           },
-          "fileSourceCode" : {
+          "fileOrigin" : {
             "type" : "string"
           },
           "_links" : {
@@ -494,86 +487,38 @@
           }
         }
       },
-      "IngestionFlowFileDTO" : {
-        "required" : [ "organizationId" ],
+      "IngestionFlowFileRequestDTO" : {
+        "required" : [ "fileName", "filePathName", "fileSize", "flowFileType", "organizationId" ],
         "type" : "object",
         "properties" : {
-          "ingestionFlowFileId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "version" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
           "organizationId" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
-          },
-          "flowIdentifierCode" : {
-            "type" : "string"
-          },
-          "numTotalRows" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "numCorrectlyImportedRows" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "lastUpdateDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "flagActive" : {
-            "type" : "boolean"
-          },
-          "operatorExternalUserId" : {
-            "type" : "string"
-          },
-          "flagSpontaneous" : {
-            "type" : "boolean"
-          },
-          "filePath" : {
+          "filePathName" : {
             "type" : "string"
           },
           "fileName" : {
             "type" : "string"
           },
-          "pdfGenerated" : {
+          "fileSize" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "codRequestToken" : {
-            "type" : "string"
-          },
-          "codError" : {
-            "type" : "string"
-          },
-          "pspIdentifier" : {
-            "type" : "string"
+          "flowFileType" : {
+            "type" : "string",
+            "enum" : [ "RECEIPT", "PAYMENTS_REPORTING", "TREASURY_OPI", "TREASURY_CSV", "TREASURY_XLS", "TREASURY_POSTE" ]
           },
           "flowDateTime" : {
             "type" : "string",
             "format" : "date-time"
           },
-          "fileSize" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "fileSourceCode" : {
+          "pspIdentifier" : {
             "type" : "string"
           },
-          "discardFileName" : {
-            "type" : "string"
+          "fileOrigin" : {
+            "type" : "string",
+            "enum" : [ "portal", "sil", "pagopa" ]
           }
         }
       },
