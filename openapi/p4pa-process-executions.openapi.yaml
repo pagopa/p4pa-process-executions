@@ -38,6 +38,7 @@ components:
         - fileName
         - fileSize
         - flowFileType
+        - fileOrigin
       properties:
         organizationId:
           type: integer
