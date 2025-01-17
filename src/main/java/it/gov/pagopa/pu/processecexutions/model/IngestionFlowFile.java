@@ -22,6 +22,7 @@ public class IngestionFlowFile implements Serializable {
   @SequenceGenerator(name = "ingestion_flow_file_generator", sequenceName = "ingestion_flow_file_id_seq", allocationSize = 1)
   private Long ingestionFlowFileId;
   private Long organizationId;
+  private String operatorExternalId;
   private String filePathName;
   private String fileName;
   private Long fileSize;

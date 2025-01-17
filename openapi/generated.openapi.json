@@ -393,6 +393,9 @@
             "type" : "integer",
             "format" : "int64"
           },
+          "operatorExternalId" : {
+            "type" : "string"
+          },
           "filePathName" : {
             "type" : "string"
           },

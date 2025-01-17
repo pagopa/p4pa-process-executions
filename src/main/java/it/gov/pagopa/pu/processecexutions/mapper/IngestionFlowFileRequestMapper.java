@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class IngestionFlowFileRequestMapper {
 
-  public IngestionFlowFile map(IngestionFlowFileRequestDTO dto) {
+  public IngestionFlowFile map(IngestionFlowFileRequestDTO dto, String operatorExternalId) {
     return IngestionFlowFile.builder()
       .organizationId(dto.getOrganizationId())
+      .operatorExternalId(operatorExternalId)
       .filePathName(dto.getFilePathName())
       .fileName(dto.getFileName())
       .fileSize(dto.getFileSize())

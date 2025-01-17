@@ -4,5 +4,5 @@ import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequest
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 
 public interface IngestionFlowFileService {
-  IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO);
+  IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId);
 }

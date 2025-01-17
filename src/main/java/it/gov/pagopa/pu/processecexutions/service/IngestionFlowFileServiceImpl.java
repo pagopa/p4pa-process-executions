@@ -20,8 +20,8 @@ public class IngestionFlowFileServiceImpl implements IngestionFlowFileService{
   }
 
   @Override
-  public IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO) {
-    IngestionFlowFile saved = repository.save(uploadedRequestMapper.map(requestDTO));
+  public IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId) {
+    IngestionFlowFile saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId));
     workflowInvokerService.invokeIngestionWorkflow(saved);
     return saved;
   }

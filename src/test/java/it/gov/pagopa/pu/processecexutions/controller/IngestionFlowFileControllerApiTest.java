@@ -1,9 +1,10 @@
-package it.gov.pagopa.pu.processecexutions.controller.generated;
+package it.gov.pagopa.pu.processecexutions.controller;
 
-import it.gov.pagopa.pu.processecexutions.controller.IngestionFlowFileControllerImpl;
+import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileService;
+import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,10 @@ class IngestionFlowFileControllerApiTest {
       .ingestionFlowFileId(1L)
       .build();
 
-    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO)))
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+
+    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
       .thenReturn(t);
 
     // When

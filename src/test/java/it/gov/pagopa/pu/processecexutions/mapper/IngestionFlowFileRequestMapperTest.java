@@ -29,12 +29,13 @@ class IngestionFlowFileRequestMapperTest {
       .build();
 
     // When
-    IngestionFlowFile result = mapper.map(dto);
+    IngestionFlowFile result = mapper.map(dto, "OPERATOREXTERNALID");
 
     // Then
     Assertions.assertNotNull(result);
 
     Assertions.assertEquals(0L, result.getOrganizationId());
+    Assertions.assertEquals("OPERATOREXTERNALID", result.getOperatorExternalId());
     Assertions.assertEquals("FILEPATHNAME", result.getFilePathName());
     Assertions.assertEquals("FILENAME", result.getFileName());
     Assertions.assertEquals(1L, result.getFileSize());
