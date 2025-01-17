@@ -51,7 +51,10 @@ class IngestionFlowFileRequestMapperTest {
       "discardFileName",
       "numTotalRows",
       "numCorrectlyImportedRows",
-      "pdfGenerated"
+      "pdfGenerated",
+      "creationDate",
+      "updateDate",
+      "updateOperatorExternalId"
     );
   }
 }

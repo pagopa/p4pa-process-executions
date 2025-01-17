@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @Builder
 @Data
 @EqualsAndHashCode(of = "ingestionFlowFileId", callSuper = false)
-public class IngestionFlowFile implements Serializable {
+public class IngestionFlowFile extends BaseEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingestion_flow_file_generator")

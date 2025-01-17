@@ -385,6 +385,17 @@
       "IngestionFlowFile" : {
         "type" : "object",
         "properties" : {
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updateDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updateOperatorExternalId" : {
+            "type" : "string"
+          },
           "ingestionFlowFileId" : {
             "type" : "integer",
             "format" : "int64"
