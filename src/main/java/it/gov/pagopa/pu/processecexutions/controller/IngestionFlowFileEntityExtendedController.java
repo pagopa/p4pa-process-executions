@@ -29,18 +29,4 @@ public class IngestionFlowFileEntityExtendedController {
           @RequestParam(required = false) String discardFile){
     return repository.updateStatus(ingestionFlowFileId, status, codError, discardFile);
   }
-
-  @GetMapping("by-organizationId-flowType-createDate")
-  public Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(
-          @RequestParam Long organizationId,
-          @RequestParam IngestionFlowFileType flowFileType,
-          @RequestParam(required = false) LocalDateTime creationDate,
-          @RequestParam(required = false) String fileName,
-          @RequestParam(defaultValue= "0", required = false)
-          Integer page,
-          @RequestParam(defaultValue= "5", required = false)
-          Integer pageSize) {
-    Pageable pageable = Pageable.ofSize(pageSize).withPage(page);
-    return repository.findByOrganizationIDFlowTypeCreateDate(organizationId, flowFileType, creationDate, fileName, pageable);
-  }
 }

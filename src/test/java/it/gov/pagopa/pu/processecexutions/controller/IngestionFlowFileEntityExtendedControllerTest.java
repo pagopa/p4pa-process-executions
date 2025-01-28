@@ -53,24 +53,4 @@ class IngestionFlowFileEntityExtendedControllerTest {
     // Then
     Assertions.assertEquals(expectedResult, result);
   }
-
-  @Test
-  void whenFindByOrganizationIDFlowTypeCreateDateThenInvokeRepository(){
-    // Given
-    long ingestionFlowFileId = 1L;
-    String discardFilename = "DISCARDFILENAME";
-    IngestionFlowFileType type = IngestionFlowFileType.PAYMENTS_REPORTING;
-    LocalDateTime creationDate = LocalDateTime.now().minusDays(1L);
-    Page<IngestionFlowFile> expectedResult = Mockito.mock(Page.class);
-    Pageable pageable = Pageable.ofSize(5).withPage(0);
-
-    Mockito.when(repositoryMock.findByOrganizationIDFlowTypeCreateDate(ingestionFlowFileId, type, creationDate , discardFilename, pageable))
-      .thenReturn(expectedResult);
-
-    // When
-    Page<IngestionFlowFile> result = controller.findByOrganizationIDFlowTypeCreateDate(ingestionFlowFileId, type, creationDate , discardFilename, pageable.getPageNumber(), pageable.getPageSize());
-
-    // Then
-    Assertions.assertEquals(expectedResult, result);
-  }
 }
