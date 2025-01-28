@@ -1,14 +1,8 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
-import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 /** Controller to host spring-data-rest directly not supported methods */
 @RestController
