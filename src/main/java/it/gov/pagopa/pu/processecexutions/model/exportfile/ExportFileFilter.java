@@ -1,14 +1,13 @@
 package it.gov.pagopa.pu.processecexutions.model.exportfile;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
-@JsonSubTypes({
-  @JsonSubTypes.Type(name = "CLASSIFICATIONS", value = ClassificationExportFileFilter.class)
+@Schema(oneOf = {
+  ClassificationsExportFileFilter.class,
+  PaidExportFileFilter.class,
+  PaymentsReportingExportFileFilter.class
 })
 public interface ExportFileFilter extends Serializable {
-  String get_type();
 }

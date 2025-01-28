@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassificationExportFileFilter implements ExportFileFilter {
-  private String _type = "CLASSIFICATIONS";
-
-  private String label;
+public class PaymentsReportingExportFileFilter implements ExportFileFilter {
+  private String iuf;
 }
