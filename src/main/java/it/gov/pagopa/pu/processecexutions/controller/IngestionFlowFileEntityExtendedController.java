@@ -23,5 +23,4 @@ public class IngestionFlowFileEntityExtendedController {
           @RequestParam(required = false) String discardFile){
     return repository.updateStatus(ingestionFlowFileId, status, codError, discardFile);
   }
-
 }
