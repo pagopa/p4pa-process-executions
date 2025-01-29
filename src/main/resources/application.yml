@@ -67,5 +67,8 @@ jwt:
                 -----END PUBLIC KEY-----}"
 
 rest:
+  default-timeout:
+    connect-millis: "\${DEFAULT_REST_CONNECT_TIMEOUT_MILLIS:120000}"
+    read-millis: "\${DEFAULT_REST_READ_TIMEOUT_MILLIS:120000}"
   workflow-hub:
     base-url: "\${WORKFLOW_HUB_BASE_URL:}"

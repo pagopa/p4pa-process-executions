@@ -18,6 +18,7 @@ public class IngestionFlowFileWorkflowInvokerService {
 
   void invokeIngestionWorkflow(IngestionFlowFile ingestionFlowFile, String accessToken){
     if(ingestionFlowFile!=null){
+      log.info("Invoking ingestion workflow for ingestionFlowFileType: {} , ingestionFlowFileId: {}", ingestionFlowFile.getFlowFileType(),ingestionFlowFile.getIngestionFlowFileId());
       WorkflowCreatedDTO response = switch(ingestionFlowFile.getFlowFileType()){
         case PAYMENTS_REPORTING -> ingestionFlowClient.ingestPaymentsReportingFile(ingestionFlowFile.getIngestionFlowFileId(), accessToken);
         case TREASURY_OPI -> ingestionFlowClient.ingestTreasuryOpi(ingestionFlowFile.getIngestionFlowFileId(), accessToken);
