@@ -22,7 +22,7 @@ public class IngestionFlowFileWorkflowInvokerService {
       WorkflowCreatedDTO response = switch(ingestionFlowFile.getFlowFileType()){
         case PAYMENTS_REPORTING -> ingestionFlowClient.ingestPaymentsReportingFile(ingestionFlowFile.getIngestionFlowFileId(), accessToken);
         case TREASURY_OPI -> ingestionFlowClient.ingestTreasuryOpi(ingestionFlowFile.getIngestionFlowFileId(), accessToken);
-        default -> throw new UnsupportedOperationException("Unsupported ingestionFlowFileType");
+        default -> throw new UnsupportedOperationException("Unsupported ingestionFlowFileType "+ingestionFlowFile.getFlowFileType()+" for ingestionFlowFile having ingestionFlowFileId "+ingestionFlowFile.getIngestionFlowFileId());
       };
       if(response!=null){
         log.info("Invoked workflow having workflowId:{}", response.getWorkflowId());
