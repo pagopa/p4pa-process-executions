@@ -49,6 +49,7 @@ class IngestionFlowFileServiceTest {
     IngestionFlowFile newEntity = new IngestionFlowFile();
     IngestionFlowFile storedEntity = new IngestionFlowFile();
     String operatorExternalId = "OPERATOREXTERNALID";
+    String accessToken = "ACCESSTOKEN";
 
     Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
       .thenReturn(newEntity);
@@ -57,12 +58,13 @@ class IngestionFlowFileServiceTest {
       .thenReturn(storedEntity);
 
     // When
-    IngestionFlowFile result = service.handleUploaded(requestDTO, operatorExternalId);
+    IngestionFlowFile result = service.handleUploaded(requestDTO, operatorExternalId,
+        accessToken);
 
     // Then
     Assertions.assertSame(storedEntity, result);
 
     Mockito.verify(workflowInvokerServiceMock)
-      .invokeIngestionWorkflow(Mockito.same(storedEntity));
+      .invokeIngestionWorkflow(Mockito.same(storedEntity), Mockito.same(accessToken));
   }
 }
