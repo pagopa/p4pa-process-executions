@@ -16,6 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @ExtendWith(MockitoExtension.class)
 class IngestionFlowFileControllerApiTest {
@@ -27,6 +31,10 @@ class IngestionFlowFileControllerApiTest {
 
   @BeforeEach
   void init(){
+    Authentication authentication = new UsernamePasswordAuthenticationToken("fakeUser", "fakeAccessToken");
+    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+    securityContext.setAuthentication(authentication);
+    SecurityContextHolder.setContext(securityContext);
     controller = new IngestionFlowFileControllerImpl(serviceMock);
   }
 
@@ -46,7 +54,8 @@ class IngestionFlowFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+            Mockito.anyString()))
       .thenReturn(t);
 
     // When

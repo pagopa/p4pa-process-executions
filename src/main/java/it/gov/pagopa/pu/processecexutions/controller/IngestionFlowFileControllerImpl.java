@@ -4,10 +4,9 @@ import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFile
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileService;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
 
 @RestController
 public class IngestionFlowFileControllerImpl implements IngestionFlowFileControllerApi {
@@ -21,7 +20,7 @@ public class IngestionFlowFileControllerImpl implements IngestionFlowFileControl
   @Override
   public ResponseEntity<Void> createIngestionFlowFile(IngestionFlowFileRequestDTO ingestionFlowFileRequestDTO) {
     return ResponseEntity
-      .created(URI.create(String.valueOf(service.handleUploaded(ingestionFlowFileRequestDTO, SecurityUtils.getCurrentUserExternalId()).getIngestionFlowFileId())))
+      .created(URI.create(String.valueOf(service.handleUploaded(ingestionFlowFileRequestDTO, SecurityUtils.getCurrentUserExternalId(), SecurityUtils.getAccessToken()).getIngestionFlowFileId())))
       .build();
   }
 
