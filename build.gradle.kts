@@ -105,7 +105,7 @@ tasks.register("dependenciesBuild") {
   description = "grouping all together automatically generate code tasks"
 
   dependsOn(
-    "openApiGenerate",
+    "openApiGeneratePROCESSEXECUTIONS",
     "openApiGenerateWORKFLOWHUB"
   )
 }
@@ -120,7 +120,10 @@ springBoot {
 	mainClass.value("it.gov.pagopa.pu.processecexutions.ProcessExecutionsApplication")
 }
 
-openApiGenerate {
+tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGeneratePROCESSEXECUTIONS") {
+  group = "openapi"
+  description = "description"
+
   generatorName.set("spring")
   inputSpec.set("$rootDir/openapi/p4pa-process-executions.openapi.yaml")
   outputDir.set("$projectDir/build/generated")
