@@ -49,6 +49,7 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   private ExportFileStatus status;
   private String codError;
   private Long numTotalRows;
+  @NotNull
   private OffsetDateTime expirationDate;
 
   public abstract T getFilterFields();
