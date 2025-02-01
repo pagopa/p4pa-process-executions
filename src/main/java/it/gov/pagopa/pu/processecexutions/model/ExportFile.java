@@ -9,6 +9,7 @@ import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,15 +32,20 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "export_file_generator")
   @SequenceGenerator(name = "export_file_generator", sequenceName = "export_file_id_seq", allocationSize = 1)
+  @NotNull
   private Long exportFileId;
+  @NotNull
   private Long organizationId;
+  @NotNull
   private String operatorExternalId;
   private String filePathName;
   private String fileName;
   private Long fileSize;
-  @Transient
+  @Enumerated(EnumType.STRING)
+  @Column(insertable = false, updatable = false)
   private ExportFlowFileType flowFileType;
   @Enumerated(EnumType.STRING)
+  @NotNull
   private ExportFileStatus status;
   private String codError;
   private Long numTotalRows;

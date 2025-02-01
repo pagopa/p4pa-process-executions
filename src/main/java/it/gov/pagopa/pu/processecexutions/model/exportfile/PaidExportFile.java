@@ -12,11 +12,14 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("PAID")
 public class PaidExportFile extends ExportFile<PaidExportFileFilter> {
+
+  public PaidExportFile(){
+    setFlowFileType(ExportFlowFileType.PAID);
+  }
 
   @Schema(type = "string", allowableValues = "PAID")
   @Override
