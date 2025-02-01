@@ -138,7 +138,7 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
     "useBeanValidation" to "true",
     "generateConstructorWithAllArgs" to "true",
     "generatedConstructorWithRequiredArgs" to "true",
-    "additionalModelTypeAnnotations" to "@lombok.Builder"
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder"
   ))
 }
 
@@ -164,7 +164,10 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
     "useSpringBoot3" to "true",
     "useJakartaEe" to "true",
     "serializationLibrary" to "jackson",
-    "generateSupportingFiles" to "true"
+    "generateSupportingFiles" to "true",
+    "generateConstructorWithAllArgs" to "true",
+    "generatedConstructorWithRequiredArgs" to "true",
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder"
   ))
   library.set("resttemplate")
 }

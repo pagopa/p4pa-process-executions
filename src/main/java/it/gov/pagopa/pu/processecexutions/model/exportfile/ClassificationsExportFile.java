@@ -12,11 +12,14 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("CLASSIFICATIONS")
 public class ClassificationsExportFile extends ExportFile<ClassificationsExportFileFilter> {
+
+  public ClassificationsExportFile(){
+    setFlowFileType(ExportFlowFileType.CLASSIFICATIONS);
+  }
 
   @Schema(type = "string", allowableValues = "CLASSIFICATIONS")
   @Override

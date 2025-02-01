@@ -12,11 +12,14 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("PAYMENTS_REPORTING")
 public class PaymentsReportingExportFile extends ExportFile<PaymentsReportingExportFileFilter> {
+
+  public PaymentsReportingExportFile(){
+    setFlowFileType(ExportFlowFileType.PAYMENTS_REPORTING);
+  }
 
   @Schema(type = "string", allowableValues = "PAYMENTS_REPORTING")
   @Override
