@@ -32,7 +32,6 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "export_file_generator")
   @SequenceGenerator(name = "export_file_generator", sequenceName = "export_file_id_seq", allocationSize = 1)
-  @NotNull
   private Long exportFileId;
   @NotNull
   private Long organizationId;

@@ -1567,7 +1567,7 @@
         }
       },
       "ClassificationsExportFile" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1673,7 +1673,7 @@
         }
       },
       "IngestionFlowFile" : {
-        "required" : [ "creationDate", "fileName", "fileOrigin", "filePathName", "fileSize", "flowFileType", "ingestionFlowFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "fileName", "fileOrigin", "filePathName", "fileSize", "flowFileType", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1798,7 +1798,7 @@
         }
       },
       "ExportFile" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1883,7 +1883,7 @@
         }
       },
       "PaidExportFile" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1968,7 +1968,7 @@
         }
       },
       "PaymentsReportingExportFile" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -2053,7 +2053,7 @@
         }
       },
       "ClassificationsExportFileRequestBody" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -2113,7 +2113,7 @@
         }
       },
       "PaidExportFileRequestBody" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -2173,7 +2173,7 @@
         }
       },
       "PaymentsReportingExportFileRequestBody" : {
-        "required" : [ "creationDate", "expirationDate", "exportFileId", "operatorExternalId", "organizationId", "status", "updateDate", "updateOperatorExternalId" ],
+        "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ],
         "type" : "object",
         "properties" : {
           "creationDate" : {

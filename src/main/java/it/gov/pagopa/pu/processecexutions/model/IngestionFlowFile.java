@@ -21,7 +21,6 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingestion_flow_file_generator")
   @SequenceGenerator(name = "ingestion_flow_file_generator", sequenceName = "ingestion_flow_file_id_seq", allocationSize = 1)
-  @NotNull
   private Long ingestionFlowFileId;
   @NotNull
   private Long organizationId;
