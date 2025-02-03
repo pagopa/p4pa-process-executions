@@ -22,7 +22,8 @@ public interface ExportFileRepository extends
     + "AND ef.flowFileType = :flowFileType "
     + "AND (cast(:creationDateFrom as date) IS NULL OR ef.creationDate >= :creationDateFrom) "
     + "AND (cast(:creationDateTo as date) IS NULL OR ef.creationDate <= :creationDateTo) "
+    + "AND (:operatorExternalId IS NULL OR ef.operatorExternalId = :operatorExternalId) "
     + "AND (:fileName IS NULL OR ef.fileName ILIKE CONCAT('%', cast(:fileName as text), '%')) "
     + "AND (:status IS NULL OR ef.status = :status) ")
-  Page<ExportFile<?>> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId, @Parameter(required = true) @Param("flowFileType") ExportFlowFileType flowFileType, LocalDateTime creationDateFrom, LocalDateTime creationDateTo, ExportFileStatus status, String fileName, Pageable pageable);
+  Page<ExportFile<?>> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId, @Parameter(required = true) @Param("flowFileType") ExportFlowFileType flowFileType, LocalDateTime creationDateFrom, LocalDateTime creationDateTo, String operatorExternalId, ExportFileStatus status, String fileName, Pageable pageable);
 }
