@@ -37,6 +37,6 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     + "AND (cast(:creationDateTo as date) IS NULL OR iff.creationDate <= :creationDateTo) "
     + "AND (:fileName IS NULL OR iff.fileName ILIKE CONCAT('%', cast(:fileName as text), '%')) "
     + "AND (:status IS NULL OR iff.status = :status) "
-    + "AND (:operatorExternalUserId IS NULL OR iff.operatorExternalId = :operatorExternalUserId) ")
-  Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,@Parameter(required = true) @Param("flowFileType") IngestionFlowFileType flowFileType, LocalDateTime creationDateFrom, LocalDateTime creationDateTo, IngestionFlowFileStatus status, String fileName, String operatorExternalUserId, Pageable pageable);
+    + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
+  Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,@Parameter(required = true) @Param("flowFileType") IngestionFlowFileType flowFileType, LocalDateTime creationDateFrom, LocalDateTime creationDateTo, IngestionFlowFileStatus status, String fileName, String operatorExternalId, Pageable pageable);
 }
