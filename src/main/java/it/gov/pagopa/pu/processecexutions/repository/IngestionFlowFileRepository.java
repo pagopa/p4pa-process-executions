@@ -29,7 +29,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Query("update IngestionFlowFile set status=:status, codError=:codError, discardFileName=:discardFileName where ingestionFlowFileId=:ingestionFlowFileId")
   int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus status, String codError, String discardFileName);
 
-  @SuppressWarnings("squid:S107")
+  @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Query("SELECT iff "
     + "FROM IngestionFlowFile iff "
     + "WHERE iff.organizationId = :organizationId "
