@@ -29,6 +29,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Query("update IngestionFlowFile set status=:status, codError=:codError, discardFileName=:discardFileName where ingestionFlowFileId=:ingestionFlowFileId")
   int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus status, String codError, String discardFileName);
 
+  @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Query("SELECT iff "
     + "FROM IngestionFlowFile iff "
     + "WHERE iff.organizationId = :organizationId "
@@ -36,6 +37,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     + "AND (cast(:creationDateFrom as date) IS NULL OR iff.creationDate >= :creationDateFrom) "
     + "AND (cast(:creationDateTo as date) IS NULL OR iff.creationDate <= :creationDateTo) "
     + "AND (:fileName IS NULL OR iff.fileName ILIKE CONCAT('%', cast(:fileName as text), '%')) "
-    + "AND (:status IS NULL OR iff.status = :status) ")
-  Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,@Parameter(required = true) @Param("flowFileType") IngestionFlowFileType flowFileType, LocalDateTime creationDateFrom, LocalDateTime creationDateTo, IngestionFlowFileStatus status, String fileName, Pageable pageable);
+    + "AND (:status IS NULL OR iff.status = :status) "
+    + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
+  Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,@Parameter(required = true) @Param("flowFileType") IngestionFlowFileType flowFileType, LocalDateTime creationDateFrom, LocalDateTime creationDateTo, IngestionFlowFileStatus status, String fileName, String operatorExternalId, Pageable pageable);
 }
