@@ -83,7 +83,7 @@ jobs:
           azure_devops_pat: ${{ secrets.AZURE_DEVOPS_TOKEN }}
           azure_template_parameters: |
             {
-              "APPS_TOP": "[p4pa-process-executions]",
+              "APPS_MID": "[p4pa-process-executions]",
               "ARGOCD_TARGET_BRANCH": "${{ github.event.inputs.argocd_target_branch }}",
               "POSTMAN_BRANCH": "${{ github.event.inputs.postman_branch }}",
               "TRIGGER_MESSAGE": "p4pa-process-executions"
