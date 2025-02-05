@@ -68,3 +68,16 @@ components:
           type: string
         fileOrigin:
           type: string
+    ProcessExecutionsErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - PROCESS_EXECUTIONS_BAD_REQUEST
+            - PROCESS_EXECUTIONS_GENERIC_ERROR
+        message:
+          type: string
