@@ -16,6 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
@@ -41,101 +43,101 @@ import static org.mockito.Mockito.doThrow;
 @ExtendWith({SpringExtension.class})
 @WebMvcTest(value = {ProcessExecutionsExceptionHandlerTest.TestController.class}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @ContextConfiguration(classes = {
-        ProcessExecutionsExceptionHandlerTest.TestController.class,
-        ProcessExecutionsExceptionHandler.class,
-        JsonConfig.class})
+  ProcessExecutionsExceptionHandlerTest.TestController.class,
+  ProcessExecutionsExceptionHandler.class,
+  JsonConfig.class})
 class ProcessExecutionsExceptionHandlerTest {
 
-    public static final String DATA = "data";
-    public static final TestRequestBody BODY = new TestRequestBody("bodyData", null, "abc", LocalDateTime.now());
+  public static final String DATA = "data";
+  public static final TestRequestBody BODY = new TestRequestBody("bodyData", null, "abc", LocalDateTime.now());
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
+  @Autowired
+  private MockMvc mockMvc;
+  @Autowired
+  private ObjectMapper objectMapper;
 
-    @MockitoSpyBean
-    private TestController testControllerSpy;
-    @MockitoSpyBean
-    private RequestMappingHandlerAdapter requestMappingHandlerAdapterSpy;
+  @MockitoSpyBean
+  private TestController testControllerSpy;
+  @MockitoSpyBean
+  private RequestMappingHandlerAdapter requestMappingHandlerAdapterSpy;
 
-    @RestController
-    @Slf4j
-    static class TestController {
-        @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-        String testEndpoint(@RequestParam(DATA) String data, @Valid @RequestBody TestRequestBody body) {
-            return "OK";
-        }
+  @RestController
+  @Slf4j
+  static class TestController {
+    @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
+    String testEndpoint(@RequestParam(DATA) String data, @Valid @RequestBody TestRequestBody body) {
+      return "OK";
+    }
+  }
+
+  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class TestRequestBody {
+    @NotNull
+    private String requiredField;
+    private String notRequiredField;
+    @Pattern(regexp = "[a-z]+")
+    private String lowerCaseAlphabeticField;
+    private LocalDateTime dateTimeField;
+  }
+
+  private ResultActions performRequest(String data, MediaType accept) throws Exception {
+    return performRequest(data, accept, objectMapper.writeValueAsString(ProcessExecutionsExceptionHandlerTest.BODY));
+  }
+
+  private ResultActions performRequest(String data, MediaType accept, String body) throws Exception {
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/test")
+      .param(DATA, data)
+      .accept(accept);
+
+    if (body != null) {
+      requestBuilder
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(body);
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class TestRequestBody {
-        @NotNull
-        private String requiredField;
-        private String notRequiredField;
-        @Pattern(regexp = "[a-z]+")
-        private String lowerCaseAlphabeticField;
-        private LocalDateTime dateTimeField;
-    }
+    return mockMvc.perform(requestBuilder);
+  }
 
-    private ResultActions performRequest(String data, MediaType accept) throws Exception {
-        return performRequest(data, accept, objectMapper.writeValueAsString(ProcessExecutionsExceptionHandlerTest.BODY));
-    }
+  @Test
+  void handleMissingServletRequestParameterException() throws Exception {
 
-    private ResultActions performRequest(String data, MediaType accept, String body) throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/test")
-                .param(DATA, data)
-                .accept(accept);
+    performRequest(null, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Required request parameter 'data' for method parameter type String is not present"));
 
-        if (body != null) {
-            requestBuilder
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body);
-        }
+  }
 
-        return mockMvc.perform(requestBuilder);
-    }
+  @Test
+  void handleRuntimeExceptionError() throws Exception {
+    doThrow(new RuntimeException("Error")).when(testControllerSpy).testEndpoint(DATA, BODY);
 
-    @Test
-    void handleMissingServletRequestParameterException() throws Exception {
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
+  }
 
-        performRequest(null, MediaType.APPLICATION_JSON)
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Required request parameter 'data' for method parameter type String is not present"));
+  @Test
+  void handleGenericServletException() throws Exception {
+    doThrow(new ServletException("Error"))
+      .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
 
-    }
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
+  }
 
-    @Test
-    void handleRuntimeExceptionError() throws Exception {
-        doThrow(new RuntimeException("Error")).when(testControllerSpy).testEndpoint(DATA, BODY);
-
-        performRequest(DATA, MediaType.APPLICATION_JSON)
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
-    }
-
-    @Test
-    void handleGenericServletException() throws Exception {
-        doThrow(new ServletException("Error"))
-                .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
-
-        performRequest(DATA, MediaType.APPLICATION_JSON)
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
-    }
-
-    @Test
-    void handle4xxHttpServletException() throws Exception {
-        performRequest(DATA, MediaType.parseMediaType("application/hal+json"))
-                .andExpect(MockMvcResultMatchers.status().isNotAcceptable())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No acceptable representation"));
-    }
+  @Test
+  void handle4xxHttpServletException() throws Exception {
+    performRequest(DATA, MediaType.parseMediaType("application/hal+json"))
+      .andExpect(MockMvcResultMatchers.status().isNotAcceptable())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No acceptable representation"));
+  }
 
   @Test
   void handleUrlNotFound() throws Exception {
@@ -145,50 +147,72 @@ class ProcessExecutionsExceptionHandlerTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No static resource NOTEXISTENTURL."));
   }
 
-    @Test
-    void handleNoBodyException() throws Exception {
-        performRequest(DATA, MediaType.APPLICATION_JSON, null)
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Required request body is missing"));
-    }
+  @Test
+  void handleResourceNotFoundException() throws Exception {
+    doThrow(new ResourceNotFoundException("Error"))
+      .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
 
-    @Test
-    void handleInvalidBodyException() throws Exception {
-        performRequest(DATA, MediaType.APPLICATION_JSON,
-                "{\"notRequiredField\":\"notRequired\",\"lowerCaseAlphabeticField\":\"ABC\"}")
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Invalid request content: lowerCaseAlphabeticField: must match \"[a-z]+\"; requiredField: must not be null"));
-    }
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isNotFound())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_NOT_FOUND"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
+  }
 
-    @Test
-    void handleNotParsableBodyException() throws Exception {
-        performRequest(DATA, MediaType.APPLICATION_JSON,
-                "{\"notRequiredField\":\"notRequired\",\"dateTimeField\":\"2025-02-05\"}")
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Cannot parse body: dateTimeField: Text '2025-02-05' could not be parsed at index 10"));
-    }
+  @Test
+  void handleDataIntegrityViolationException() throws Exception {
+    doThrow(new DataIntegrityViolationException("Error"))
+      .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
 
-    @Test
-    void handle5xxHttpServletException() throws Exception {
-        doThrow(new ServerErrorException("Error", new RuntimeException("Error")))
-                .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isConflict())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_CONFLICT"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
+  }
 
-        performRequest(DATA, MediaType.APPLICATION_JSON)
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("500 INTERNAL_SERVER_ERROR \"Error\""));
-    }
+  @Test
+  void handleNoBodyException() throws Exception {
+    performRequest(DATA, MediaType.APPLICATION_JSON, null)
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Required request body is missing"));
+  }
 
-    @Test
-    void handleViolationException() throws Exception {
-        doThrow(new ConstraintViolationException("Error", Set.of())).when(testControllerSpy).testEndpoint(DATA, BODY);
+  @Test
+  void handleInvalidBodyException() throws Exception {
+    performRequest(DATA, MediaType.APPLICATION_JSON,
+      "{\"notRequiredField\":\"notRequired\",\"lowerCaseAlphabeticField\":\"ABC\"}")
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Invalid request content: lowerCaseAlphabeticField: must match \"[a-z]+\"; requiredField: must not be null"));
+  }
 
-        performRequest(DATA, MediaType.APPLICATION_JSON)
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
-    }
+  @Test
+  void handleNotParsableBodyException() throws Exception {
+    performRequest(DATA, MediaType.APPLICATION_JSON,
+      "{\"notRequiredField\":\"notRequired\",\"dateTimeField\":\"2025-02-05\"}")
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Cannot parse body: dateTimeField: Text '2025-02-05' could not be parsed at index 10"));
+  }
+
+  @Test
+  void handle5xxHttpServletException() throws Exception {
+    doThrow(new ServerErrorException("Error", new RuntimeException("Error")))
+      .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
+
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("500 INTERNAL_SERVER_ERROR \"Error\""));
+  }
+
+  @Test
+  void handleViolationException() throws Exception {
+    doThrow(new ConstraintViolationException("Error", Set.of())).when(testControllerSpy).testEndpoint(DATA, BODY);
+
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error"));
+  }
 }

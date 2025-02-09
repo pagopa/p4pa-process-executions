@@ -78,6 +78,7 @@ components:
           type: string
           enum:
             - PROCESS_EXECUTIONS_NOT_FOUND
+            - PROCESS_EXECUTIONS_CONFLICT
             - PROCESS_EXECUTIONS_BAD_REQUEST
             - PROCESS_EXECUTIONS_GENERIC_ERROR
         message:
