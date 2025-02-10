@@ -661,25 +661,26 @@
             "type" : "string"
           }
         }, {
-          "name" : "flowFileType",
+          "name" : "flowFileTypes",
           "in" : "query",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
           }
         }, {
           "name" : "creationDateFrom",
           "in" : "query",
           "schema" : {
-            "type" : "string",
-            "format" : "date-time"
+            "type" : "LocalDateTime"
           }
         }, {
           "name" : "creationDateTo",
           "in" : "query",
           "schema" : {
-            "type" : "string",
-            "format" : "date-time"
+            "type" : "LocalDateTime"
           }
         }, {
           "name" : "status",
