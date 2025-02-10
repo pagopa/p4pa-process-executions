@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 @ExtendWith(MockitoExtension.class)
 class IngestionFlowFileEntityExtendedControllerTest {
@@ -35,16 +37,36 @@ class IngestionFlowFileEntityExtendedControllerTest {
     long ingestionFlowFileId = 1L;
     String codError = "CODERROR";
     String discardFilename = "DISCARDFILENAME";
-    IngestionFlowFileStatus status = IngestionFlowFileStatus.PROCESSING;
+    IngestionFlowFileStatus oldStatus = IngestionFlowFileStatus.UPLOADED;
+    IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, status, codError, discardFilename))
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateStatus(ingestionFlowFileId, status, codError, discardFilename).getBody();
+    Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getBody();
 
     // Then
     Assertions.assertEquals(expectedResult, result);
+  }
+
+  @Test
+  void givenZeroResultWhenUpdateStatusThenNotFound(){
+    // Given
+    long ingestionFlowFileId = 1L;
+    String codError = "CODERROR";
+    String discardFilename = "DISCARDFILENAME";
+    IngestionFlowFileStatus oldStatus = IngestionFlowFileStatus.UPLOADED;
+    IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
+
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename))
+      .thenReturn(0);
+
+    // When
+    HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getStatusCode();
+
+    // Then
+    Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
   }
 }

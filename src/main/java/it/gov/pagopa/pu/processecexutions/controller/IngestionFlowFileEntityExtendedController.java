@@ -3,6 +3,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileEntityExtendedControllerApi;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +20,13 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
   }
 
   @Override
-  public ResponseEntity<Integer> updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus status,
+  public ResponseEntity<Integer> updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
                                               String errorDescription,String discardFile) {
-    return ResponseEntity.ok(repository.updateStatus(ingestionFlowFileId, status, errorDescription, discardFile));
+    int result = repository.updateStatus(ingestionFlowFileId, oldStatus, newStatus, errorDescription, discardFile);
+    if(result>0){
+      return ResponseEntity.ok(result);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
   }
 }

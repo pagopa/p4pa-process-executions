@@ -761,7 +761,14 @@
             "format" : "int64"
           }
         }, {
-          "name" : "status",
+          "name" : "oldStatus",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
+          }
+        }, {
+          "name" : "newStatus",
           "in" : "query",
           "schema" : {
             "type" : "string",
@@ -1495,7 +1502,15 @@
             "format" : "int64"
           }
         }, {
-          "name" : "status",
+          "name" : "oldStatus",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
+          }
+        }, {
+          "name" : "newStatus",
           "in" : "query",
           "required" : true,
           "schema" : {
@@ -1521,7 +1536,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "text/plain" : {
+              "application/json" : {
                 "schema" : {
                   "type" : "integer",
                   "format" : "int32"
@@ -1847,6 +1862,14 @@
           }
         }
       },
+      "PaymentsReportingExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "iuf" : {
+            "type" : "string"
+          }
+        }
+      },
       "PagedModelPaymentsReportingExportFile" : {
         "type" : "object",
         "properties" : {
@@ -1866,14 +1889,6 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "PaymentsReportingExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "iuf" : {
-            "type" : "string"
           }
         }
       },
@@ -1950,6 +1965,14 @@
           "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
         } ]
       },
+      "PaidExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "iuv" : {
+            "type" : "string"
+          }
+        }
+      },
       "PagedModelExportFile" : {
         "type" : "object",
         "properties" : {
@@ -1969,14 +1992,6 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "PaidExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "iuv" : {
-            "type" : "string"
           }
         }
       },

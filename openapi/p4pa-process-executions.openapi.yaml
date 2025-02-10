@@ -19,7 +19,12 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: status
+        - name: oldStatus
+          in: query
+          required: true
+          schema:
+            type: "IngestionFlowFileStatusEnum"
+        - name: newStatus
           in: query
           required: true
           schema:
@@ -35,10 +40,10 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
                 type: integer
                 format: int32
