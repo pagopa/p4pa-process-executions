@@ -38,7 +38,7 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   @Enumerated(EnumType.STRING)
   @NotNull
   private IngestionFlowFileStatus status;
-  private String codError;
+  private String errorDescription;
   private String discardFileName;
   private Long numTotalRows;
   private Long numCorrectlyImportedRows;

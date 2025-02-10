@@ -7,6 +7,41 @@ servers:
   - url: http://localhost:8080
     description: Generated server url
 paths:
+  /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-status:
+    patch:
+      tags:
+        - ingestion-flow-file-entity-extended-controller
+      operationId: updateStatus
+      parameters:
+        - name: ingestionFlowFileId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          required: true
+          schema:
+            type: "IngestionFlowFileStatusEnum"
+        - name: errorDescription
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: discardFile
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: integer
+                format: int32
   /ingestion-flow-files:
     post:
       summary: create-ingestion-flow-file

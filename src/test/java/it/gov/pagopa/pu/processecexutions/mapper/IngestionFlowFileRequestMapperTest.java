@@ -47,7 +47,7 @@ class IngestionFlowFileRequestMapperTest {
 
     TestUtils.checkNotNullFields(result,
       "ingestionFlowFileId",
-      "codError",
+      "errorDescription",
       "discardFileName",
       "numTotalRows",
       "numCorrectlyImportedRows",

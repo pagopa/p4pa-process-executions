@@ -131,6 +131,9 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   outputDir.set("$projectDir/build/generated")
   apiPackage.set("it.gov.pagopa.pu.processecexutions.controller.generated")
   modelPackage.set("it.gov.pagopa.pu.processecexutions.dto.generated")
+  typeMappings.set(mapOf(
+    "IngestionFlowFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus"
+  ))
   configOptions.set(mapOf(
     "dateLibrary" to "java8",
     "requestMappingMode" to "api_interface",

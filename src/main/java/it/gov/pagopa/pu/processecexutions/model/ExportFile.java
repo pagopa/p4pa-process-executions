@@ -46,7 +46,7 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   @Enumerated(EnumType.STRING)
   @NotNull
   private ExportFileStatus status;
-  private String codError;
+  private String errorDescription;
   private Long numTotalRows;
   @NotNull
   private OffsetDateTime expirationDate;
