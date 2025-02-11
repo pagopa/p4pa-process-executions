@@ -55,4 +55,21 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     String fileName,
     String operatorExternalId,
     Pageable pageable);
+
+  @Modifying
+  @Transactional
+  @Query("""
+    UPDATE IngestionFlowFile iff
+    SET iff.status = 'PROCESSING'
+    WHERE iff.ingestionFlowFileId = :ingestionFlowFileId
+    AND NOT EXISTS (
+        SELECT 1 FROM IngestionFlowFile other
+        WHERE other.organizationId = iff.organizationId
+        AND other.flowFileType = iff.flowFileType
+        AND other.status = 'PROCESSING'
+        AND other.ingestionFlowFileId <> iff.ingestionFlowFileId
+    )
+    """)
+  int updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
+
 }
