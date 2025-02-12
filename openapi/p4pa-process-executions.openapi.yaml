@@ -101,6 +101,7 @@ components:
             - TREASURY_CSV
             - TREASURY_XLS
             - TREASURY_POSTE
+            - DP_INSTALLMENTS
         flowDateTime:
           type: string
           format: date-time
