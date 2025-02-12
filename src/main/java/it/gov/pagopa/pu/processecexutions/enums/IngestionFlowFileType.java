@@ -8,6 +8,7 @@ public enum IngestionFlowFileType {
   TREASURY_OPI,
   TREASURY_CSV,
   TREASURY_XLS,
-  TREASURY_POSTE
+  TREASURY_POSTE,
+  DP_INSTALLMENTS
 }
 
