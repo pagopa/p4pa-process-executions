@@ -1,11 +1,8 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
-import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
-import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileService;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import java.net.URI;
 import org.springframework.http.ResponseEntity;

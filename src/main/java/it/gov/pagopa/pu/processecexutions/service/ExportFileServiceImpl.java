@@ -23,12 +23,12 @@ public class ExportFileServiceImpl implements ExportFileService{
   }
 
   @Override
-  public ExportFile<?> handleUploaded(ExportFileRequestDTO requestDTO,
+  public <T extends ExportFile<?>> T handleUploaded(ExportFileRequestDTO requestDTO,
     String operatorExternalId,
     String accessToken) {
     ExportFile<?> saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId, createExportFileByType(requestDTO.getFlowFileType())));
 //  TODO: call workflow services based on ExportFile type
-    return saved;
+    return (T) saved;
   }
 
   private ExportFile<?> createExportFileByType(FlowFileTypeEnum fileType) {

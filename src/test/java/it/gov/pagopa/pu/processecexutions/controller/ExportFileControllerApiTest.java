@@ -1,14 +1,11 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
-import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
-import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileService;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -52,7 +49,7 @@ class ExportFileControllerApiTest {
   void whenHandleUploadedThenInvokeService(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
-    ExportFile<?> t = new ClassificationsExportFile();
+    ClassificationsExportFile t = new ClassificationsExportFile();
     t.setExportFileId(1L);
 
     String operatorExternalId = "OPERATOREXTERNALID";

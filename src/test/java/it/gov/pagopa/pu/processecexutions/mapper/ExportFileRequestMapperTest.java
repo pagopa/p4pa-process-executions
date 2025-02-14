@@ -1,16 +1,11 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
