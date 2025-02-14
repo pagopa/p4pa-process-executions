@@ -1,0 +1,124 @@
+package it.gov.pagopa.pu.processecexutions.service;
+
+import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO.FlowFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
+import it.gov.pagopa.pu.processecexutions.model.ExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
+import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class ExportFileServiceTest {
+
+  @Mock
+  private ExportFileRequestMapper uploadedRequestMapperMock;
+  @Mock
+  private ExportFileRepository repositoryMock;
+//  @Mock
+//  TODO: mock worflow services
+
+  private ExportFileService service;
+
+  @BeforeEach
+  void init(){
+    service = new ExportFileServiceImpl(
+      uploadedRequestMapperMock,
+      repositoryMock);
+  }
+
+  @AfterEach
+  void verifyNoMoreInteractions(){
+    Mockito.verifyNoMoreInteractions(
+      uploadedRequestMapperMock,
+      repositoryMock
+    );
+  }
+
+  @Test
+  void whenHandleUploadedThenStoreAndInvokeWF_Classifications(){
+    // Given
+    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    requestDTO.setFlowFileType(FlowFileTypeEnum.CLASSIFICATIONS);
+    ClassificationsExportFile newEntity = new ClassificationsExportFile();
+    ClassificationsExportFile storedEntity = new ClassificationsExportFile();
+    String operatorExternalId = "OPERATOREXTERNALID";
+    String accessToken = "ACCESSTOKEN";
+
+    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.any(
+        ClassificationsExportFile.class)))
+      .thenReturn(newEntity);
+
+    Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
+      .thenReturn(storedEntity);
+
+    // When
+    ExportFile<?> result = service.handleUploaded(requestDTO, operatorExternalId,
+        accessToken);
+
+    // Then
+    Assertions.assertSame(storedEntity, result);
+//  TODO: verify interaction with mocked workflow service
+  }
+
+  @Test
+  void whenHandleUploadedThenStoreAndInvokeWF_Paid(){
+    // Given
+    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    requestDTO.setFlowFileType(FlowFileTypeEnum.PAID);
+    PaidExportFile newEntity = new PaidExportFile();
+    PaidExportFile storedEntity = new PaidExportFile();
+    String operatorExternalId = "OPERATOREXTERNALID";
+    String accessToken = "ACCESSTOKEN";
+
+    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.any(
+        PaidExportFile.class)))
+      .thenReturn(newEntity);
+
+    Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
+      .thenReturn(storedEntity);
+
+    // When
+    ExportFile<?> result = service.handleUploaded(requestDTO, operatorExternalId,
+        accessToken);
+
+    // Then
+    Assertions.assertSame(storedEntity, result);
+//  TODO: verify interaction with mocked workflow service
+  }
+
+  @Test
+  void whenHandleUploadedThenStoreAndInvokeWF_PaymentsReporting(){
+    // Given
+    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    requestDTO.setFlowFileType(FlowFileTypeEnum.PAYMENTS_REPORTING);
+    PaymentsReportingExportFile newEntity = new PaymentsReportingExportFile();
+    PaymentsReportingExportFile storedEntity = new PaymentsReportingExportFile();
+    String operatorExternalId = "OPERATOREXTERNALID";
+    String accessToken = "ACCESSTOKEN";
+
+    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.any(
+        PaymentsReportingExportFile.class)))
+      .thenReturn(newEntity);
+
+    Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
+      .thenReturn(storedEntity);
+
+    // When
+    ExportFile<?> result = service.handleUploaded(requestDTO, operatorExternalId,
+        accessToken);
+
+    // Then
+    Assertions.assertSame(storedEntity, result);
+//  TODO: verify interaction with mocked workflow service
+  }
+}
