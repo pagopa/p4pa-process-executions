@@ -2,6 +2,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
@@ -47,15 +48,14 @@ class ExportFileControllerApiTest {
   void whenHandleUploadedThenInvokeService(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
-    ClassificationsExportFile t = new ClassificationsExportFile();
+    ExportFile<?> t = new ClassificationsExportFile();
     t.setExportFileId(1L);
 
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
-            Mockito.anyString()))
-      .thenReturn(t);
+    Mockito.doReturn(t).when(serviceMock).handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+      Mockito.anyString());
 
     // When
     ResponseEntity<Void> result = controller.createExportFile(requestDTO);
@@ -64,4 +64,5 @@ class ExportFileControllerApiTest {
     Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
   }
+
 }

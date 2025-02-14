@@ -18,10 +18,7 @@ class ExportFileRequestMapperTest {
     // Given
     ExportFileRequestDTO dto = ExportFileRequestDTO.builder()
       .organizationId(0L)
-      .filePathName("FILEPATHNAME")
-      .fileName("FILENAME")
-      .fileSize(1L)
-      .flowFileType(ExportFileRequestDTO.FlowFileTypeEnum.PAYMENTS_REPORTING)
+      .flowFileType(ExportFlowFileType.PAYMENTS_REPORTING)
       .build();
 
     // When
@@ -32,14 +29,14 @@ class ExportFileRequestMapperTest {
 
     Assertions.assertEquals(0L, result.getOrganizationId());
     Assertions.assertEquals("OPERATOREXTERNALID", result.getOperatorExternalId());
-    Assertions.assertEquals("FILEPATHNAME", result.getFilePathName());
-    Assertions.assertEquals("FILENAME", result.getFileName());
-    Assertions.assertEquals(1L, result.getFileSize());
     Assertions.assertEquals(ExportFlowFileType.PAYMENTS_REPORTING, result.getFlowFileType());
     Assertions.assertEquals(ExportFileStatus.REQUESTED, result.getStatus());
 
     TestUtils.checkNotNullFields(result,
       "exportFileId",
+      "filePathName",
+      "fileSize",
+      "fileName",
       "filterFields",
       "errorDescription",
       "numTotalRows",

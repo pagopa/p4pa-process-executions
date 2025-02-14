@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO.FlowFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
@@ -23,15 +23,15 @@ public class ExportFileServiceImpl implements ExportFileService{
   }
 
   @Override
-  public <T extends ExportFile<?>> T handleUploaded(ExportFileRequestDTO requestDTO,
+  public ExportFile<?> handleUploaded(ExportFileRequestDTO requestDTO,
     String operatorExternalId,
     String accessToken) {
     ExportFile<?> saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId, createExportFileByType(requestDTO.getFlowFileType())));
 //  TODO: call workflow services based on ExportFile type
-    return (T) saved;
+    return saved;
   }
 
-  private ExportFile<?> createExportFileByType(FlowFileTypeEnum fileType) {
+  private ExportFile<?> createExportFileByType(ExportFlowFileType fileType) {
     return switch (fileType) {
       case CLASSIFICATIONS -> new ClassificationsExportFile();
       case PAID -> new PaidExportFile();

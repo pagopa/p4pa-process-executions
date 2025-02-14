@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO.FlowFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
@@ -48,7 +48,7 @@ class ExportFileServiceTest {
   void whenHandleUploadedThenStoreAndInvokeWF_Classifications(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
-    requestDTO.setFlowFileType(FlowFileTypeEnum.CLASSIFICATIONS);
+    requestDTO.setFlowFileType(ExportFlowFileType.CLASSIFICATIONS);
     ClassificationsExportFile newEntity = new ClassificationsExportFile();
     ClassificationsExportFile storedEntity = new ClassificationsExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -74,7 +74,7 @@ class ExportFileServiceTest {
   void whenHandleUploadedThenStoreAndInvokeWF_Paid(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
-    requestDTO.setFlowFileType(FlowFileTypeEnum.PAID);
+    requestDTO.setFlowFileType(ExportFlowFileType.PAID);
     PaidExportFile newEntity = new PaidExportFile();
     PaidExportFile storedEntity = new PaidExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -100,7 +100,7 @@ class ExportFileServiceTest {
   void whenHandleUploadedThenStoreAndInvokeWF_PaymentsReporting(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
-    requestDTO.setFlowFileType(FlowFileTypeEnum.PAYMENTS_REPORTING);
+    requestDTO.setFlowFileType(ExportFlowFileType.PAYMENTS_REPORTING);
     PaymentsReportingExportFile newEntity = new PaymentsReportingExportFile();
     PaymentsReportingExportFile storedEntity = new PaymentsReportingExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";

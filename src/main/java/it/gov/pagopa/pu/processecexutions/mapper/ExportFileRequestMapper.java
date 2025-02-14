@@ -11,10 +11,7 @@ public class ExportFileRequestMapper {
   public <T extends ExportFile<?>> T map(ExportFileRequestDTO dto, String operatorExternalId, T exportFile) {
       exportFile.setOrganizationId(dto.getOrganizationId());
       exportFile.setOperatorExternalId(operatorExternalId);
-      exportFile.setFilePathName(dto.getFilePathName());
-      exportFile.setFileName(dto.getFileName());
-      exportFile.setFileSize(dto.getFileSize());
-      exportFile.setStatus(ExportFileStatus.REQUESTED); // TODO: correct status?
+      exportFile.setStatus(ExportFileStatus.REQUESTED);
       return exportFile;
   }
 

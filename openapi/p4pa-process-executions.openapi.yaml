@@ -128,27 +128,13 @@ components:
       type: object
       required:
         - organizationId
-        - filePathName
-        - fileName
-        - fileSize
         - flowFileType
       properties:
         organizationId:
           type: integer
           format: int64
-        filePathName:
-          type: string
-        fileName:
-          type: string
-        fileSize:
-          type: integer
-          format: int64
         flowFileType:
-          type: string
-          enum:
-            - PAID
-            - CLASSIFICATIONS
-            - PAYMENTS_REPORTING
+          type: 'ExportFileType'
     ProcessExecutionsErrorDTO:
       type: object
       required:
