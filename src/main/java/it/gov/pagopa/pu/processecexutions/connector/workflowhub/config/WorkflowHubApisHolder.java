@@ -1,5 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
+import it.gov.pagopa.pu.processecexutions.config.RestTemplateConfig;
 import it.gov.pagopa.pu.workflowhub.controller.ApiClient;
 import it.gov.pagopa.pu.workflowhub.controller.BaseApi;
 import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
@@ -18,12 +19,18 @@ public class WorkflowHubApisHolder {
     private final ThreadLocal<String> bearerTokenHolder = new ThreadLocal<>();
 
     public WorkflowHubApisHolder(
-            @Value("${rest.workflow-hub.base-url}") String baseUrl,
-            RestTemplateBuilder restTemplateBuilder) {
+        WorkflowHubClientConfig clientConfig,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ApiClient apiClient = new ApiClient(restTemplate);
-        apiClient.setBasePath(baseUrl);
-        apiClient.setBearerToken(bearerTokenHolder::get);
+      apiClient.setBasePath(clientConfig.getBaseUrl());
+      apiClient.setBearerToken(bearerTokenHolder::get);
+      apiClient.setMaxAttemptsForRetry(Math.max(1, clientConfig.getMaxAttempts()));
+      apiClient.setWaitTimeMillis(clientConfig.getWaitTimeMillis());
+      if (clientConfig.isPrintBodyWhenError()) {
+        restTemplate.setErrorHandler(RestTemplateConfig.bodyPrinterWhenError("ORGANIZATION"));
+      }
 
         this.ingestionFlowApi = new IngestionFlowApi(apiClient);
     }
