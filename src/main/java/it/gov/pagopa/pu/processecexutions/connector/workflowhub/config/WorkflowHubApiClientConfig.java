@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
-import it.gov.pagopa.pu.processecexutions.connector.config.ClientConfig;
+import it.gov.pagopa.pu.processecexutions.config.ApiClientConfig;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,5 +10,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "rest.workflow-hub")
 @SuperBuilder
 @NoArgsConstructor
-public class WorkflowHubClientConfig extends ClientConfig {
+public class WorkflowHubApiClientConfig extends ApiClientConfig {
 }

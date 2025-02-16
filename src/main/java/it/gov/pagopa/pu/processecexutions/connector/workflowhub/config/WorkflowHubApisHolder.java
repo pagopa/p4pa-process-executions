@@ -5,7 +5,6 @@ import it.gov.pagopa.pu.workflowhub.controller.ApiClient;
 import it.gov.pagopa.pu.workflowhub.controller.BaseApi;
 import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
 import jakarta.annotation.PreDestroy;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class WorkflowHubApisHolder {
     private final ThreadLocal<String> bearerTokenHolder = new ThreadLocal<>();
 
     public WorkflowHubApisHolder(
-        WorkflowHubClientConfig clientConfig,
+        WorkflowHubApiClientConfig clientConfig,
         RestTemplateBuilder restTemplateBuilder
     ) {
         RestTemplate restTemplate = restTemplateBuilder.build();
@@ -29,7 +28,7 @@ public class WorkflowHubApisHolder {
       apiClient.setMaxAttemptsForRetry(Math.max(1, clientConfig.getMaxAttempts()));
       apiClient.setWaitTimeMillis(clientConfig.getWaitTimeMillis());
       if (clientConfig.isPrintBodyWhenError()) {
-        restTemplate.setErrorHandler(RestTemplateConfig.bodyPrinterWhenError("ORGANIZATION"));
+        restTemplate.setErrorHandler(RestTemplateConfig.bodyPrinterWhenError("WORKFLOW-HUB"));
       }
 
         this.ingestionFlowApi = new IngestionFlowApi(apiClient);
