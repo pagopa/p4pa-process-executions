@@ -1,10 +1,10 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
+import it.gov.pagopa.pu.processecexutions.config.RestTemplateConfig;
 import it.gov.pagopa.pu.workflowhub.controller.ApiClient;
 import it.gov.pagopa.pu.workflowhub.controller.BaseApi;
 import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
 import jakarta.annotation.PreDestroy;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,18 @@ public class WorkflowHubApisHolder {
     private final ThreadLocal<String> bearerTokenHolder = new ThreadLocal<>();
 
     public WorkflowHubApisHolder(
-            @Value("${rest.workflow-hub.base-url}") String baseUrl,
-            RestTemplateBuilder restTemplateBuilder) {
+        WorkflowHubApiClientConfig clientConfig,
+        RestTemplateBuilder restTemplateBuilder
+    ) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ApiClient apiClient = new ApiClient(restTemplate);
-        apiClient.setBasePath(baseUrl);
-        apiClient.setBearerToken(bearerTokenHolder::get);
+      apiClient.setBasePath(clientConfig.getBaseUrl());
+      apiClient.setBearerToken(bearerTokenHolder::get);
+      apiClient.setMaxAttemptsForRetry(Math.max(1, clientConfig.getMaxAttempts()));
+      apiClient.setWaitTimeMillis(clientConfig.getWaitTimeMillis());
+      if (clientConfig.isPrintBodyWhenError()) {
+        restTemplate.setErrorHandler(RestTemplateConfig.bodyPrinterWhenError("WORKFLOW-HUB"));
+      }
 
         this.ingestionFlowApi = new IngestionFlowApi(apiClient);
     }
