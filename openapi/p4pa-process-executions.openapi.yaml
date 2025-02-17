@@ -72,7 +72,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExportFileRequestDTO'
+              type: 'ExportFileRequestDTO'
         required: true
       responses:
         '201':
@@ -124,17 +124,6 @@ components:
           type: string
         fileOrigin:
           type: string
-    ExportFileRequestDTO:
-      type: object
-      required:
-        - organizationId
-        - flowFileType
-      properties:
-        organizationId:
-          type: integer
-          format: int64
-        flowFileType:
-          type: 'ExportFileType'
     ProcessExecutionsErrorDTO:
       type: object
       required:

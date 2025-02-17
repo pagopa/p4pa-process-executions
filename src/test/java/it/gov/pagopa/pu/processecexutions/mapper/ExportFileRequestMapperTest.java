@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
-import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;

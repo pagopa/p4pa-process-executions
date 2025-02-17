@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
-import it.gov.pagopa.pu.processecexutions.dto.generated.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
