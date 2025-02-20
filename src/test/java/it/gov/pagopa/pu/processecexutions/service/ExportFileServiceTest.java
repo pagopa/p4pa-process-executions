@@ -5,8 +5,11 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -47,7 +50,7 @@ class ExportFileServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_Classifications(){
     // Given
-    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    ExportFileRequestDTO<ClassificationsExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
     requestDTO.setFlowFileType(ExportFlowFileType.CLASSIFICATIONS);
     ClassificationsExportFile newEntity = new ClassificationsExportFile();
     ClassificationsExportFile storedEntity = new ClassificationsExportFile();
@@ -73,7 +76,7 @@ class ExportFileServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_Paid(){
     // Given
-    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    ExportFileRequestDTO<PaidExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
     requestDTO.setFlowFileType(ExportFlowFileType.PAID);
     PaidExportFile newEntity = new PaidExportFile();
     PaidExportFile storedEntity = new PaidExportFile();
@@ -104,7 +107,7 @@ class ExportFileServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_PaymentsReporting(){
     // Given
-    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    ExportFileRequestDTO<PaymentsReportingExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
     requestDTO.setFlowFileType(ExportFlowFileType.PAYMENTS_REPORTING);
     PaymentsReportingExportFile newEntity = new PaymentsReportingExportFile();
     PaymentsReportingExportFile storedEntity = new PaymentsReportingExportFile();

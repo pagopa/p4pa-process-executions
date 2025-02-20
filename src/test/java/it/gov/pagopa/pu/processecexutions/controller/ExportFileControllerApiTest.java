@@ -4,6 +4,7 @@ import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControl
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
@@ -47,7 +48,7 @@ class ExportFileControllerApiTest {
   @Test
   void whenHandleUploadedThenInvokeService(){
     // Given
-    ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
+    ExportFileRequestDTO<ClassificationsExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
     ExportFile<?> t = new ClassificationsExportFile();
     t.setExportFileId(1L);
 

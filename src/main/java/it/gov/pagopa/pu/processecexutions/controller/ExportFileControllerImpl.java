@@ -18,6 +18,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   @Override
+  @SuppressWarnings("rawtypes")
   public ResponseEntity<Void> createExportFile(
     ExportFileRequestDTO exportFileRequestDTO) {
     return ResponseEntity

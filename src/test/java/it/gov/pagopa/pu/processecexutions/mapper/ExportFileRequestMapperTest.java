@@ -3,7 +3,6 @@ package it.gov.pagopa.pu.processecexutions.mapper;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
-import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
@@ -17,7 +16,7 @@ class ExportFileRequestMapperTest {
   @Test
   void test() {
     // Given
-    ExportFileRequestDTO dto = ExportFileRequestDTO.builder()
+    ExportFileRequestDTO<PaymentsReportingExportFileFilter> dto = ExportFileRequestDTO.<PaymentsReportingExportFileFilter>builder()
       .organizationId(0L)
       .flowFileType(ExportFlowFileType.PAYMENTS_REPORTING)
       .filterFields(new PaymentsReportingExportFileFilter("iuf"))
