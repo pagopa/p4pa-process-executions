@@ -1,7 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
 import it.gov.pagopa.pu.processecexutions.connector.BaseApiHolderTest;
-import it.gov.pagopa.pu.workflowhub.controller.ApiClient;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +23,10 @@ class WorkflowHubApisHolderTest extends BaseApiHolderTest {
   void setUp() {
     Mockito.when(restTemplateBuilderMock.build()).thenReturn(restTemplateMock);
     Mockito.when(restTemplateMock.getUriTemplateHandler()).thenReturn(new DefaultUriBuilderFactory());
-    ApiClient apiClient = new ApiClient(restTemplateMock);
-    String baseUrl = "http://example.com";
-    apiClient.setBasePath(baseUrl);
-    workflowHubApisHolder = new WorkflowHubApisHolder(baseUrl, restTemplateBuilderMock);
+    WorkflowHubApiClientConfig clientConfig = WorkflowHubApiClientConfig.builder()
+      .baseUrl("http://example.com")
+      .build();
+    workflowHubApisHolder = new WorkflowHubApisHolder(clientConfig, restTemplateBuilderMock);
   }
 
   @AfterEach

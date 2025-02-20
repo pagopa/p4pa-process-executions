@@ -2,57 +2,57 @@ server:
   http: "\${SERVER_PORT:8080}"
 
 spring:
-    application:
-      name: ${artifactId}
-      version: ${version}
-    jmx.enabled: true
-    threads:
-      virtual:
-        enabled: "\${VIRTUAL_THREADS_ENABLED:true}"
-    jpa:
-      show-sql: "\${SHOW_SQL:false}"
-      hibernate:
-        ddl-auto: none
-    datasource:
-      url: "\${PROCESS_EXECUTIONS_DB_URL:jdbc:postgresql://\${PROCESS_EXECUTIONS_DB_HOST:localhost}:\${PROCESS_EXECUTIONS_DB_PORT:5432}/\${PROCESS_EXECUTIONS_DB_NAME:payhub}?currentSchema=process_executions}"
-      username: "\${PROCESS_EXECUTIONS_DB_USER}"
-      password: "\${PROCESS_EXECUTIONS_DB_PASSWORD}"
-      driverClassName: org.postgresql.Driver
-    data:
-      rest:
-        basePath: crud
+  application:
+    name: ${artifactId}
+    version: ${version}
+  jmx.enabled: true
+  threads:
+    virtual:
+      enabled: "\${VIRTUAL_THREADS_ENABLED:true}"
+  jpa:
+    show-sql: "\${SHOW_SQL:false}"
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: "\${PROCESS_EXECUTIONS_DB_URL:jdbc:postgresql://\${PROCESS_EXECUTIONS_DB_HOST:localhost}:\${PROCESS_EXECUTIONS_DB_PORT:5432}/\${PROCESS_EXECUTIONS_DB_NAME:payhub}?currentSchema=process_executions}"
+    username: "\${PROCESS_EXECUTIONS_DB_USER}"
+    password: "\${PROCESS_EXECUTIONS_DB_PASSWORD}"
+    driverClassName: org.postgresql.Driver
+  data:
+    rest:
+      basePath: crud
 
 management:
-    endpoints:
-      jmx:
-        exposure.include: "*"
-      web:
-        exposure:
-          include: health, info, prometheus, metrics
-        base-path: /actuator
-    endpoint:
-      health:
-        probes.enabled: true
-        logging.slow-indicator-threshold: "\${HEALTH_ACTUATOR_LOGGER_TIMEOUT_DURATION:PT1S}"
-        group:
-          readiness.include: "*"
-          liveness.include: livenessState,diskSpace,ping
+  endpoints:
+    jmx:
+      exposure.include: "*"
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      probes.enabled: true
+      logging.slow-indicator-threshold: "\${HEALTH_ACTUATOR_LOGGER_TIMEOUT_DURATION:PT1S}"
+      group:
+        readiness.include: "*"
+        liveness.include: livenessState,diskSpace,ping
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${artifactId}
+    export:
       prometheus:
         enabled: true
-    metrics:
-      tags:
-        application: ${artifactId}
-      export:
-        prometheus:
-          enabled: true
-          step: 1m
-          descriptions: true
-      enable:
-        jvm: true
-        process: true
-        system: true
-        http: true
-        logback: true
+        step: 1m
+        descriptions: true
+    enable:
+      jvm: true
+      process: true
+      system: true
+      http: true
+      logback: true
 
 logging:
   level:
@@ -60,6 +60,11 @@ logging:
     it.gov.pagopa: "\${LOG_LEVEL_PAGOPA:INFO}"
     org.springframework: "\${LOG_LEVEL_SPRING:INFO}"
     org.springframework.boot.availability: "\${LOG_LEVEL_SPRING_BOOT_AVAILABILITY:DEBUG}"
+    it.gov.pagopa.pu.processecexutions.exception.ProcessExecutionsExceptionHandler: "\${LOGGING_LEVEL_API_REQUEST_EXCEPTION:INFO}"
+    org.springdoc.core.utils.SpringDocAnnotationsUtils: "\${LOG_LEVEL_SPRING_DOC:ERROR}"
+    PERFORMANCE_LOG: "\${LOG_LEVEL_PERFORMANCE_LOG:INFO}"
+    PERFORMANCE_LOG.API_REQUEST: "\${LOG_LEVEL_PERFORMANCE_LOG_API_REQUEST:\${logging.level.PERFORMANCE_LOG}}"
+    PERFORMANCE_LOG.REST_INVOKE: "\${LOG_LEVEL_PERFORMANCE_LOG_REST_INVOKE:\${logging.level.PERFORMANCE_LOG}}"
 
 springdoc:
   writer-with-default-pretty-printer: true
@@ -82,3 +87,6 @@ rest:
     read-millis: "\${DEFAULT_REST_READ_TIMEOUT_MILLIS:120000}"
   workflow-hub:
     base-url: "\${WORKFLOW_HUB_BASE_URL:}"
+    max-attempts: "\${WORKFLOW_HUB_MAX_ATTEMPTS:3}" # It's counting also the first attempt
+    wait-time-millis: "\${WORKFLOW_HUB_WAIT_TIME_MILLIS:500}"
+    print-body-when-error: "\${WORKFLOW_HUB_PRINT_BODY_WHEN_ERROR:true}"
