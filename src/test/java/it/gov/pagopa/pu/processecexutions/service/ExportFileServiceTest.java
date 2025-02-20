@@ -45,7 +45,7 @@ class ExportFileServiceTest {
   }
 
   @Test
-  void whenHandleUploadedThenStoreAndInvokeWF_Classifications(){
+  void whenSaveThenStoreAndInvokeWF_Classifications(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
     requestDTO.setFlowFileType(ExportFlowFileType.CLASSIFICATIONS);
@@ -62,7 +62,7 @@ class ExportFileServiceTest {
       .thenReturn(storedEntity);
 
     // When
-    ExportFile<?> result = service.handleUploaded(requestDTO, operatorExternalId,
+    ExportFile<?> result = service.save(requestDTO, operatorExternalId,
         accessToken);
 
     // Then
@@ -71,7 +71,7 @@ class ExportFileServiceTest {
   }
 
   @Test
-  void whenHandleUploadedThenStoreAndInvokeWF_Paid(){
+  void whenSaveThenStoreAndInvokeWF_Paid(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
     requestDTO.setFlowFileType(ExportFlowFileType.PAID);
@@ -88,16 +88,21 @@ class ExportFileServiceTest {
       .thenReturn(storedEntity);
 
     // When
-    ExportFile<?> result = service.handleUploaded(requestDTO, operatorExternalId,
+    ExportFile<?> result = service.save(requestDTO, operatorExternalId,
         accessToken);
 
     // Then
     Assertions.assertSame(storedEntity, result);
-//  TODO: verify interaction with mocked workflow service
+
+    /*  TODO: verify invocation to workflow services based on ExportFile type
+    [P4ADEV-2225] CLASSIFICATIONS
+    [P4ADEV-2223] PAID
+    [P4ADEV-2224] PAYMENTS_REPORTING
+    */
   }
 
   @Test
-  void whenHandleUploadedThenStoreAndInvokeWF_PaymentsReporting(){
+  void whenSaveThenStoreAndInvokeWF_PaymentsReporting(){
     // Given
     ExportFileRequestDTO requestDTO = new ExportFileRequestDTO();
     requestDTO.setFlowFileType(ExportFlowFileType.PAYMENTS_REPORTING);
@@ -114,7 +119,7 @@ class ExportFileServiceTest {
       .thenReturn(storedEntity);
 
     // When
-    ExportFile<?> result = service.handleUploaded(requestDTO, operatorExternalId,
+    ExportFile<?> result = service.save(requestDTO, operatorExternalId,
         accessToken);
 
     // Then

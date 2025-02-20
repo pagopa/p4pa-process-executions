@@ -22,7 +22,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
     ExportFileRequestDTO exportFileRequestDTO) {
     return ResponseEntity
       .created(URI.create(String.valueOf(
-        service.handleUploaded(exportFileRequestDTO,
+        service.save(exportFileRequestDTO,
           SecurityUtils.getCurrentUserExternalId(),
           SecurityUtils.getAccessToken()).getExportFileId())))
       .build();

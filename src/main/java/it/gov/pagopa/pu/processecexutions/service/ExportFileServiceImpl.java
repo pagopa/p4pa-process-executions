@@ -13,21 +13,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExportFileServiceImpl implements ExportFileService{
 
-  private final ExportFileRequestMapper uploadedRequestMapper;
+  private final ExportFileRequestMapper requestMapper;
   private final ExportFileRepository repository;
-//TODO: exportFileWorkflowServices
 
-  public ExportFileServiceImpl(ExportFileRequestMapper uploadedRequestMapper, ExportFileRepository repository) {
-    this.uploadedRequestMapper = uploadedRequestMapper;
+  public ExportFileServiceImpl(ExportFileRequestMapper requestMapper, ExportFileRepository repository) {
+    this.requestMapper = requestMapper;
     this.repository = repository;
   }
 
   @Override
-  public ExportFile<?> handleUploaded(ExportFileRequestDTO requestDTO,
+  @SuppressWarnings("rawtypes")
+  public ExportFile<?> save(ExportFileRequestDTO requestDTO,
     String operatorExternalId,
     String accessToken) {
-    ExportFile<?> saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId, createExportFileByType(requestDTO.getFlowFileType())));
-//  TODO: call workflow services based on ExportFile type
+
+    ExportFile<?> saved = repository.save(
+      requestMapper.map(requestDTO, operatorExternalId,
+        createExportFileByType(requestDTO.getFlowFileType())));
+
+    /*  TODO: call workflow services based on ExportFile type
+    [P4ADEV-2225] CLASSIFICATIONS
+    [P4ADEV-2223] PAID
+    [P4ADEV-2224] PAYMENTS_REPORTING
+    */
+
     return saved;
   }
 

@@ -54,7 +54,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(t).when(serviceMock).handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
       Mockito.anyString());
 
     // When

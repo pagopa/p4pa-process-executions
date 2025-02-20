@@ -5,6 +5,7 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,11 @@ class ExportFileRequestMapperTest {
     ExportFileRequestDTO dto = ExportFileRequestDTO.builder()
       .organizationId(0L)
       .flowFileType(ExportFlowFileType.PAYMENTS_REPORTING)
+      .filterFields(new PaymentsReportingExportFileFilter("iuf"))
       .build();
 
     // When
-    ExportFile<?> result = mapper.map(dto, "OPERATOREXTERNALID", new PaymentsReportingExportFile());
+    PaymentsReportingExportFile result = mapper.map(dto, "OPERATOREXTERNALID", new PaymentsReportingExportFile());
 
     // Then
     Assertions.assertNotNull(result);
@@ -37,10 +39,8 @@ class ExportFileRequestMapperTest {
       "filePathName",
       "fileSize",
       "fileName",
-      "filterFields",
       "errorDescription",
       "numTotalRows",
-      "pdfGenerated",
       "creationDate",
       "updateDate",
       "expirationDate",
