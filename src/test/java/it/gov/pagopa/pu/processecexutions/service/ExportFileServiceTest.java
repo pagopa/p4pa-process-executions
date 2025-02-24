@@ -97,11 +97,7 @@ class ExportFileServiceTest {
     // Then
     Assertions.assertSame(storedEntity, result);
 
-    /*  TODO: verify invocation to workflow services based on ExportFile type
-    [P4ADEV-2225] CLASSIFICATIONS
-    [P4ADEV-2223] PAID
-    [P4ADEV-2224] PAYMENTS_REPORTING
-    */
+    // TODO: verify invocation to workflow service
   }
 
   @Test
