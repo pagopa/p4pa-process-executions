@@ -1,15 +1,21 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.client;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.config.WorkflowHubApisHolder;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
 import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
@@ -36,39 +42,56 @@ class IngestionFlowClientTest {
   }
 
   @Test
-  void whenIngestPaymentsReportingFileThenInvokeWithAccessToken() {
+  void whenIngestFlowFileThenInvokeWithAccessToken() {
     long ingestionFlowFileId = 1L;
+    IngestionFlowFileType ingestionFlowFileType = IngestionFlowFileType.PAYMENTS_REPORTING;
     String accessToken = "ACCESSTOKEN";
     WorkflowCreatedDTO expectedResult = new WorkflowCreatedDTO();
 
     when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
       .thenReturn(ingestionFlowApiMock);
-    when(ingestionFlowApiMock.ingestPaymentsReportingFile(
-      ingestionFlowFileId))
+    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType.name()))
       .thenReturn(expectedResult);
 
-    WorkflowCreatedDTO result = ingestionFlowClient.ingestPaymentsReportingFile(
-      ingestionFlowFileId, accessToken);
+    WorkflowCreatedDTO result = ingestionFlowClient.ingestFlowFile(
+      ingestionFlowFileId, ingestionFlowFileType, accessToken);
 
     assertSame(expectedResult, result);
   }
 
   @Test
-  void whenIngestTreasuryOpiThenInvokeWithAccessToken() {
+  void givenNotSupportedIngestionFlowFileWhenIngestFlowFileThenThrowUnsupportedOperationException() {
     long ingestionFlowFileId = 1L;
+    IngestionFlowFileType ingestionFlowFileType = IngestionFlowFileType.PAYMENTS_REPORTING;
     String accessToken = "ACCESSTOKEN";
-    WorkflowCreatedDTO expectedResult = new WorkflowCreatedDTO();
 
     when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
       .thenReturn(ingestionFlowApiMock);
-    when(ingestionFlowApiMock.ingestTreasuryOpi(
-      ingestionFlowFileId))
-      .thenReturn(expectedResult);
+    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType.name()))
+      .thenThrow(HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Bad request", null,
+        "{\"code\":\"WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED\"}".getBytes(StandardCharsets.UTF_8),
+        StandardCharsets.UTF_8));
 
-    WorkflowCreatedDTO result = ingestionFlowClient.ingestTreasuryOpi(
-      ingestionFlowFileId, accessToken);
+    Assertions.assertThrows(UnsupportedOperationException.class, () -> ingestionFlowClient.ingestFlowFile(
+      ingestionFlowFileId, ingestionFlowFileType, accessToken));
+  }
 
-    assertSame(expectedResult, result);
+  @Test
+  void givenGenericBadRequestWhenIngestFlowFileThenThrowNotSupportedException() {
+    long ingestionFlowFileId = 1L;
+    IngestionFlowFileType ingestionFlowFileType = IngestionFlowFileType.PAYMENTS_REPORTING;
+    String accessToken = "ACCESSTOKEN";
+    HttpClientErrorException expectedException = HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Bad request", null, null, null);
+
+    when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
+      .thenReturn(ingestionFlowApiMock);
+    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType.name()))
+      .thenThrow(expectedException);
+
+    HttpClientErrorException.BadRequest result = Assertions.assertThrows(HttpClientErrorException.BadRequest.class, () -> ingestionFlowClient.ingestFlowFile(
+      ingestionFlowFileId, ingestionFlowFileType, accessToken));
+
+    Assertions.assertSame(expectedException, result);
   }
 
 }

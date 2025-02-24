@@ -3,7 +3,7 @@ package it.gov.pagopa.pu.processecexutions.service;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 
-public interface IngestionFlowFileService {
+public interface IngestionFlowFileUploadService {
   IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId,
     String accessToken);
 }

@@ -41,7 +41,7 @@ class WorkflowHubApisHolderTest extends BaseApiHolderTest {
   void whenGetIngestionFlowApiThenAuthenticationShouldBeSetInThreadSafeMode() throws InterruptedException {
     assertAuthenticationShouldBeSetInThreadSafeMode(
       accessToken -> workflowHubApisHolder.getIngestionFlowApi(accessToken)
-        .ingestPaymentsReportingFile(1L),
+        .ingestFlowFile(1L, "PAYMENTS_REPORTING"),
       WorkflowCreatedDTO.class,
       workflowHubApisHolder::unload);
   }
