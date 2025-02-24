@@ -3,7 +3,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
-import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileService;
+import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileUploadService;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 class IngestionFlowFileControllerApiTest {
 
   @Mock
-  private IngestionFlowFileService serviceMock;
+  private IngestionFlowFileUploadService serviceMock;
 
   private IngestionFlowFileControllerApi controller;
 
