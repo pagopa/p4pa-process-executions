@@ -62,6 +62,21 @@ paths:
       responses:
         '201':
           description: OK
+  /export-files:
+    post:
+      summary: create-export-file
+      tags:
+        - export-file-controller
+      operationId: createExportFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: 'ExportFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
 security:
   - BearerAuth: []
 components:
