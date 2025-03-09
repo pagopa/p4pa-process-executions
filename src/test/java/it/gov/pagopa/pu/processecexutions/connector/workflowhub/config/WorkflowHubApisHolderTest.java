@@ -1,7 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
 import it.gov.pagopa.pu.processecexutions.connector.BaseApiHolderTest;
-import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +42,7 @@ class WorkflowHubApisHolderTest extends BaseApiHolderTest {
     assertAuthenticationShouldBeSetInThreadSafeMode(
       accessToken -> workflowHubApisHolder.getIngestionFlowApi(accessToken)
         .ingestFlowFile(1L, "PAYMENTS_REPORTING"),
-      WorkflowCreatedDTO.class,
+      new ParameterizedTypeReference<>() {},
       workflowHubApisHolder::unload);
   }
 }
