@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 public class ProcessExecutionsExceptionHandler {
 
   @ExceptionHandler({ResourceNotFoundException.class})
-  public ResponseEntity<ProcessExecutionsErrorDTO> handleResourceNotFoundException(RuntimeException ex, HttpServletRequest request){
+  public ResponseEntity<ProcessExecutionsErrorDTO> handleResourceNotFoundException(RuntimeException ex, HttpServletRequest request) {
     return handleException(ex, request, HttpStatus.NOT_FOUND, ProcessExecutionsErrorDTO.CodeEnum.NOT_FOUND);
   }
 
@@ -50,7 +51,7 @@ public class ProcessExecutionsExceptionHandler {
     ProcessExecutionsErrorDTO.CodeEnum errorCode = ProcessExecutionsErrorDTO.CodeEnum.GENERIC_ERROR;
     if (ex instanceof ErrorResponse errorResponse) {
       httpStatus = errorResponse.getStatusCode();
-      if(httpStatus.isSameCodeAs(HttpStatus.NOT_FOUND)) {
+      if (httpStatus.isSameCodeAs(HttpStatus.NOT_FOUND)) {
         errorCode = ProcessExecutionsErrorDTO.CodeEnum.NOT_FOUND;
       } else if (httpStatus.is4xxClientError()) {
         errorCode = ProcessExecutionsErrorDTO.CodeEnum.BAD_REQUEST;
@@ -75,19 +76,24 @@ public class ProcessExecutionsExceptionHandler {
   }
 
   private static void logException(Exception ex, HttpServletRequest request, HttpStatusCode httpStatus) {
-    log.info("A {} occurred handling request {}: HttpStatus {} - {}",
-      ex.getClass(),
-      getRequestDetails(request),
-      httpStatus.value(),
-      ex.getMessage());
-    if(log.isDebugEnabled() && ex.getCause()!=null){
+    boolean printStackTrace = httpStatus.is5xxServerError();
+    Level logLevel = printStackTrace ? Level.ERROR : Level.INFO;
+    log.makeLoggingEventBuilder(logLevel)
+      .log("A {} occurred handling request {}: HttpStatus {} - {}",
+        ex.getClass(),
+        getRequestDetails(request),
+        httpStatus.value(),
+        ex.getMessage(),
+        printStackTrace ? ex : null
+      );
+    if (!printStackTrace && log.isDebugEnabled() && ex.getCause() != null) {
       log.debug("CausedBy: ", ex.getCause());
     }
   }
 
   private static String buildReturnedMessage(Exception ex) {
     if (ex instanceof HttpMessageNotReadableException) {
-      if(ex.getCause() instanceof JsonMappingException jsonMappingException){
+      if (ex.getCause() instanceof JsonMappingException jsonMappingException) {
         return "Cannot parse body: " +
           jsonMappingException.getPath().stream()
             .map(JsonMappingException.Reference::getFieldName)
@@ -100,7 +106,7 @@ public class ProcessExecutionsExceptionHandler {
         methodArgumentNotValidException.getBindingResult()
           .getAllErrors().stream()
           .map(e -> " " +
-            (e instanceof FieldError fieldError? fieldError.getField(): e.getObjectName()) +
+            (e instanceof FieldError fieldError ? fieldError.getField() : e.getObjectName()) +
             ": " + e.getDefaultMessage())
           .sorted()
           .collect(Collectors.joining(";"));
