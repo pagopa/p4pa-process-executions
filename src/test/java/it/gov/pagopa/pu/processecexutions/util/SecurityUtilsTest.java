@@ -4,10 +4,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.net.URI;
 
@@ -44,11 +48,12 @@ public class SecurityUtilsTest {
   }
 //endregion
 
+//region test getCurrentUserExternalId
   @Test
-  void givenJwtWhenGetCurrentUserExternalIdThenReturnPrincipalName() {
+  void givenJwtWhenGetCurrentUserExternalIdThenReturnPrincipalName(){
     // Given
     String principalName = "PRINCIPALNAME";
-    configureSecurityContext(principalName);
+    SecurityContextHolder.setContext(new SecurityContextImpl(new JwtAuthenticationToken(Mockito.mock(Jwt.class), null, principalName)));
 
     // When
     String result = SecurityUtils.getCurrentUserExternalId();
@@ -56,6 +61,51 @@ public class SecurityUtilsTest {
     // Then
     Assertions.assertSame(principalName, result);
   }
+
+  @Test
+  void givenPuSystemUserAndUserIdProvidedWhenGetCurrentUserExternalIdThenReturnUserId(){
+    // Given
+    String expetectedUserId = "USERID";
+    String principalName = SecurityUtils.SYSTEM_USERID_PREFIX + "ORGIPACODE";
+    SecurityContextHolder.setContext(new SecurityContextImpl(new JwtAuthenticationToken(Mockito.mock(Jwt.class), null, principalName)));
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addHeader(SecurityUtils.HEADER_USER_ID, expetectedUserId);
+    RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+    // When
+    String result = SecurityUtils.getCurrentUserExternalId();
+
+    // Then
+    Assertions.assertSame(expetectedUserId, result);
+  }
+
+  @Test
+  void givenPuSystemUserAndNotUserIdProvidedWhenGetCurrentUserExternalIdThenReturnUserId(){
+    // Given
+    String principalName = SecurityUtils.SYSTEM_USERID_PREFIX + "ORGIPACODE";
+    SecurityContextHolder.setContext(new SecurityContextImpl(new JwtAuthenticationToken(Mockito.mock(Jwt.class), null, principalName)));
+    RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
+
+    // When
+    String result = SecurityUtils.getCurrentUserExternalId();
+
+    // Then
+    Assertions.assertSame(principalName, result);
+  }
+
+  @Test
+  void givenPuSystemUserAndNotHttpContextWhenGetCurrentUserExternalIdThenReturnUserId(){
+    // Given
+    String principalName = SecurityUtils.SYSTEM_USERID_PREFIX + "ORGIPACODE";
+    SecurityContextHolder.setContext(new SecurityContextImpl(new JwtAuthenticationToken(Mockito.mock(Jwt.class), null, principalName)));
+
+    // When
+    String result = SecurityUtils.getCurrentUserExternalId();
+
+    // Then
+    Assertions.assertSame(principalName, result);
+  }
+//endregion
 
   public static Jwt configureSecurityContext(String operatorExternalId) {
     Jwt jwt = Jwt
