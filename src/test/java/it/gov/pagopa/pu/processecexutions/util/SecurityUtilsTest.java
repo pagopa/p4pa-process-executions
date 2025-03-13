@@ -65,18 +65,22 @@ public class SecurityUtilsTest {
   @Test
   void givenPuSystemUserAndUserIdProvidedWhenGetCurrentUserExternalIdThenReturnUserId(){
     // Given
-    String expetectedUserId = "USERID";
+    String expectedUserId = "USERID";
     String principalName = SecurityUtils.SYSTEM_USERID_PREFIX + "ORGIPACODE";
     SecurityContextHolder.setContext(new SecurityContextImpl(new JwtAuthenticationToken(Mockito.mock(Jwt.class), null, principalName)));
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.addHeader(SecurityUtils.HEADER_USER_ID, expetectedUserId);
-    RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+    configureXUserIdHeader(expectedUserId);
 
     // When
     String result = SecurityUtils.getCurrentUserExternalId();
 
     // Then
-    Assertions.assertSame(expetectedUserId, result);
+    Assertions.assertSame(expectedUserId, result);
+  }
+
+  public static void configureXUserIdHeader(String expectedUserId) {
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addHeader(SecurityUtils.HEADER_USER_ID, expectedUserId);
+    RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
   }
 
   @Test
