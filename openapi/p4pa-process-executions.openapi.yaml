@@ -77,6 +77,27 @@ paths:
       responses:
         '201':
           description: OK
+  /export-files/{exportFlowFileVersion}:
+    get:
+      summary: get-export-file-versions
+      tags:
+        - export-file-controller
+      operationId: getExportFileVersions
+      parameters:
+        - name: exportFlowFileVersion
+          in: path
+          required: true
+          schema:
+            type: 'ExportFlowFileType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
 security:
   - BearerAuth: []
 components:
@@ -139,3 +160,11 @@ components:
             - PROCESS_EXECUTIONS_GENERIC_ERROR
         message:
           type: string
+    PaidExportFileVersion:
+      type: string
+      enum:
+        - v1.0
+        - v1.1
+        - v1.2
+        - v1.3
+

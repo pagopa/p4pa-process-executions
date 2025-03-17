@@ -143,7 +143,11 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   modelPackage.set("it.gov.pagopa.pu.processecexutions.dto.generated")
   typeMappings.set(mapOf(
     "IngestionFlowFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus",
-    "ExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO"
+    "ExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO",
+    "ExportFlowFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType"
+  ))
+  additionalProperties.set(mapOf(
+    "removeEnumValuePrefix" to "false"
   ))
   configOptions.set(mapOf(
     "dateLibrary" to "java8",

@@ -43,6 +43,8 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   @Enumerated(EnumType.STRING)
   @Column(insertable = false, updatable = false)
   private ExportFlowFileType flowFileType;
+  @NotNull
+  private String flowFileVersion;
   @Enumerated(EnumType.STRING)
   @NotNull
   private ExportFileStatus status;
