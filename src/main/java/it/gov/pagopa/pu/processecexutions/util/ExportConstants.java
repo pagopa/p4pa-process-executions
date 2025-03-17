@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.util;
 
-import it.gov.pagopa.pu.processecexutions.dto.generated.PaidExportFileVersion;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion;
 
 import java.util.Arrays;
 import java.util.List;

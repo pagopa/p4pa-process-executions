@@ -144,7 +144,8 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   typeMappings.set(mapOf(
     "IngestionFlowFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus",
     "ExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO",
-    "ExportFlowFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType"
+    "ExportFlowFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType",
+    "PaidExportFileVersion" to "it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion"
   ))
   additionalProperties.set(mapOf(
     "removeEnumValuePrefix" to "false"
