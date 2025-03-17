@@ -5,7 +5,10 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 

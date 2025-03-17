@@ -2,16 +2,20 @@ package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
+import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -66,4 +70,12 @@ class ExportFileControllerApiTest {
     Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
   }
 
+  @ParameterizedTest
+  @EnumSource(ExportFlowFileType.class)
+  void givenExportFlowFileTypeWhenThenReturnAvailableVersions(ExportFlowFileType exportFlowFileType){
+    Assertions.assertSame(
+      ExportConstants.getAvailableVersions(exportFlowFileType),
+      controller.getExportFileVersions(exportFlowFileType).getBody()
+    );
+  }
 }

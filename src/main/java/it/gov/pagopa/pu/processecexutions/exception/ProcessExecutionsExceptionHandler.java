@@ -30,31 +30,36 @@ import java.util.stream.Collectors;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ProcessExecutionsExceptionHandler {
 
+  @ExceptionHandler({ExportFlowFileVersionNotSupportedException.class})
+  public ResponseEntity<ProcessExecutionsErrorDTO> handleBadRequestExceptions(Exception ex, HttpServletRequest request) {
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
+  }
+
   @ExceptionHandler({ResourceNotFoundException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleResourceNotFoundException(RuntimeException ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.NOT_FOUND, ProcessExecutionsErrorDTO.CodeEnum.NOT_FOUND);
+    return handleException(ex, request, HttpStatus.NOT_FOUND, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_NOT_FOUND);
   }
 
   @ExceptionHandler({DataIntegrityViolationException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleDataIntegrityViolationException(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.CONFLICT, ProcessExecutionsErrorDTO.CodeEnum.CONFLICT);
+    return handleException(ex, request, HttpStatus.CONFLICT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_CONFLICT);
   }
 
   @ExceptionHandler({ValidationException.class, HttpMessageNotReadableException.class, MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleViolationException(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.BAD_REQUEST);
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
   }
 
   @ExceptionHandler({ServletException.class, ErrorResponseException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleServletException(Exception ex, HttpServletRequest request) {
     HttpStatusCode httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    ProcessExecutionsErrorDTO.CodeEnum errorCode = ProcessExecutionsErrorDTO.CodeEnum.GENERIC_ERROR;
+    ProcessExecutionsErrorDTO.CodeEnum errorCode = ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_GENERIC_ERROR;
     if (ex instanceof ErrorResponse errorResponse) {
       httpStatus = errorResponse.getStatusCode();
       if (httpStatus.isSameCodeAs(HttpStatus.NOT_FOUND)) {
-        errorCode = ProcessExecutionsErrorDTO.CodeEnum.NOT_FOUND;
+        errorCode = ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_NOT_FOUND;
       } else if (httpStatus.is4xxClientError()) {
-        errorCode = ProcessExecutionsErrorDTO.CodeEnum.BAD_REQUEST;
+        errorCode = ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST;
       }
     }
     return handleException(ex, request, httpStatus, errorCode);
@@ -62,7 +67,7 @@ public class ProcessExecutionsExceptionHandler {
 
   @ExceptionHandler({RuntimeException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, ProcessExecutionsErrorDTO.CodeEnum.GENERIC_ERROR);
+    return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_GENERIC_ERROR);
   }
 
   static ResponseEntity<ProcessExecutionsErrorDTO> handleException(Exception ex, HttpServletRequest request, HttpStatusCode httpStatus, ProcessExecutionsErrorDTO.CodeEnum errorEnum) {

@@ -2,9 +2,13 @@ package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
+import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import java.net.URI;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,4 +39,8 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
       .build();
   }
 
+  @Override
+  public ResponseEntity<List<String>> getExportFileVersions(ExportFlowFileType exportFlowFileVersion) {
+    return ResponseEntity.ok(ExportConstants.getAvailableVersions(exportFlowFileVersion));
+  }
 }
