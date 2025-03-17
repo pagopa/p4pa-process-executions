@@ -1263,7 +1263,7 @@
           }
         }
       },
-      "ClassificationsExportFile" : {
+      "ExportFile" : {
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1300,7 +1300,7 @@
           },
           "flowFileType" : {
             "type" : "string",
-            "enum" : [ "CLASSIFICATIONS" ]
+            "enum" : [ "PAID", "CLASSIFICATIONS", "PAYMENTS_REPORTING" ]
           },
           "status" : {
             "type" : "string",
@@ -1318,13 +1318,23 @@
             "format" : "date-time"
           },
           "filterFields" : {
-            "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
+            "$ref" : "#/components/schemas/ExportFileFilter"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
           }
         },
         "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ]
+      },
+      "ExportFileFilter" : {
+        "type" : "object",
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
+        }, {
+          "$ref" : "#/components/schemas/PaidExportFileFilter"
+        }, {
+          "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
+        } ]
       },
       "LocalDateIntervalFilter" : {
         "type" : "object",
@@ -1360,7 +1370,7 @@
           }
         }
       },
-      "PagedModelClassificationsExportFile" : {
+      "PagedModelExportFile" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
@@ -1369,7 +1379,7 @@
               "exportFiles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/ClassificationsExportFile"
+                  "$ref" : "#/components/schemas/ExportFile"
                 }
               }
             }
@@ -1379,6 +1389,26 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PaidExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDate" : {
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
+          },
+          "debtPositionTypeOrgId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "PaymentsReportingExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "iuf" : {
+            "type" : "string"
           }
         }
       },
@@ -1481,7 +1511,7 @@
           }
         }
       },
-      "ExportFile" : {
+      "ClassificationsExportFile" : {
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1518,7 +1548,7 @@
           },
           "flowFileType" : {
             "type" : "string",
-            "enum" : [ "PAID", "CLASSIFICATIONS", "PAYMENTS_REPORTING" ]
+            "enum" : [ "CLASSIFICATIONS" ]
           },
           "status" : {
             "type" : "string",
@@ -1536,7 +1566,7 @@
             "format" : "date-time"
           },
           "filterFields" : {
-            "$ref" : "#/components/schemas/ExportFileFilter"
+            "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
@@ -1544,17 +1574,7 @@
         },
         "required" : [ "expirationDate", "operatorExternalId", "organizationId", "status" ]
       },
-      "ExportFileFilter" : {
-        "type" : "object",
-        "oneOf" : [ {
-          "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
-        }, {
-          "$ref" : "#/components/schemas/PaidExportFileFilter"
-        }, {
-          "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
-        } ]
-      },
-      "PagedModelExportFile" : {
+      "PagedModelClassificationsExportFile" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
@@ -1563,7 +1583,7 @@
               "exportFiles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/ExportFile"
+                  "$ref" : "#/components/schemas/ClassificationsExportFile"
                 }
               }
             }
@@ -1573,22 +1593,6 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "PaidExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "iuv" : {
-            "type" : "string"
-          }
-        }
-      },
-      "PaymentsReportingExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "iuf" : {
-            "type" : "string"
           }
         }
       },
