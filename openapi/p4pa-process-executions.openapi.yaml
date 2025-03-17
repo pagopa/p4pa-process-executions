@@ -98,6 +98,21 @@ paths:
                 type: array
                 items:
                   type: string
+  /export-files/PAID:
+    get:
+      summary: get-paid-export-file-versions
+      tags:
+        - export-file-controller
+      operationId: getPaidExportFileVersions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaidExportFileVersion'
 security:
   - BearerAuth: []
 components:
