@@ -11,7 +11,7 @@ paths:
     patch:
       tags:
         - ingestion-flow-file-entity-extended-controller
-      operationId: updateStatus
+      operationId: updateIngestionFlowFileStatus
       parameters:
         - name: ingestionFlowFileId
           in: path
@@ -113,6 +113,41 @@ paths:
                 type: array
                 items:
                   type: 'PaidExportFileVersion'
+  /crud-ext/export-files/{exportFileId}/set-status:
+    patch:
+      tags:
+        - export-file-entity-extended-controller
+      operationId: updateExportFileStatus
+      parameters:
+        - name: exportFileId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: oldStatus
+          in: query
+          required: true
+          schema:
+            type: "ExportFileStatusEnum"
+        - name: newStatus
+          in: query
+          required: true
+          schema:
+            type: "ExportFileStatusEnum"
+        - name: errorDescription
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
 security:
   - BearerAuth: []
 components:

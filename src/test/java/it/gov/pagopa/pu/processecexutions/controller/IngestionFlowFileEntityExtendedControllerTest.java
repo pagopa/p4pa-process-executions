@@ -45,7 +45,7 @@ class IngestionFlowFileEntityExtendedControllerTest {
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getBody();
+    Integer result = controller.updateIngestionFlowFileStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getBody();
 
     // Then
     Assertions.assertEquals(expectedResult, result);
@@ -64,7 +64,7 @@ class IngestionFlowFileEntityExtendedControllerTest {
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getStatusCode();
+    HttpStatusCode result = controller.updateIngestionFlowFileStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getStatusCode();
 
     // Then
     Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
