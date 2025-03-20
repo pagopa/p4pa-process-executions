@@ -11,7 +11,7 @@ paths:
     patch:
       tags:
         - ingestion-flow-file-entity-extended-controller
-      operationId: updateIngestionFlowFileStatus
+      operationId: updateStatus
       parameters:
         - name: ingestionFlowFileId
           in: path
