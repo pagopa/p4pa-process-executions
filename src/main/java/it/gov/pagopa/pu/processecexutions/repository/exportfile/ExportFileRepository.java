@@ -5,15 +5,16 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import jakarta.annotation.Nonnull;
+import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-
-import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @RepositoryRestResource(path = "export-files")
 public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long> {
@@ -42,4 +43,14 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
     String fileName,
     Pageable pageable
   );
+
+  @Modifying
+  @Transactional
+  @Query("UPDATE ExportFile " +
+    "SET status=:newStatus, " +
+    "errorDescription=:errorDescription " +
+    "WHERE exportFileId=:exportFileId " +
+    "AND status=:oldStatus")
+  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String errorDescription);
+
 }
