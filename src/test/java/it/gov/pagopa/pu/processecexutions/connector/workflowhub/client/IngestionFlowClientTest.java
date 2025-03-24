@@ -3,6 +3,7 @@ package it.gov.pagopa.pu.processecexutions.connector.workflowhub.client;
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.config.WorkflowHubApisHolder;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
 import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
+import it.gov.pagopa.pu.workflowhub.dto.generated.FlowFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -50,7 +51,7 @@ class IngestionFlowClientTest {
 
     when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
       .thenReturn(ingestionFlowApiMock);
-    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType.name()))
+    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, FlowFileTypeEnum.valueOf(ingestionFlowFileType.name())))
       .thenReturn(expectedResult);
 
     WorkflowCreatedDTO result = ingestionFlowClient.ingestFlowFile(
@@ -67,7 +68,7 @@ class IngestionFlowClientTest {
 
     when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
       .thenReturn(ingestionFlowApiMock);
-    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType.name()))
+    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, FlowFileTypeEnum.valueOf(ingestionFlowFileType.name())))
       .thenThrow(HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Bad request", null,
         "{\"code\":\"WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED\"}".getBytes(StandardCharsets.UTF_8),
         StandardCharsets.UTF_8));
@@ -85,7 +86,7 @@ class IngestionFlowClientTest {
 
     when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
       .thenReturn(ingestionFlowApiMock);
-    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType.name()))
+    when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, FlowFileTypeEnum.valueOf(ingestionFlowFileType.name())))
       .thenThrow(expectedException);
 
     HttpClientErrorException.BadRequest result = Assertions.assertThrows(HttpClientErrorException.BadRequest.class, () -> ingestionFlowClient.ingestFlowFile(

@@ -26,6 +26,14 @@ class ExportFileTest {
   );
 
   @Test
+  void testExpectedMapIsCompleted() {
+    Assertions.assertEquals(
+      Arrays.stream(ExportFlowFileType.values()).collect(Collectors.toSet()),
+      expectedPolymorphicConfiguration.keySet()
+    );
+  }
+
+  @Test
   void testUpdatedExpectedMap() {
     Assertions.assertEquals(
       Arrays.stream(ExportFlowFileType.values())
@@ -63,7 +71,7 @@ class ExportFileTest {
   }
 
   @Test
-  void testOpenApiPolymorphicConfiguration(){
+  void testOpenApiPolymorphicConfiguration() {
     expectedPolymorphicConfiguration.forEach((exportFlowFileType, exportFlowType2FilterClasses) -> {
       Class<? extends ExportFile<?>> exportFileClass = exportFlowType2FilterClasses.getLeft();
       try {
