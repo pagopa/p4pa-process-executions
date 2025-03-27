@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.connector.workflowhub.client;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.config.WorkflowHubApisHolder;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
-import it.gov.pagopa.pu.workflowhub.dto.generated.FlowFileTypeEnum;
+import it.gov.pagopa.pu.workflowhub.dto.generated.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class IngestionFlowClient {
   public WorkflowCreatedDTO ingestFlowFile(Long ingestionFlowFileId, IngestionFlowFileType ingestionFlowFileType, String accessToken) {
     try{
       return workflowHubApisHolder.getIngestionFlowApi(accessToken)
-        .ingestFlowFile(ingestionFlowFileId, FlowFileTypeEnum.valueOf(ingestionFlowFileType.name()));
+        .ingestFlowFile(ingestionFlowFileId, IngestionFlowFileTypeEnum.valueOf(ingestionFlowFileType.name()));
     } catch (HttpClientErrorException.BadRequest e){
       if(e.getResponseBodyAsString().contains("WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED")){
         throw new UnsupportedOperationException("IngestionFlowFile " + ingestionFlowFileType + " not supported!");
