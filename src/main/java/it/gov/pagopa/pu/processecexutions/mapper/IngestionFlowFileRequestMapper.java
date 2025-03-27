@@ -16,7 +16,7 @@ public class IngestionFlowFileRequestMapper {
       .filePathName(dto.getFilePathName())
       .fileName(dto.getFileName())
       .fileSize(dto.getFileSize())
-      .flowFileType(IngestionFlowFileType.valueOf(dto.getFlowFileType().name()))
+      .ingestionFlowFileType(IngestionFlowFileType.valueOf(dto.getFlowFileType().name()))
       .status(IngestionFlowFileStatus.UPLOADED)
       .flowDateTime(dto.getFlowDateTime())
       .pspIdentifier(dto.getPspIdentifier())

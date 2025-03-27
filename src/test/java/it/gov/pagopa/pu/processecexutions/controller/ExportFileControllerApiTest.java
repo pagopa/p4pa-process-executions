@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
@@ -71,11 +71,11 @@ class ExportFileControllerApiTest {
   }
 
   @ParameterizedTest
-  @EnumSource(ExportFlowFileType.class)
-  void givenExportFlowFileTypeWhenThenReturnAvailableVersions(ExportFlowFileType exportFlowFileType){
+  @EnumSource(ExportFileType.class)
+  void givenExportFlowFileTypeWhenThenReturnAvailableVersions(ExportFileType exportFileType){
     Assertions.assertSame(
-      ExportConstants.getAvailableVersions(exportFlowFileType),
-      controller.getExportFileVersions(exportFlowFileType).getBody()
+      ExportConstants.getAvailableVersions(exportFileType),
+      controller.getExportFileTypeVersions(exportFileType).getBody()
     );
   }
 }

@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.exception.ExportFlowFileVersionNotSupportedException;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
@@ -19,13 +19,13 @@ public class ExportFileRequestMapper {
     String operatorExternalId, T exportFile) {
     exportFile.setOrganizationId(dto.getOrganizationId());
     exportFile.setOperatorExternalId(operatorExternalId);
-    exportFile.setFlowFileVersion(transcodeFlowFileVersion(dto.getFlowFileType(), dto.getFlowFileVersion()));
+    exportFile.setFileVersion(transcodeFlowFileVersion(dto.getFlowFileType(), dto.getFlowFileVersion()));
     exportFile.setStatus(ExportFileStatus.REQUESTED);
     exportFile.setFilterFields(dto.getFilterFields());
     return exportFile;
   }
 
-  private @NotNull String transcodeFlowFileVersion(@NotNull ExportFlowFileType flowFileType, @NotNull String flowFileVersion) {
+  private @NotNull String transcodeFlowFileVersion(@NotNull ExportFileType flowFileType, @NotNull String flowFileVersion) {
     List<String> availableVersions = ExportConstants.getAvailableVersions(flowFileType);
     if(availableVersions.contains(flowFileVersion)){
       return flowFileVersion;

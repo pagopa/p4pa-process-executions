@@ -36,16 +36,16 @@ class IngestionFlowFileServiceTest {
     // Given
     IngestionFlowFile ingestionFlowFile = new IngestionFlowFile();
     ingestionFlowFile.setIngestionFlowFileId(1L);
-    ingestionFlowFile.setFlowFileType(IngestionFlowFileType.PAYMENTS_REPORTING);
+    ingestionFlowFile.setIngestionFlowFileType(IngestionFlowFileType.PAYMENTS_REPORTING);
     String accessToken = "ACCESSTOKEN";
     WorkflowCreatedDTO workflowCreatedDTO = new WorkflowCreatedDTO();
 
-    Mockito.when(ingestionFlowClientMock.ingestFlowFile(ingestionFlowFile.getIngestionFlowFileId(), ingestionFlowFile.getFlowFileType(), accessToken))
+    Mockito.when(ingestionFlowClientMock.ingestFlowFile(ingestionFlowFile.getIngestionFlowFileId(), ingestionFlowFile.getIngestionFlowFileType(), accessToken))
       .thenReturn(workflowCreatedDTO);
 
     service.invokeIngestionWorkflow(ingestionFlowFile,accessToken);
 
     Mockito.verify(ingestionFlowClientMock)
-      .ingestFlowFile(ingestionFlowFile.getIngestionFlowFileId(), ingestionFlowFile.getFlowFileType(), accessToken);
+      .ingestFlowFile(ingestionFlowFile.getIngestionFlowFileId(), ingestionFlowFile.getIngestionFlowFileType(), accessToken);
   }
 }

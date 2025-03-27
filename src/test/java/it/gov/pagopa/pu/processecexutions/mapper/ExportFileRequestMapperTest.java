@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.exception.ExportFlowFileVersionNotSupportedException;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileFilter;
@@ -20,7 +20,7 @@ class ExportFileRequestMapperTest {
     // Given
     ExportFileRequestDTO<PaidExportFileFilter> dto = ExportFileRequestDTO.<PaidExportFileFilter>builder()
       .organizationId(0L)
-      .flowFileType(ExportFlowFileType.PAID)
+      .flowFileType(ExportFileType.PAID)
       .flowFileVersion("v1.0")
       .filterFields(new PaidExportFileFilter())
       .build();
@@ -33,8 +33,8 @@ class ExportFileRequestMapperTest {
 
     Assertions.assertEquals(0L, result.getOrganizationId());
     Assertions.assertEquals("OPERATOREXTERNALID", result.getOperatorExternalId());
-    Assertions.assertEquals(ExportFlowFileType.PAID, result.getFlowFileType());
-    Assertions.assertEquals("v1.0", result.getFlowFileVersion());
+    Assertions.assertEquals(ExportFileType.PAID, result.getExportFileType());
+    Assertions.assertEquals("v1.0", result.getFileVersion());
     Assertions.assertEquals(ExportFileStatus.REQUESTED, result.getStatus());
 
     TestUtils.checkNotNullFields(result,
@@ -56,7 +56,7 @@ class ExportFileRequestMapperTest {
     // Given
     ExportFileRequestDTO<PaidExportFileFilter> dto = ExportFileRequestDTO.<PaidExportFileFilter>builder()
       .organizationId(0L)
-      .flowFileType(ExportFlowFileType.PAID)
+      .flowFileType(ExportFileType.PAID)
       .flowFileVersion("NOTVALID")
       .filterFields(new PaidExportFileFilter())
       .build();
@@ -66,7 +66,7 @@ class ExportFileRequestMapperTest {
     ExportFlowFileVersionNotSupportedException result = Assertions.assertThrows(ExportFlowFileVersionNotSupportedException.class, () -> mapper.map(dto, "OPERATOREXTERNALID", exportFile));
 
     // Then
-    Assertions.assertEquals("Flow file version NOTVALID not supported for PAID: Available versions are: " + ExportConstants.getAvailableVersions(ExportFlowFileType.PAID),
+    Assertions.assertEquals("Flow file version NOTVALID not supported for PAID: Available versions are: " + ExportConstants.getAvailableVersions(ExportFileType.PAID),
       result.getMessage());
   }
 }

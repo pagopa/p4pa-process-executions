@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.enums;
 
-public enum ExportFlowFileType {
+public enum ExportFileType {
   PAID,
   CLASSIFICATIONS,
   PAYMENTS_REPORTING

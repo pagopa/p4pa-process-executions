@@ -18,8 +18,8 @@ public class IngestionFlowFileServiceImpl implements IngestionFlowFileService {
 
   @Override
   public void invokeIngestionWorkflow(IngestionFlowFile ingestionFlowFile, String accessToken) {
-    log.debug("Invoking ingestion workflow for ingestionFlowFileType: {} , ingestionFlowFileId: {}", ingestionFlowFile.getFlowFileType(), ingestionFlowFile.getIngestionFlowFileId());
-    WorkflowCreatedDTO response = ingestionFlowClient.ingestFlowFile(ingestionFlowFile.getIngestionFlowFileId(), ingestionFlowFile.getFlowFileType(), accessToken);
+    log.debug("Invoking ingestion workflow for ingestionFlowFileType: {} , ingestionFlowFileId: {}", ingestionFlowFile.getIngestionFlowFileType(), ingestionFlowFile.getIngestionFlowFileId());
+    WorkflowCreatedDTO response = ingestionFlowClient.ingestFlowFile(ingestionFlowFile.getIngestionFlowFileId(), ingestionFlowFile.getIngestionFlowFileType(), accessToken);
     log.info("Invoked workflow having workflowId:{}", response.getWorkflowId());
   }
 

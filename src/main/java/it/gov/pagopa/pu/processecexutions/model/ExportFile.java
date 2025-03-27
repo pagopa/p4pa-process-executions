@@ -3,7 +3,7 @@ package it.gov.pagopa.pu.processecexutions.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
 @Table(name = "export_file")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "flowFileType")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "flowFileType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "exportFileType")
 @JsonSubTypes({
   @JsonSubTypes.Type(name = "CLASSIFICATIONS", value = ClassificationsExportFile.class),
   @JsonSubTypes.Type(name = "PAID", value = PaidExportFile.class),
@@ -42,9 +42,9 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   private Long fileSize;
   @Enumerated(EnumType.STRING)
   @Column(insertable = false, updatable = false)
-  private ExportFlowFileType flowFileType;
+  private ExportFileType exportFileType;
   @NotNull
-  private String flowFileVersion;
+  private String fileVersion;
   @Enumerated(EnumType.STRING)
   @NotNull
   private ExportFileStatus status;

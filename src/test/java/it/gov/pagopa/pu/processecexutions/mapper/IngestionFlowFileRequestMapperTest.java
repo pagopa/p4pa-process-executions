@@ -39,7 +39,7 @@ class IngestionFlowFileRequestMapperTest {
     Assertions.assertEquals("FILEPATHNAME", result.getFilePathName());
     Assertions.assertEquals("FILENAME", result.getFileName());
     Assertions.assertEquals(1L, result.getFileSize());
-    Assertions.assertEquals(IngestionFlowFileType.PAYMENTS_REPORTING, result.getFlowFileType());
+    Assertions.assertEquals(IngestionFlowFileType.PAYMENTS_REPORTING, result.getIngestionFlowFileType());
     Assertions.assertEquals(IngestionFlowFileStatus.UPLOADED, result.getStatus());
     Assertions.assertSame(dto.getFlowDateTime(), result.getFlowDateTime());
     Assertions.assertEquals(dto.getPspIdentifier(), result.getPspIdentifier());

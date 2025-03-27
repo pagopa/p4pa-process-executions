@@ -34,7 +34,7 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   private Long fileSize;
   @Enumerated(EnumType.STRING)
   @NotNull
-  private IngestionFlowFileType flowFileType;
+  private IngestionFlowFileType ingestionFlowFileType;
   @Enumerated(EnumType.STRING)
   @NotNull
   private IngestionFlowFileStatus status;

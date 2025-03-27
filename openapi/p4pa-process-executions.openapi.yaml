@@ -77,18 +77,18 @@ paths:
       responses:
         '201':
           description: OK
-  /export-files/{exportFlowFileVersion}:
+  /export-files/{exportFileType}:
     get:
-      summary: get-export-file-versions
+      summary: get-export-file-type-versions
       tags:
         - export-file-controller
-      operationId: getExportFileVersions
+      operationId: getExportFileTypeVersions
       parameters:
-        - name: exportFlowFileVersion
+        - name: exportFileType
           in: path
           required: true
           schema:
-            type: 'ExportFlowFileType'
+            type: 'ExportFileType'
       responses:
         '200':
           description: OK
