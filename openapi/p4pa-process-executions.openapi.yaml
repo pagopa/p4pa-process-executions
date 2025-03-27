@@ -163,7 +163,7 @@ components:
         - filePathName
         - fileName
         - fileSize
-        - flowFileType
+        - ingestionFlowFileType
         - fileOrigin
       properties:
         organizationId:
@@ -176,7 +176,7 @@ components:
         fileSize:
           type: integer
           format: int64
-        flowFileType:
+        ingestionFlowFileType:
           type: string
           enum:
             - RECEIPT

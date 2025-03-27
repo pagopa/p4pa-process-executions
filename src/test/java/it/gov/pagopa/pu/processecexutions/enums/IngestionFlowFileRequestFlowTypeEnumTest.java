@@ -8,8 +8,8 @@ class IngestionFlowFileRequestFlowTypeEnumTest {
 
   @Test
   void testConversion(){
-    for (IngestionFlowFileRequestDTO.FlowFileTypeEnum value : IngestionFlowFileRequestDTO.FlowFileTypeEnum.values()) {
-      Assertions.assertDoesNotThrow(() -> IngestionFlowFileType.valueOf(value.name()));
+    for (IngestionFlowFileRequestDTO.IngestionFlowFileTypeEnum value : IngestionFlowFileRequestDTO.IngestionFlowFileTypeEnum.values()) {
+      Assertions.assertDoesNotThrow(() -> IngestionFlowFileType.valueOf(value.getValue()));
     }
 
   }

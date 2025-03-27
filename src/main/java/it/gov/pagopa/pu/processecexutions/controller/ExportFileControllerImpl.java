@@ -28,9 +28,9 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   public ResponseEntity<Void> createExportFile(
     ExportFileRequestDTO exportFileRequestDTO) {
     log.info(
-      "The user has requested export file with organizationId {} and flowFileType {}",
+      "The user has requested export file with organizationId {} and exportFileType {}",
       exportFileRequestDTO.getOrganizationId(),
-      exportFileRequestDTO.getFlowFileType());
+      exportFileRequestDTO.getExportFileType());
     return ResponseEntity
       .created(URI.create(String.valueOf(
         service.save(exportFileRequestDTO,

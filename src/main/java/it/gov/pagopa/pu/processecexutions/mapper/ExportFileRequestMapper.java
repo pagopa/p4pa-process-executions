@@ -19,18 +19,18 @@ public class ExportFileRequestMapper {
     String operatorExternalId, T exportFile) {
     exportFile.setOrganizationId(dto.getOrganizationId());
     exportFile.setOperatorExternalId(operatorExternalId);
-    exportFile.setFileVersion(transcodeFlowFileVersion(dto.getFlowFileType(), dto.getFlowFileVersion()));
+    exportFile.setFileVersion(transcodeFileVersion(dto.getExportFileType(), dto.getFileVersion()));
     exportFile.setStatus(ExportFileStatus.REQUESTED);
     exportFile.setFilterFields(dto.getFilterFields());
     return exportFile;
   }
 
-  private @NotNull String transcodeFlowFileVersion(@NotNull ExportFileType flowFileType, @NotNull String flowFileVersion) {
-    List<String> availableVersions = ExportConstants.getAvailableVersions(flowFileType);
-    if(availableVersions.contains(flowFileVersion)){
-      return flowFileVersion;
+  private @NotNull String transcodeFileVersion(@NotNull ExportFileType exportFileType, @NotNull String fileVersion) {
+    List<String> availableVersions = ExportConstants.getAvailableVersions(exportFileType);
+    if(availableVersions.contains(fileVersion)){
+      return fileVersion;
     } else {
-      throw new ExportFlowFileVersionNotSupportedException("Flow file version " + flowFileVersion + " not supported for " + flowFileType + ": Available versions are: " + availableVersions);
+      throw new ExportFlowFileVersionNotSupportedException("File version " + fileVersion + " not supported for " + exportFileType + ": Available versions are: " + availableVersions);
     }
   }
 

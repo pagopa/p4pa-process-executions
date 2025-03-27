@@ -1954,7 +1954,7 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "flowFileType" : {
+          "ingestionFlowFileType" : {
             "type" : "string",
             "enum" : [ "RECEIPT", "RECEIPT_PAGOPA", "PAYMENTS_REPORTING", "PAYMENTS_REPORTING_PAGOPA", "TREASURY_OPI", "TREASURY_CSV", "TREASURY_XLS", "TREASURY_POSTE", "DP_INSTALLMENTS" ]
           },
@@ -1969,7 +1969,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "fileName", "fileOrigin", "filePathName", "fileSize", "flowFileType", "organizationId" ]
+        "required" : [ "fileName", "fileOrigin", "filePathName", "fileSize", "ingestionFlowFileType", "organizationId" ]
       },
       "ExportFileRequestDTO" : {
         "type" : "object",
@@ -1978,18 +1978,18 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "flowFileType" : {
+          "exportFileType" : {
             "type" : "string",
             "enum" : [ "PAID", "CLASSIFICATIONS", "PAYMENTS_REPORTING" ]
           },
-          "flowFileVersion" : {
+          "fileVersion" : {
             "type" : "string"
           },
           "filterFields" : {
             "$ref" : "#/components/schemas/ExportFileFilter"
           }
         },
-        "required" : [ "filterFields", "flowFileType", "flowFileVersion", "organizationId" ]
+        "required" : [ "exportFileType", "fileVersion", "filterFields", "organizationId" ]
       },
       "PaidExportFileVersion" : {
         "type" : "string",

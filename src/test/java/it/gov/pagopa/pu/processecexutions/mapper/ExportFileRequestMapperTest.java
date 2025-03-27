@@ -20,8 +20,8 @@ class ExportFileRequestMapperTest {
     // Given
     ExportFileRequestDTO<PaidExportFileFilter> dto = ExportFileRequestDTO.<PaidExportFileFilter>builder()
       .organizationId(0L)
-      .flowFileType(ExportFileType.PAID)
-      .flowFileVersion("v1.0")
+      .exportFileType(ExportFileType.PAID)
+      .fileVersion("v1.0")
       .filterFields(new PaidExportFileFilter())
       .build();
 
@@ -56,8 +56,8 @@ class ExportFileRequestMapperTest {
     // Given
     ExportFileRequestDTO<PaidExportFileFilter> dto = ExportFileRequestDTO.<PaidExportFileFilter>builder()
       .organizationId(0L)
-      .flowFileType(ExportFileType.PAID)
-      .flowFileVersion("NOTVALID")
+      .exportFileType(ExportFileType.PAID)
+      .fileVersion("NOTVALID")
       .filterFields(new PaidExportFileFilter())
       .build();
     PaidExportFile exportFile = new PaidExportFile();
@@ -66,7 +66,7 @@ class ExportFileRequestMapperTest {
     ExportFlowFileVersionNotSupportedException result = Assertions.assertThrows(ExportFlowFileVersionNotSupportedException.class, () -> mapper.map(dto, "OPERATOREXTERNALID", exportFile));
 
     // Then
-    Assertions.assertEquals("Flow file version NOTVALID not supported for PAID: Available versions are: " + ExportConstants.getAvailableVersions(ExportFileType.PAID),
+    Assertions.assertEquals("File version NOTVALID not supported for PAID: Available versions are: " + ExportConstants.getAvailableVersions(ExportFileType.PAID),
       result.getMessage());
   }
 }

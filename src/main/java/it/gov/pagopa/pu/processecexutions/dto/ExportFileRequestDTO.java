@@ -16,9 +16,9 @@ public class ExportFileRequestDTO <T extends ExportFileFilter> {
   @NotNull
   private Long organizationId;
   @NotNull
-  private ExportFileType flowFileType;
+  private ExportFileType exportFileType;
   @NotNull
-  private String flowFileVersion;
+  private String fileVersion;
   @NotNull
   private T filterFields;
 }

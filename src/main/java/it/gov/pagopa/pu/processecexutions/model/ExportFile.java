@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 @Entity
 @Table(name = "export_file")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "flowFileType")
+@DiscriminatorColumn(name = "exportFileType")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "exportFileType")
 @JsonSubTypes({
   @JsonSubTypes.Type(name = "CLASSIFICATIONS", value = ClassificationsExportFile.class),

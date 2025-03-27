@@ -31,7 +31,7 @@ public class ExportFileServiceImpl implements ExportFileService {
 
     ExportFile<R> saved = repository.save(
       requestMapper.map(requestDTO, operatorExternalId,
-        (ExportFile<R>) createExportFileByType(requestDTO.getFlowFileType())));
+        (ExportFile<R>) createExportFileByType(requestDTO.getExportFileType())));
 
     //  TODO: call workflow service
 

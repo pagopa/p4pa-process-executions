@@ -22,7 +22,7 @@ class IngestionFlowFileRequestMapperTest {
       .filePathName("FILEPATHNAME")
       .fileName("FILENAME")
       .fileSize(1L)
-      .flowFileType(IngestionFlowFileRequestDTO.FlowFileTypeEnum.PAYMENTS_REPORTING)
+      .ingestionFlowFileType(IngestionFlowFileRequestDTO.IngestionFlowFileTypeEnum.PAYMENTS_REPORTING)
       .flowDateTime(OffsetDateTime.MIN)
       .pspIdentifier("PSPIDENTIFIER")
       .fileOrigin("portal")

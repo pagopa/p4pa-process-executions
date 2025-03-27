@@ -51,7 +51,7 @@ class ExportFileServiceTest {
   void whenSaveThenStoreAndInvokeWF_Classifications(){
     // Given
     ExportFileRequestDTO<ClassificationsExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
-    requestDTO.setFlowFileType(ExportFileType.CLASSIFICATIONS);
+    requestDTO.setExportFileType(ExportFileType.CLASSIFICATIONS);
     ClassificationsExportFile newEntity = new ClassificationsExportFile();
     ClassificationsExportFile storedEntity = new ClassificationsExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -77,7 +77,7 @@ class ExportFileServiceTest {
   void whenSaveThenStoreAndInvokeWF_Paid(){
     // Given
     ExportFileRequestDTO<PaidExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
-    requestDTO.setFlowFileType(ExportFileType.PAID);
+    requestDTO.setExportFileType(ExportFileType.PAID);
     PaidExportFile newEntity = new PaidExportFile();
     PaidExportFile storedEntity = new PaidExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -104,7 +104,7 @@ class ExportFileServiceTest {
   void whenSaveThenStoreAndInvokeWF_PaymentsReporting(){
     // Given
     ExportFileRequestDTO<PaymentsReportingExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
-    requestDTO.setFlowFileType(ExportFileType.PAYMENTS_REPORTING);
+    requestDTO.setExportFileType(ExportFileType.PAYMENTS_REPORTING);
     PaymentsReportingExportFile newEntity = new PaymentsReportingExportFile();
     PaymentsReportingExportFile storedEntity = new PaymentsReportingExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
