@@ -1,0 +1,213 @@
+openapi: 3.0.1
+info:
+  title: p4pa-process-executions
+  description: Api and Models
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-status:
+    patch:
+      tags:
+        - ingestion-flow-file-entity-extended-controller
+      operationId: updateStatus
+      parameters:
+        - name: ingestionFlowFileId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: oldStatus
+          in: query
+          required: true
+          schema:
+            type: "IngestionFlowFileStatusEnum"
+        - name: newStatus
+          in: query
+          required: true
+          schema:
+            type: "IngestionFlowFileStatusEnum"
+        - name: errorDescription
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: discardFile
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+  /ingestion-flow-files:
+    post:
+      summary: create-ingestion-flow-file
+      tags:
+        - ingestion-flow-file-controller
+      operationId: createIngestionFlowFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestionFlowFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
+  /export-files:
+    post:
+      summary: create-export-file
+      tags:
+        - export-file-controller
+      operationId: createExportFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: 'ExportFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
+  /export-files/{exportFileType}:
+    get:
+      summary: get-export-file-type-versions
+      tags:
+        - export-file-controller
+      operationId: getExportFileTypeVersions
+      parameters:
+        - name: exportFileType
+          in: path
+          required: true
+          schema:
+            type: 'ExportFileType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /export-files/PAID:
+    get:
+      summary: get-paid-export-file-versions
+      tags:
+        - export-file-controller
+      operationId: getPaidExportFileVersions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: 'PaidExportFileVersion'
+  /crud-ext/export-files/{exportFileId}/set-status:
+    patch:
+      tags:
+        - export-file-entity-extended-controller
+      operationId: updateExportFileStatus
+      parameters:
+        - name: exportFileId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: oldStatus
+          in: query
+          required: true
+          schema:
+            type: "ExportFileStatusEnum"
+        - name: newStatus
+          in: query
+          required: true
+          schema:
+            type: "ExportFileStatusEnum"
+        - name: errorDescription
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    IngestionFlowFileRequestDTO:
+      type: object
+      required:
+        - organizationId
+        - filePathName
+        - fileName
+        - fileSize
+        - ingestionFlowFileType
+        - fileOrigin
+      properties:
+        organizationId:
+          type: integer
+          format: int64
+        filePathName:
+          type: string
+        fileName:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        ingestionFlowFileType:
+          type: string
+          enum:
+            - RECEIPT
+            - RECEIPT_PAGOPA
+            - PAYMENTS_REPORTING
+            - PAYMENTS_REPORTING_PAGOPA
+            - TREASURY_OPI
+            - TREASURY_CSV
+            - TREASURY_XLS
+            - TREASURY_POSTE
+            - DP_INSTALLMENTS
+        flowDateTime:
+          type: string
+          format: date-time
+        pspIdentifier:
+          type: string
+        fileOrigin:
+          type: string
+    ProcessExecutionsErrorDTO:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - PROCESS_EXECUTIONS_NOT_FOUND
+            - PROCESS_EXECUTIONS_CONFLICT
+            - PROCESS_EXECUTIONS_BAD_REQUEST
+            - PROCESS_EXECUTIONS_GENERIC_ERROR
+        message:
+          type: string
+
