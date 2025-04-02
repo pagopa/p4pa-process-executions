@@ -48,13 +48,13 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
   @Transactional
   @Query("UPDATE ExportFile " +
     "SET status=:newStatus, " +
-    "filePathName=:filePath, " +
+    "filePathName=:filePathName, " +
     "fileName=:fileName, " +
     "numTotalRows=:numTotalRows, " +
     "fileSize=:fileSize, " +
     "errorDescription=:errorDescription " +
     "WHERE exportFileId=:exportFileId " +
     "AND status=:oldStatus")
-  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String filePath, String fileName, Long numTotalRows, Long fileSize, String errorDescription);
+  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String filePathName, String fileName, Long numTotalRows, Long fileSize, String errorDescription);
 
 }

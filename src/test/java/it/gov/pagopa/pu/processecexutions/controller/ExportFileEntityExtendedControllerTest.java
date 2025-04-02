@@ -38,17 +38,17 @@ class ExportFileEntityExtendedControllerTest {
     String codError = "CODERROR";
     ExportFileStatus oldStatus = ExportFileStatus.COMPLETED;
     ExportFileStatus newStatus = ExportFileStatus.EXPIRED;
-    String filePath = "filePath";
+    String filePathName = "filePath";
     String fileName = "fileName";
     Long numTotalRows = 2L;
     Long fileSize = 3L;
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePath, fileName, numTotalRows, fileSize, codError))
+    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePath, fileName, numTotalRows, fileSize, codError).getBody();
+    Integer result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError).getBody();
 
     // Then
     Assertions.assertEquals(expectedResult, result);
@@ -61,16 +61,16 @@ class ExportFileEntityExtendedControllerTest {
     String codError = "CODERROR";
     ExportFileStatus oldStatus = ExportFileStatus.COMPLETED;
     ExportFileStatus newStatus = ExportFileStatus.EXPIRED;
-    String filePath = "filePath";
+    String filePathName = "filePath";
     String fileName = "fileName";
     Long numTotalRows = 2L;
     Long fileSize = 3L;
 
-    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePath, fileName, numTotalRows, fileSize, codError))
+    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError))
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePath, fileName, numTotalRows, fileSize, codError).getStatusCode();
+    HttpStatusCode result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError).getStatusCode();
 
     // Then
     Assertions.assertEquals(HttpStatus.NOT_FOUND, result);

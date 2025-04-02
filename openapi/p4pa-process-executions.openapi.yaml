@@ -135,7 +135,7 @@ paths:
           required: true
           schema:
             type: "ExportFileStatusEnum"
-        - name: filePath
+        - name: filePathName
           in: query
           required: false
           schema:
