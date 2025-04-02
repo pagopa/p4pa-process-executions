@@ -44,11 +44,11 @@ class ExportFileEntityExtendedControllerTest {
     Long fileSize = 3L;
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError))
+    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError).getBody();
+    Integer result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError).getBody();
 
     // Then
     Assertions.assertEquals(expectedResult, result);
@@ -66,11 +66,11 @@ class ExportFileEntityExtendedControllerTest {
     Long numTotalRows = 2L;
     Long fileSize = 3L;
 
-    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError))
+    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError))
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, numTotalRows, fileSize, codError).getStatusCode();
+    HttpStatusCode result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError).getStatusCode();
 
     // Then
     Assertions.assertEquals(HttpStatus.NOT_FOUND, result);

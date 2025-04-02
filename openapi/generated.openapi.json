@@ -334,14 +334,14 @@
             "type" : "string"
           }
         }, {
-          "name" : "numTotalRows",
+          "name" : "fileSize",
           "in" : "query",
           "schema" : {
             "type" : "integer",
             "format" : "int64"
           }
         }, {
-          "name" : "fileSize",
+          "name" : "numTotalRows",
           "in" : "query",
           "schema" : {
             "type" : "integer",
@@ -1251,7 +1251,7 @@
             "type" : "string"
           }
         }, {
-          "name" : "numTotalRows",
+          "name" : "fileSize",
           "in" : "query",
           "required" : false,
           "schema" : {
@@ -1259,7 +1259,7 @@
             "format" : "int64"
           }
         }, {
-          "name" : "fileSize",
+          "name" : "numTotalRows",
           "in" : "query",
           "required" : false,
           "schema" : {
