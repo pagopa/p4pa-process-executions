@@ -44,6 +44,7 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
     Pageable pageable
   );
 
+  @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Modifying
   @Transactional
   @Query("UPDATE ExportFile " +
