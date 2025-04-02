@@ -51,9 +51,10 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
     "filePathName=:filePath, " +
     "fileName=:fileName, " +
     "numTotalRows=:numTotalRows, " +
+    "fileSize=:fileSize, " +
     "errorDescription=:errorDescription " +
     "WHERE exportFileId=:exportFileId " +
     "AND status=:oldStatus")
-  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String filePath, String fileName, Long numTotalRows, String errorDescription);
+  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String filePath, String fileName, Long numTotalRows, Long fileSize, String errorDescription);
 
 }

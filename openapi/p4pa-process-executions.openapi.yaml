@@ -151,6 +151,12 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: fileSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
         - name: errorDescription
           in: query
           required: false
