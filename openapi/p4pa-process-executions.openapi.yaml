@@ -135,6 +135,22 @@ paths:
           required: true
           schema:
             type: "ExportFileStatusEnum"
+        - name: filePath
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fileName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: numTotalRows
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
         - name: errorDescription
           in: query
           required: false
