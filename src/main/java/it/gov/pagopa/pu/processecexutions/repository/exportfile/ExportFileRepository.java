@@ -24,6 +24,7 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
   @Override
   <S extends ExportFile<?>> S save(@Nonnull S entity);
 
+  @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Query("SELECT ef "
     + "FROM ExportFile ef "
     + "WHERE ef.organizationId = :organizationId "
