@@ -3,7 +3,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
-import it.gov.pagopa.pu.processecexutions.service.ExportFileService;
+import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +17,9 @@ import java.util.List;
 @Slf4j
 public class ExportFileControllerImpl implements ExportFileControllerApi {
 
-  private final ExportFileService service;
+  private final ExportFileSaveService service;
 
-  public ExportFileControllerImpl(ExportFileService service) {
+  public ExportFileControllerImpl(ExportFileSaveService service) {
     this.service = service;
   }
 
