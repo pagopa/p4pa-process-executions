@@ -20,8 +20,8 @@ public class ExportFileServiceImpl implements ExportFileService{
   @Override
   public void invokeExportFileWorkflow(ExportFile<?> exportFile, String accessToken) {
     log.debug("Invoking export file workflow for ExportFileTypeEnum: {} , exportFileId: {}", exportFile.getExportFileType(), exportFile.getExportFileId());
-    String name = exportFile.getExportFileType().name();
-    WorkflowCreatedDTO response = exportFileClient.exportFile(exportFile.getExportFileId(), ExportFileTypeEnum.fromValue(name), accessToken);
+    String exportFileTypeString = exportFile.getExportFileType().toString();
+    WorkflowCreatedDTO response = exportFileClient.exportFile(exportFile.getExportFileId(), ExportFileTypeEnum.fromValue(exportFileTypeString), accessToken);
     log.info("Invoked workflow having workflowId:{}", response.getWorkflowId());
   }
 }
