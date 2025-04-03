@@ -22,8 +22,8 @@ public class ExportFileEntityExtendedController implements
 
   @Override
   public ResponseEntity<Integer> updateExportFileStatus(Long ingestionFlowFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus,
-                                              String errorDescription) {
-    int result = repository.updateStatus(ingestionFlowFileId, oldStatus, newStatus, errorDescription);
+                        String filePathName, String fileName, Long fileSize,  Long numTotalRows, String errorDescription) {
+    int result = repository.updateStatus(ingestionFlowFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, errorDescription);
     if(result>0){
       return ResponseEntity.ok(result);
     } else {
