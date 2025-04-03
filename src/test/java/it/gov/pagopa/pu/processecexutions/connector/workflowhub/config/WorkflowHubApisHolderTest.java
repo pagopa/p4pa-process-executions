@@ -1,6 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
 import it.gov.pagopa.pu.processecexutions.connector.BaseApiHolderTest;
+import it.gov.pagopa.pu.workflowhub.dto.generated.ExportFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.IngestionFlowFileTypeEnum;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,15 @@ class WorkflowHubApisHolderTest extends BaseApiHolderTest {
     assertAuthenticationShouldBeSetInThreadSafeMode(
       accessToken -> workflowHubApisHolder.getIngestionFlowApi(accessToken)
         .ingestFlowFile(1L, IngestionFlowFileTypeEnum.PAYMENTS_REPORTING),
+      new ParameterizedTypeReference<>() {},
+      workflowHubApisHolder::unload);
+  }
+
+  @Test
+  void whenGetExportFileThenAuthenticationShouldBeSetInThreadSafeMode() throws InterruptedException {
+    assertAuthenticationShouldBeSetInThreadSafeMode(
+      accessToken -> workflowHubApisHolder.getExportFileApi(accessToken)
+        .exportFile(1L, ExportFileTypeEnum.PAID),
       new ParameterizedTypeReference<>() {},
       workflowHubApisHolder::unload);
   }

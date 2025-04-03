@@ -1,5 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
+import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
@@ -12,15 +13,18 @@ import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileReposi
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExportFileServiceImpl implements ExportFileService {
+public class ExportFileDownloadServiceImpl implements ExportFileDownloadService {
 
   private final ExportFileRequestMapper requestMapper;
   private final ExportFileRepository repository;
+  private final ExportFileService exportFileService;
 
-  public ExportFileServiceImpl(ExportFileRequestMapper requestMapper,
-    ExportFileRepository repository) {
+
+  public ExportFileDownloadServiceImpl(ExportFileRequestMapper requestMapper,
+                                       ExportFileRepository repository, ExportFileService exportFileService) {
     this.requestMapper = requestMapper;
     this.repository = repository;
+    this.exportFileService = exportFileService;
   }
 
   @Override
@@ -33,7 +37,7 @@ public class ExportFileServiceImpl implements ExportFileService {
       requestMapper.map(requestDTO, operatorExternalId,
         (ExportFile<R>) createExportFileByType(requestDTO.getExportFileType())));
 
-    //  TODO: call workflow service
+    exportFileService.invokeExportFileWorkflow(saved, accessToken);
 
     return saved;
   }

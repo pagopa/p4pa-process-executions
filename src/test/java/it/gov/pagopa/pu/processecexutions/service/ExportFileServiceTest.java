@@ -1,5 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
+import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
@@ -27,16 +28,16 @@ class ExportFileServiceTest {
   private ExportFileRequestMapper uploadedRequestMapperMock;
   @Mock
   private ExportFileRepository repositoryMock;
-//  @Mock
-//  TODO: mock worflow services
+  @Mock
+  private ExportFileService exportFileServiceMock;
 
-  private ExportFileService service;
+  private ExportFileDownloadService service;
 
   @BeforeEach
   void init(){
-    service = new ExportFileServiceImpl(
+    service = new ExportFileDownloadServiceImpl(
       uploadedRequestMapperMock,
-      repositoryMock);
+      repositoryMock, exportFileServiceMock);
   }
 
   @AfterEach
@@ -70,7 +71,7 @@ class ExportFileServiceTest {
 
     // Then
     Assertions.assertSame(storedEntity, result);
-//  TODO: verify interaction with mocked workflow service
+    Mockito.verify(exportFileServiceMock).invokeExportFileWorkflow(result, accessToken);
   }
 
   @Test
@@ -96,8 +97,7 @@ class ExportFileServiceTest {
 
     // Then
     Assertions.assertSame(storedEntity, result);
-
-    // TODO: verify invocation to workflow service
+    Mockito.verify(exportFileServiceMock).invokeExportFileWorkflow(result, accessToken);
   }
 
   @Test
@@ -123,6 +123,6 @@ class ExportFileServiceTest {
 
     // Then
     Assertions.assertSame(storedEntity, result);
-//  TODO: verify interaction with mocked workflow service
+    Mockito.verify(exportFileServiceMock).invokeExportFileWorkflow(result, accessToken);
   }
 }
