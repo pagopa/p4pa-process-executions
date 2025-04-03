@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ExportFileServiceTest {
+class ExportFileSaveServiceTest {
 
   @Mock
   private ExportFileRequestMapper uploadedRequestMapperMock;
@@ -31,11 +31,11 @@ class ExportFileServiceTest {
   @Mock
   private ExportFileService exportFileServiceMock;
 
-  private ExportFileDownloadService service;
+  private ExportFileSaveService service;
 
   @BeforeEach
   void init(){
-    service = new ExportFileDownloadServiceImpl(
+    service = new ExportFileSaveServiceImpl(
       uploadedRequestMapperMock,
       repositoryMock, exportFileServiceMock);
   }

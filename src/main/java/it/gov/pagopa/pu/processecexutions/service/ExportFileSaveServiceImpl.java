@@ -13,15 +13,15 @@ import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileReposi
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExportFileDownloadServiceImpl implements ExportFileDownloadService {
+public class ExportFileSaveServiceImpl implements ExportFileSaveService {
 
   private final ExportFileRequestMapper requestMapper;
   private final ExportFileRepository repository;
   private final ExportFileService exportFileService;
 
 
-  public ExportFileDownloadServiceImpl(ExportFileRequestMapper requestMapper,
-                                       ExportFileRepository repository, ExportFileService exportFileService) {
+  public ExportFileSaveServiceImpl(ExportFileRequestMapper requestMapper,
+                                   ExportFileRepository repository, ExportFileService exportFileService) {
     this.requestMapper = requestMapper;
     this.repository = repository;
     this.exportFileService = exportFileService;

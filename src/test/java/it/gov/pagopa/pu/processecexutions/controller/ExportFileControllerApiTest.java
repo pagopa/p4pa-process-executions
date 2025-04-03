@@ -6,7 +6,7 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
-import it.gov.pagopa.pu.processecexutions.service.ExportFileDownloadService;
+import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 class ExportFileControllerApiTest {
 
   @Mock
-  private ExportFileDownloadService serviceMock;
+  private ExportFileSaveService serviceMock;
 
   private ExportFileControllerApi controller;
 
