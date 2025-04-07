@@ -6,7 +6,6 @@ import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.mapper.IngestionFlowFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +22,6 @@ public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUplo
   }
 
   @Override
-  @Transactional
   public IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId,
     String accessToken) {
     IngestionFlowFile saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId));
@@ -33,6 +31,11 @@ public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUplo
       saved.setStatus(IngestionFlowFileStatus.ERROR);
       saved.setErrorDescription("Flow type not supported");
       repository.save(saved);
+    } catch (RuntimeException e){
+      saved.setStatus(IngestionFlowFileStatus.ERROR);
+      saved.setErrorDescription(e.getMessage());
+      repository.save(saved);
+      throw e;
     }
     return saved;
   }
