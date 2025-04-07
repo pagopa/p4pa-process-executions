@@ -6,6 +6,7 @@ import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.mapper.IngestionFlowFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,7 @@ public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUplo
   }
 
   @Override
+  @Transactional
   public IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId,
     String accessToken) {
     IngestionFlowFile saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId));
