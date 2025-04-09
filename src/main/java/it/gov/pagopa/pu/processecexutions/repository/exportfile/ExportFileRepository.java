@@ -1,6 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.repository.exportfile;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
@@ -37,8 +38,8 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
   Page<ExportFile<?>> findByOrganizationIDFlowTypeCreateDate(
     @Parameter(required = true) @Param("organizationId") Long organizationId,
     @Parameter(required = true) @Param("exportFileType") ExportFileType exportFileType,
-    LocalDateTime creationDateFrom,
-    LocalDateTime creationDateTo,
+    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
+    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo")LocalDateTime creationDateTo,
     String operatorExternalId,
     ExportFileStatus status,
     String fileName,

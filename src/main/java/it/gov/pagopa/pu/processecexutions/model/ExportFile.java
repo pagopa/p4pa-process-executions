@@ -8,12 +8,22 @@ import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExport
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -50,7 +60,6 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   private ExportFileStatus status;
   private String errorDescription;
   private Long numTotalRows;
-  @NotNull
   private OffsetDateTime expirationDate;
 
   public abstract T getFilterFields();

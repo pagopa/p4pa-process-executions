@@ -62,17 +62,47 @@ paths:
       responses:
         '201':
           description: OK
-  /export-files:
+  /export-files/paid:
     post:
-      summary: create-export-file
+      summary: create-paid-export-file
       tags:
         - export-file-controller
-      operationId: createExportFile
+      operationId: createPaidExportFile
       requestBody:
         content:
           application/json:
             schema:
-              type: 'ExportFileRequestDTO'
+              type: 'PaidExportFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
+  /export-files/classifications:
+    post:
+      summary: create-classifications-export-file
+      tags:
+        - export-file-controller
+      operationId: createClassificationsExportFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: 'ClassificationsExportFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
+  /export-files/payments-reporting:
+    post:
+      summary: create-payments-reporting-export-file
+      tags:
+        - export-file-controller
+      operationId: createPaymentsReportingExportFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: 'PaymentsReportingExportFileRequestDTO'
         required: true
       responses:
         '201':

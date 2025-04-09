@@ -145,7 +145,9 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   modelPackage.set("it.gov.pagopa.pu.processecexutions.dto.generated")
   typeMappings.set(mapOf(
     "IngestionFlowFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus",
-    "ExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO",
+    "PaidExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO",
+    "ClassificationsExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.ClassificationsExportFileRequestDTO",
+    "PaymentsReportingExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.PaymentsReportingExportFileRequestDTO",
     "ExportFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileType",
     "ExportFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus",
     "PaidExportFileVersion" to "it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion"

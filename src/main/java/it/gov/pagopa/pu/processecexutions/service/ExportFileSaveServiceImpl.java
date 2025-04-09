@@ -11,6 +11,7 @@ import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
 import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ExportFileSaveServiceImpl implements ExportFileSaveService {
@@ -27,6 +28,7 @@ public class ExportFileSaveServiceImpl implements ExportFileSaveService {
     this.exportFileService = exportFileService;
   }
 
+  @Transactional
   @Override
   public <R extends ExportFileFilter> ExportFile<R> save(
     ExportFileRequestDTO<R> requestDTO,
