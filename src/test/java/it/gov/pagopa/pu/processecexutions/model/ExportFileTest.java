@@ -1,7 +1,10 @@
 package it.gov.pagopa.pu.processecexutions.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.media.Schema;
+import it.gov.pagopa.pu.processecexutions.config.json.JsonConfig;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import jakarta.persistence.DiscriminatorValue;
@@ -24,6 +27,8 @@ class ExportFileTest {
     ExportFileType.PAID, Pair.of(PaidExportFile.class, PaidExportFileFilter.class),
     ExportFileType.PAYMENTS_REPORTING, Pair.of(PaymentsReportingExportFile.class, PaymentsReportingExportFileFilter.class)
   );
+
+  private final ObjectMapper objectMapper = new JsonConfig().objectMapper();
 
   @Test
   void testExpectedMapIsCompleted() {
@@ -91,5 +96,19 @@ class ExportFileTest {
       Arrays.stream(ExportFileFilter.class.getAnnotation(Schema.class).oneOf())
         .collect(Collectors.toSet())
     );
+  }
+
+  @Test
+  void testSerialization() throws JsonProcessingException {
+    PaidExportFileFilter filterFields = PaidExportFileFilter.builder()
+      .debtPositionTypeOrgId(1L)
+      .build();
+    PaidExportFile exportFile = new PaidExportFile();
+    exportFile.setFilterFields(filterFields);
+
+    String serialized = objectMapper.writeValueAsString(exportFile);
+    ExportFile<?> result = objectMapper.readValue(serialized, ExportFile.class);
+
+    Assertions.assertEquals(exportFile, result);
   }
 }

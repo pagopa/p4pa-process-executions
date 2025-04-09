@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
 @Table(name = "export_file")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "exportFileType")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "exportFileType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "exportFileType")
 @JsonSubTypes({
   @JsonSubTypes.Type(name = "CLASSIFICATIONS", value = ClassificationsExportFile.class),
   @JsonSubTypes.Type(name = "PAID", value = PaidExportFile.class),
