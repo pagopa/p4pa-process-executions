@@ -582,6 +582,47 @@
         }
       }
     },
+    "/crud/ingestion-flow-files/search/findByOrganizationIdAndFilePathNameAndFileName" : {
+      "get" : {
+        "tags" : [ "ingestion-flow-file-search-controller" ],
+        "operationId" : "crud-ingestion-flow-files-findByOrganizationIdAndFilePathNameAndFileName",
+        "parameters" : [ {
+          "name" : "organizationId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "filePathName",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "fileName",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IngestionFlowFile"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      }
+    },
     "/crud/ingestion-flow-files/search/updateProcessingIfNoOtherProcessing" : {
       "get" : {
         "tags" : [ "ingestion-flow-file-search-controller" ],
@@ -1476,7 +1517,7 @@
           }
         }
       },
-      "PaymentsReportingExportFile" : {
+      "IngestionFlowFile" : {
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1490,7 +1531,7 @@
           "updateOperatorExternalId" : {
             "type" : "string"
           },
-          "exportFileId" : {
+          "ingestionFlowFileId" : {
             "type" : "integer",
             "format" : "int64"
           },
@@ -1511,47 +1552,50 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "exportFileType" : {
+          "ingestionFlowFileType" : {
             "type" : "string",
-            "enum" : [ "PAYMENTS_REPORTING" ]
-          },
-          "fileVersion" : {
-            "type" : "string"
+            "enum" : [ "RECEIPT", "RECEIPT_PAGOPA", "PAYMENTS_REPORTING", "PAYMENTS_REPORTING_PAGOPA", "TREASURY_OPI", "TREASURY_CSV", "TREASURY_XLS", "TREASURY_POSTE", "DP_INSTALLMENTS", "PAYMENT_NOTIFICATION" ]
           },
           "status" : {
-            "$ref" : "#/components/schemas/ExportFileStatus"
+            "$ref" : "#/components/schemas/IngestionFlowFileStatus"
           },
           "errorDescription" : {
+            "type" : "string"
+          },
+          "discardFileName" : {
             "type" : "string"
           },
           "numTotalRows" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "expirationDate" : {
+          "numCorrectlyImportedRows" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "pdfGenerated" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "pspIdentifier" : {
+            "type" : "string"
+          },
+          "flowDateTime" : {
             "type" : "string",
             "format" : "date-time"
           },
-          "filterFields" : {
-            "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
+          "fileOrigin" : {
+            "type" : "string"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
           }
         },
-        "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
+        "required" : [ "fileName", "fileOrigin", "filePathName", "fileSize", "ingestionFlowFileType", "operatorExternalId", "organizationId", "status" ]
       },
-      "ExportFileStatus" : {
+      "IngestionFlowFileStatus" : {
         "type" : "string",
-        "enum" : [ "REQUESTED", "PROCESSING", "COMPLETED", "EXPIRED", "ERROR" ]
-      },
-      "PaymentsReportingExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "iuf" : {
-            "type" : "string"
-          }
-        }
+        "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
       },
       "PageMetadata" : {
         "type" : "object",
@@ -1574,16 +1618,16 @@
           }
         }
       },
-      "PagedModelPaymentsReportingExportFile" : {
+      "PagedModelIngestionFlowFile" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
             "type" : "object",
             "properties" : {
-              "exportFiles" : {
+              "ingestionFlowFiles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/PaymentsReportingExportFile"
+                  "$ref" : "#/components/schemas/IngestionFlowFile"
                 }
               }
             }
@@ -1708,6 +1752,10 @@
         },
         "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
       },
+      "ExportFileStatus" : {
+        "type" : "string",
+        "enum" : [ "REQUESTED", "PROCESSING", "COMPLETED", "EXPIRED", "ERROR" ]
+      },
       "LocalDateIntervalFilter" : {
         "type" : "object",
         "properties" : {
@@ -1743,7 +1791,7 @@
           }
         }
       },
-      "IngestionFlowFile" : {
+      "PaymentsReportingExportFile" : {
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -1757,7 +1805,7 @@
           "updateOperatorExternalId" : {
             "type" : "string"
           },
-          "ingestionFlowFileId" : {
+          "exportFileId" : {
             "type" : "integer",
             "format" : "int64"
           },
@@ -1778,61 +1826,46 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "ingestionFlowFileType" : {
+          "exportFileType" : {
             "type" : "string",
-            "enum" : [ "RECEIPT", "RECEIPT_PAGOPA", "PAYMENTS_REPORTING", "PAYMENTS_REPORTING_PAGOPA", "TREASURY_OPI", "TREASURY_CSV", "TREASURY_XLS", "TREASURY_POSTE", "DP_INSTALLMENTS", "PAYMENT_NOTIFICATION" ]
+            "enum" : [ "PAYMENTS_REPORTING" ]
           },
-          "status" : {
-            "$ref" : "#/components/schemas/IngestionFlowFileStatus"
-          },
-          "errorDescription" : {
+          "fileVersion" : {
             "type" : "string"
           },
-          "discardFileName" : {
+          "status" : {
+            "$ref" : "#/components/schemas/ExportFileStatus"
+          },
+          "errorDescription" : {
             "type" : "string"
           },
           "numTotalRows" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "numCorrectlyImportedRows" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "pdfGenerated" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "pspIdentifier" : {
-            "type" : "string"
-          },
-          "flowDateTime" : {
+          "expirationDate" : {
             "type" : "string",
             "format" : "date-time"
           },
-          "fileOrigin" : {
-            "type" : "string"
+          "filterFields" : {
+            "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
           }
         },
-        "required" : [ "fileName", "fileOrigin", "filePathName", "fileSize", "ingestionFlowFileType", "operatorExternalId", "organizationId", "status" ]
+        "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
       },
-      "IngestionFlowFileStatus" : {
-        "type" : "string",
-        "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
-      },
-      "PagedModelIngestionFlowFile" : {
+      "PagedModelPaymentsReportingExportFile" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
             "type" : "object",
             "properties" : {
-              "ingestionFlowFiles" : {
+              "exportFiles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/IngestionFlowFile"
+                  "$ref" : "#/components/schemas/PaymentsReportingExportFile"
                 }
               }
             }
@@ -1842,6 +1875,14 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PaymentsReportingExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "iuf" : {
+            "type" : "string"
           }
         }
       },
@@ -1910,18 +1951,6 @@
         },
         "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
       },
-      "PaidExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "paymentDate" : {
-            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
-          },
-          "debtPositionTypeOrgId" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }
-      },
       "PagedModelPaidExportFile" : {
         "type" : "object",
         "properties" : {
@@ -1941,6 +1970,18 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PaidExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDate" : {
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
+          },
+          "debtPositionTypeOrgId" : {
+            "type" : "integer",
+            "format" : "int64"
           }
         }
       },
