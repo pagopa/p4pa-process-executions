@@ -1,17 +1,20 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
+import it.gov.pagopa.pu.processecexutions.dto.ClassificationsExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.PaymentsReportingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
+import java.net.URI;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -24,9 +27,25 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   @Override
-  @SuppressWarnings("rawtypes")
-  public ResponseEntity<Void> createExportFile(
-    ExportFileRequestDTO exportFileRequestDTO) {
+  public ResponseEntity<Void> createPaidExportFile(
+    PaidExportFileRequestDTO paidExportFileRequestDTO) {
+    return createExportFile(paidExportFileRequestDTO);
+  }
+
+  @Override
+  public ResponseEntity<Void> createClassificationsExportFile(
+    ClassificationsExportFileRequestDTO classificationExportFileRequestDTO) {
+    return createExportFile(classificationExportFileRequestDTO);
+  }
+
+  @Override
+  public ResponseEntity<Void> createPaymentsReportingExportFile(
+    PaymentsReportingExportFileRequestDTO paymentsReportingExportFileRequestDTO) {
+    return createExportFile(paymentsReportingExportFileRequestDTO);
+  }
+
+  private <R extends ExportFileFilter> ResponseEntity<Void> createExportFile(
+    ExportFileRequestDTO<R> exportFileRequestDTO) {
     log.info(
       "The user has requested export file with organizationId {} and exportFileType {}",
       exportFileRequestDTO.getOrganizationId(),

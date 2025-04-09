@@ -1,6 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.exception.ExportFlowFileVersionNotSupportedException;
@@ -18,7 +19,7 @@ class ExportFileRequestMapperTest {
   @Test
   void whenMapThenOk() {
     // Given
-    ExportFileRequestDTO<PaidExportFileFilter> dto = ExportFileRequestDTO.<PaidExportFileFilter>builder()
+    PaidExportFileRequestDTO dto = PaidExportFileRequestDTO.builder()
       .organizationId(0L)
       .exportFileType(ExportFileType.PAID)
       .fileVersion("v1.0")
@@ -54,7 +55,7 @@ class ExportFileRequestMapperTest {
   @Test
   void givenUnsupportedVersionWhenMapThen (){
     // Given
-    ExportFileRequestDTO<PaidExportFileFilter> dto = ExportFileRequestDTO.<PaidExportFileFilter>builder()
+    ExportFileRequestDTO<PaidExportFileFilter> dto = PaidExportFileRequestDTO.builder()
       .organizationId(0L)
       .exportFileType(ExportFileType.PAID)
       .fileVersion("NOTVALID")
