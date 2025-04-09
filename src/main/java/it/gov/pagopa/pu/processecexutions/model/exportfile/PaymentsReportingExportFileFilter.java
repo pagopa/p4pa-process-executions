@@ -1,5 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.model.exportfile;
 
+import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentsReportingExportFileFilter implements ExportFileFilter {
-  private String iuf;
+
+  private LocalDateIntervalFilter paymentDate;
 }
