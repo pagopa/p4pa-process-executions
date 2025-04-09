@@ -95,7 +95,7 @@ class ExportFileControllerApiTest {
   }
 
   @Test
-  void whenCreateCPaymentsReportingExportFileThenInvokeService(){
+  void whenCreatePaymentsReportingExportFileThenInvokeService(){
     // Given
     PaymentsReportingExportFileRequestDTO requestDTO = new PaymentsReportingExportFileRequestDTO();
     ExportFile<?> t = new PaymentsReportingExportFile();
