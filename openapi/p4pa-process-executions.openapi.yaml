@@ -47,6 +47,36 @@ paths:
               schema:
                 type: integer
                 format: int32
+  /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-file-names:
+    patch:
+      tags:
+        - ingestion-flow-file-entity-extended-controller
+      operationId: updateFileNames
+      parameters:
+        - name: ingestionFlowFileId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fileName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: discardFileName
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
   /ingestion-flow-files:
     post:
       summary: create-ingestion-flow-file

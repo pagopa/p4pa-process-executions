@@ -29,7 +29,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Override
   <S extends IngestionFlowFile> S save(@Nonnull S entity);
 
-  @Modifying
+  @RestResource(exported = false)@Modifying
   @Transactional
   @Query("update IngestionFlowFile" +
     " set status=:newStatus," +
@@ -38,6 +38,14 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     "where ingestionFlowFileId=:ingestionFlowFileId" +
     " and status=:oldStatus")
   int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus, String errorDescription, String discardFileName);
+
+  @RestResource(exported = false)@Modifying
+  @Transactional
+  @Query("update IngestionFlowFile" +
+    " set fileName=:fileName," +
+    " discardFileName=:discardFileName " +
+    "where ingestionFlowFileId=:ingestionFlowFileId")
+  int updateFileNames(Long ingestionFlowFileId, String fileName, String discardFileName);
 
   @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Query("SELECT iff "

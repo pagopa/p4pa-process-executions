@@ -29,4 +29,14 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
   }
+
+  @Override
+  public ResponseEntity<Integer> updateFileNames(Long ingestionFlowFileId, String fileName, String discardFileName) {
+    int result = repository.updateFileNames(ingestionFlowFileId, fileName, discardFileName);
+    if(result>0){
+      return ResponseEntity.ok(result);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+  }
 }
