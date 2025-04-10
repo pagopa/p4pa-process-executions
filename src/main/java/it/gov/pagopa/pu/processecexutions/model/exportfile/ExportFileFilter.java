@@ -7,7 +7,8 @@ import java.io.Serializable;
 @Schema(oneOf = {
   ClassificationsExportFileFilter.class,
   PaidExportFileFilter.class,
-  PaymentsReportingExportFileFilter.class
+  PaymentsReportingExportFileFilter.class,
+  ArchivingExportFileFilter.class
 })
 public interface ExportFileFilter extends Serializable {
 }
