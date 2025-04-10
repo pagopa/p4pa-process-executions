@@ -137,6 +137,21 @@ paths:
       responses:
         '201':
           description: OK
+  /export-files/archiving:
+    post:
+      summary: create-archiving-export-file
+      tags:
+        - export-file-controller
+      operationId: createArchivingExportFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: 'ArchivingExportFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
   /export-files/{exportFileType}:
     get:
       summary: get-export-file-type-versions
