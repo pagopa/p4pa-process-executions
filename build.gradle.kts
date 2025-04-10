@@ -148,7 +148,7 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
     "PaidExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO",
     "ClassificationsExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.ClassificationsExportFileRequestDTO",
     "PaymentsReportingExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.PaymentsReportingExportFileRequestDTO",
-    "ArchivingExportFileRequestDTO" to "string",
+    "ArchivingExportFileRequestDTO" to "String",
     "ExportFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileType",
     "ExportFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus",
     "PaidExportFileVersion" to "it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion"
