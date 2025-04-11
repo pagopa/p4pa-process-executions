@@ -33,11 +33,15 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Transactional
   @Query("update IngestionFlowFile" +
     " set status=:newStatus," +
+    " numCorrectlyImportedRows=:processedRows," +
+    " numTotalRows=:totalRows," +
     " errorDescription=:errorDescription," +
     " discardFileName=:discardFileName " +
     "where ingestionFlowFileId=:ingestionFlowFileId" +
     " and status=:oldStatus")
-  int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus, String errorDescription, String discardFileName);
+  int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
+                   long processedRows, long totalRows,
+                   String errorDescription, String discardFileName);
 
   @RestResource(exported = false)@Modifying
   @Transactional

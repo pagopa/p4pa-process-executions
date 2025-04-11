@@ -29,6 +29,18 @@ paths:
           required: true
           schema:
             type: "IngestionFlowFileStatusEnum"
+        - name: processedRows
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: totalRows
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: errorDescription
           in: query
           required: false

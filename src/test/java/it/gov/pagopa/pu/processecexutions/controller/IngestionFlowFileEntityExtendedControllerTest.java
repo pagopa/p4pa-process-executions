@@ -22,49 +22,63 @@ class IngestionFlowFileEntityExtendedControllerTest {
   private IngestionFlowFileEntityExtendedController controller;
 
   @BeforeEach
-  void init(){
+  void init() {
     controller = new IngestionFlowFileEntityExtendedController(repositoryMock);
   }
 
   @AfterEach
-  void verifyNoMoreInteractions(){
+  void verifyNoMoreInteractions() {
     Mockito.verifyNoMoreInteractions(repositoryMock);
   }
 
   @Test
-  void whenUpdateStatusThenInvokeRepository(){
+  void whenUpdateStatusThenInvokeRepository() {
     // Given
     long ingestionFlowFileId = 1L;
-    String codError = "CODERROR";
-    String discardFilename = "DISCARDFILENAME";
     IngestionFlowFileStatus oldStatus = IngestionFlowFileStatus.UPLOADED;
     IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
+    long processedRows = 10L;
+    long totalRows = 100L;
+    String errorDescription = "ERRORDESCRIPTION";
+    String discardFilename = "DISCARDFILENAME";
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename))
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+        processedRows, totalRows,
+        errorDescription, discardFilename))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getBody();
+    Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+        processedRows, totalRows,
+        errorDescription, discardFilename)
+      .getBody();
 
     // Then
     Assertions.assertEquals(expectedResult, result);
   }
 
   @Test
-  void givenZeroResultWhenUpdateStatusThenNotFound(){
+  void givenZeroResultWhenUpdateStatusThenNotFound() {
     // Given
     long ingestionFlowFileId = 1L;
-    String codError = "CODERROR";
-    String discardFilename = "DISCARDFILENAME";
     IngestionFlowFileStatus oldStatus = IngestionFlowFileStatus.UPLOADED;
     IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
+    long processedRows = 10L;
+    long totalRows = 100L;
+    String errorDescription = "ERRORDESCRIPTION";
+    String discardFilename = "DISCARDFILENAME";
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename))
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+        processedRows, totalRows,
+        errorDescription, discardFilename))
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus, codError, discardFilename).getStatusCode();
+    HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+        processedRows, totalRows,
+        errorDescription, discardFilename)
+      .getStatusCode();
 
     // Then
     Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
