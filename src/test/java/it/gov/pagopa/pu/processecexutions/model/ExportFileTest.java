@@ -26,7 +26,7 @@ class ExportFileTest {
     ExportFileType.CLASSIFICATIONS, Pair.of(ClassificationsExportFile.class, ClassificationsExportFileFilter.class),
     ExportFileType.PAID, Pair.of(PaidExportFile.class, PaidExportFileFilter.class),
     ExportFileType.PAYMENTS_REPORTING, Pair.of(PaymentsReportingExportFile.class, PaymentsReportingExportFileFilter.class),
-    ExportFileType.ARCHIVING, Pair.of(ArchivingExportFile.class, ArchivingExportFileFilter.class)
+    ExportFileType.RECEIPTS_ARCHIVING, Pair.of(ReceiptsArchivingExportFile.class, ReceiptsArchivingExportFileFilter.class)
   );
 
   private final ObjectMapper objectMapper = new JsonConfig().objectMapper();

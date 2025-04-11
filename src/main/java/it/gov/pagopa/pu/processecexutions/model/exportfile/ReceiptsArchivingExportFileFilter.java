@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArchivingExportFileFilter implements ExportFileFilter {
+public class ReceiptsArchivingExportFileFilter implements ExportFileFilter {
 
   private OffsetDateTimeIntervalFilter paymentDate;
 }

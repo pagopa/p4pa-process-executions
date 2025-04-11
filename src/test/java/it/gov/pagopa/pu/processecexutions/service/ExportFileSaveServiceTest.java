@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
-import it.gov.pagopa.pu.processecexutions.dto.*;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
@@ -124,16 +124,16 @@ class ExportFileSaveServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_Archiving(){
     // Given
-    ExportFileRequestDTO<ArchivingExportFileFilter> requestDTO = new ArchivingExportFileRequestDTO();
-    requestDTO.setExportFileType(ExportFileType.ARCHIVING);
-    ArchivingExportFile newEntity = new ArchivingExportFile();
-    ArchivingExportFile storedEntity = new ArchivingExportFile();
+    ExportFileRequestDTO<ReceiptsArchivingExportFileFilter> requestDTO = new ReceiptsArchivingExportFileRequestDTO();
+    requestDTO.setExportFileType(ExportFileType.RECEIPTS_ARCHIVING);
+    ReceiptsArchivingExportFile newEntity = new ReceiptsArchivingExportFile();
+    ReceiptsArchivingExportFile storedEntity = new ReceiptsArchivingExportFile();
 
     String operatorExternalId = "OPERATOREXTERNALID";
     String accessToken = "ACCESSTOKEN";
 
     Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.any(
-        ArchivingExportFile.class)))
+        ReceiptsArchivingExportFile.class)))
       .thenReturn(newEntity);
 
     Mockito.when(repositoryMock.save(Mockito.same(newEntity)))

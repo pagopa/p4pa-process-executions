@@ -1,13 +1,13 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
-import it.gov.pagopa.pu.processecexutions.dto.ArchivingExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.ClassificationsExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.PaymentsReportingExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.ClassificationsExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaidExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaymentsReportingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ArchivingExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ReceiptsArchivingExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
@@ -120,18 +120,18 @@ class ExportFileControllerApiTest {
   @Test
   void whenCreateArchivingExportFileThenInvokeService(){
     // Given
-    ArchivingExportFileRequestDTO archivingExportFileRequestDTO = new ArchivingExportFileRequestDTO();
-    ExportFile<?> t = new ArchivingExportFile();
+    ReceiptsArchivingExportFileRequestDTO receiptsArchivingExportFileRequestDTO = new ReceiptsArchivingExportFileRequestDTO();
+    ExportFile<?> t = new ReceiptsArchivingExportFile();
     t.setExportFileId(1L);
 
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(archivingExportFileRequestDTO), Mockito.same(operatorExternalId),
+    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(receiptsArchivingExportFileRequestDTO), Mockito.same(operatorExternalId),
       Mockito.anyString());
 
     // When
-    ResponseEntity<Void> result = controller.createArchivingExportFile(archivingExportFileRequestDTO);
+    ResponseEntity<Void> result = controller.createReceiptsArchivingExportFile(receiptsArchivingExportFileRequestDTO);
 
     // Then
     Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());

@@ -17,19 +17,19 @@ import org.hibernate.type.SqlTypes;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@DiscriminatorValue("ARCHIVING")
-public class ArchivingExportFile extends ExportFile<ArchivingExportFileFilter> {
+@DiscriminatorValue("RECEIPTS_ARCHIVING")
+public class ReceiptsArchivingExportFile extends ExportFile<ReceiptsArchivingExportFileFilter> {
 
-  public ArchivingExportFile(){
-    setExportFileType(ExportFileType.ARCHIVING);
+  public ReceiptsArchivingExportFile(){
+    setExportFileType(ExportFileType.RECEIPTS_ARCHIVING);
   }
 
-  @Schema(type = "string", allowableValues = "ARCHIVING")
+  @Schema(type = "string", allowableValues = "RECEIPTS_ARCHIVING")
   @Override
   public ExportFileType getExportFileType() {
     return super.getExportFileType();
   }
 
   @JdbcTypeCode(SqlTypes.JSON)
-  private ArchivingExportFileFilter filterFields;
+  private ReceiptsArchivingExportFileFilter filterFields;
 }

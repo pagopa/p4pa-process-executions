@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
-import it.gov.pagopa.pu.processecexutions.dto.*;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
@@ -42,8 +42,8 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   @Override
-  public ResponseEntity<Void> createArchivingExportFile(ArchivingExportFileRequestDTO archivingExportFileRequestDTO) {
-    return createExportFile(archivingExportFileRequestDTO);
+  public ResponseEntity<Void> createReceiptsArchivingExportFile(ReceiptsArchivingExportFileRequestDTO receiptsArchivingExportFileRequestDTO) {
+    return createExportFile(receiptsArchivingExportFileRequestDTO);
   }
 
   private <R extends ExportFileFilter> ResponseEntity<Void> createExportFile(

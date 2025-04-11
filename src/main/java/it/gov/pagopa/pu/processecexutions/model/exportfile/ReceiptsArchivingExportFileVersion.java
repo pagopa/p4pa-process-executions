@@ -6,18 +6,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
-public enum ArchivingExportFileVersion {
+public enum ReceiptsArchivingExportFileVersion {
   V1("v1.0");
 
   final String value;
 
-  ArchivingExportFileVersion(String value){
+  ReceiptsArchivingExportFileVersion(String value){
     this.value = value;
   }
 
   @JsonCreator
-  public static  ArchivingExportFileVersion forValue(String value){
-    return  ArchivingExportFileVersion.valueOf(value);
+  public static ReceiptsArchivingExportFileVersion forValue(String value){
+    return  ReceiptsArchivingExportFileVersion.valueOf(value);
   }
 
   @JsonValue

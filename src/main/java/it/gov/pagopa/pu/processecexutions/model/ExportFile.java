@@ -33,7 +33,7 @@ import lombok.EqualsAndHashCode;
   @JsonSubTypes.Type(name = "CLASSIFICATIONS", value = ClassificationsExportFile.class),
   @JsonSubTypes.Type(name = "PAID", value = PaidExportFile.class),
   @JsonSubTypes.Type(name = "PAYMENTS_REPORTING", value = PaymentsReportingExportFile.class),
-  @JsonSubTypes.Type(name = "ARCHIVING", value = ArchivingExportFile.class)
+  @JsonSubTypes.Type(name = "RECEIPTS_ARCHIVING", value = ReceiptsArchivingExportFile.class)
 })
 public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity{
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
   ClassificationsExportFileFilter.class,
   PaidExportFileFilter.class,
   PaymentsReportingExportFileFilter.class,
-  ArchivingExportFileFilter.class
+  ReceiptsArchivingExportFileFilter.class
 })
 public interface ExportFileFilter extends Serializable {
 }
