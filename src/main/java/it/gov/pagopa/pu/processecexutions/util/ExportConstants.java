@@ -1,6 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.util;
 
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ArchivingExportFileVersion;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion;
 
 import java.util.Arrays;
@@ -14,7 +15,8 @@ public class ExportConstants {
 
   static {
     availableVersions = Map.of(
-      ExportFileType.PAID, Arrays.stream(PaidExportFileVersion.values()).map(PaidExportFileVersion::getValue).toList()
+      ExportFileType.PAID, Arrays.stream(PaidExportFileVersion.values()).map(PaidExportFileVersion::getValue).toList(),
+      ExportFileType.ARCHIVING, Arrays.stream(ArchivingExportFileVersion.values()).map(ArchivingExportFileVersion::getValue).toList()
     );
   }
 

@@ -1,11 +1,13 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
+import it.gov.pagopa.pu.processecexutions.dto.ArchivingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.ClassificationsExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.PaymentsReportingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ArchivingExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
@@ -109,6 +111,27 @@ class ExportFileControllerApiTest {
 
     // When
     ResponseEntity<Void> result = controller.createPaymentsReportingExportFile(requestDTO);
+
+    // Then
+    Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
+    Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
+  }
+
+  @Test
+  void whenCreateArchivingExportFileThenInvokeService(){
+    // Given
+    ArchivingExportFileRequestDTO archivingExportFileRequestDTO = new ArchivingExportFileRequestDTO();
+    ExportFile<?> t = new ArchivingExportFile();
+    t.setExportFileId(1L);
+
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+
+    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(archivingExportFileRequestDTO), Mockito.same(operatorExternalId),
+      Mockito.anyString());
+
+    // When
+    ResponseEntity<Void> result = controller.createArchivingExportFile(archivingExportFileRequestDTO);
 
     // Then
     Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());

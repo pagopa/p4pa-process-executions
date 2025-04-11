@@ -1,10 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
-import it.gov.pagopa.pu.processecexutions.dto.ClassificationsExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.PaidExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.dto.PaymentsReportingExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.*;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
@@ -42,6 +39,11 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   public ResponseEntity<Void> createPaymentsReportingExportFile(
     PaymentsReportingExportFileRequestDTO paymentsReportingExportFileRequestDTO) {
     return createExportFile(paymentsReportingExportFileRequestDTO);
+  }
+
+  @Override
+  public ResponseEntity<Void> createArchivingExportFile(ArchivingExportFileRequestDTO archivingExportFileRequestDTO) {
+    return createExportFile(archivingExportFileRequestDTO);
   }
 
   private <R extends ExportFileFilter> ResponseEntity<Void> createExportFile(
