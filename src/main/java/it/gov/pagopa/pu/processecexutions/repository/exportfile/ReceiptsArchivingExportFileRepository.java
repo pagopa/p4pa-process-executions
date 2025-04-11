@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-@RepositoryRestResource(collectionResourceRel = "exportFiles", path = "archiving-export-files")
+@RepositoryRestResource(collectionResourceRel = "exportFiles", path = "receipts-archiving-export-files")
 public interface ReceiptsArchivingExportFileRepository extends JpaRepository<ReceiptsArchivingExportFile, Long> {
 
   @RestResource(exported = false)
