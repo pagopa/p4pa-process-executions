@@ -149,6 +149,21 @@ paths:
       responses:
         '201':
           description: OK
+  /export-files/receipts-archiving:
+    post:
+      summary: create-receipts-archiving-export-file
+      tags:
+        - export-file-controller
+      operationId: createReceiptsArchivingExportFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: 'ReceiptsArchivingExportFileRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: OK
   /export-files/{exportFileType}:
     get:
       summary: get-export-file-type-versions

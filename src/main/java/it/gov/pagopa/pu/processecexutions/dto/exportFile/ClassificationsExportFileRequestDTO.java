@@ -1,4 +1,4 @@
-package it.gov.pagopa.pu.processecexutions.dto;
+package it.gov.pagopa.pu.processecexutions.dto.exportFile;
 
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
-import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.exception.ExportFlowFileVersionNotSupportedException;

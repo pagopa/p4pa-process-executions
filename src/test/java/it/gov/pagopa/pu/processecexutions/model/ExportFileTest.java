@@ -25,7 +25,8 @@ class ExportFileTest {
   private final Map<ExportFileType, Pair<Class<? extends ExportFile<?>>, Class<? extends ExportFileFilter>>> expectedPolymorphicConfiguration = Map.of(
     ExportFileType.CLASSIFICATIONS, Pair.of(ClassificationsExportFile.class, ClassificationsExportFileFilter.class),
     ExportFileType.PAID, Pair.of(PaidExportFile.class, PaidExportFileFilter.class),
-    ExportFileType.PAYMENTS_REPORTING, Pair.of(PaymentsReportingExportFile.class, PaymentsReportingExportFileFilter.class)
+    ExportFileType.PAYMENTS_REPORTING, Pair.of(PaymentsReportingExportFile.class, PaymentsReportingExportFileFilter.class),
+    ExportFileType.RECEIPTS_ARCHIVING, Pair.of(ReceiptsArchivingExportFile.class, ReceiptsArchivingExportFileFilter.class)
   );
 
   private final ObjectMapper objectMapper = new JsonConfig().objectMapper();

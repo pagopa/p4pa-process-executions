@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -35,7 +32,8 @@ import lombok.EqualsAndHashCode;
 @JsonSubTypes({
   @JsonSubTypes.Type(name = "CLASSIFICATIONS", value = ClassificationsExportFile.class),
   @JsonSubTypes.Type(name = "PAID", value = PaidExportFile.class),
-  @JsonSubTypes.Type(name = "PAYMENTS_REPORTING", value = PaymentsReportingExportFile.class)
+  @JsonSubTypes.Type(name = "PAYMENTS_REPORTING", value = PaymentsReportingExportFile.class),
+  @JsonSubTypes.Type(name = "RECEIPTS_ARCHIVING", value = ReceiptsArchivingExportFile.class)
 })
 public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity{
 

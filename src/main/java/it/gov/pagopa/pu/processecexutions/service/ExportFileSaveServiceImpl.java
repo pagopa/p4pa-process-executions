@@ -1,14 +1,11 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
-import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +46,7 @@ public class ExportFileSaveServiceImpl implements ExportFileSaveService {
       case CLASSIFICATIONS -> new ClassificationsExportFile();
       case PAID -> new PaidExportFile();
       case PAYMENTS_REPORTING -> new PaymentsReportingExportFile();
+      case RECEIPTS_ARCHIVING -> new ReceiptsArchivingExportFile();
     };
   }
 }
