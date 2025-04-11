@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
-import it.gov.pagopa.pu.processecexutions.config.ApiClientConfig;
+import it.gov.pagopa.pu.processecexutions.config.rest.ApiClientConfig;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;

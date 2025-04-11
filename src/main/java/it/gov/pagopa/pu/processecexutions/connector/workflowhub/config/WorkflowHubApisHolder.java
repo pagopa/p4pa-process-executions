@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
-import it.gov.pagopa.pu.processecexutions.config.RestTemplateConfig;
+import it.gov.pagopa.pu.processecexutions.config.rest.RestTemplateConfig;
 import it.gov.pagopa.pu.workflowhub.controller.ApiClient;
 import it.gov.pagopa.pu.workflowhub.controller.BaseApi;
 import it.gov.pagopa.pu.workflowhub.controller.generated.ExportFileApi;
