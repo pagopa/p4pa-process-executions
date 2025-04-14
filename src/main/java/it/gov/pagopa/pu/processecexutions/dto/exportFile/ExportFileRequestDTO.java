@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.dto.exportFile;
 
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ public abstract class ExportFileRequestDTO <T extends ExportFileFilter> {
   @NotNull
   private Long organizationId;
   @NotNull
-  private ExportFileType exportFileType;
+  private ExportFileTypeEnum exportFileType;
   @NotNull
   private String fileVersion;
   @NotNull

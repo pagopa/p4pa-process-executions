@@ -3,7 +3,7 @@ package it.gov.pagopa.pu.processecexutions.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -50,7 +50,7 @@ public abstract class ExportFile <T extends ExportFileFilter> extends BaseEntity
   private Long fileSize;
   @Enumerated(EnumType.STRING)
   @Column(insertable = false, updatable = false)
-  private ExportFileType exportFileType;
+  private ExportFileTypeEnum exportFileType;
   @NotNull
   private String fileVersion;
   @Enumerated(EnumType.STRING)

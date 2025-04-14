@@ -1,8 +1,8 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.config;
 
 import it.gov.pagopa.pu.processecexutions.connector.BaseApiHolderTest;
-import it.gov.pagopa.pu.workflowhub.dto.generated.ExportFileTypeEnum;
-import it.gov.pagopa.pu.workflowhub.dto.generated.IngestionFlowFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

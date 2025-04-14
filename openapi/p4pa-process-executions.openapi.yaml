@@ -286,17 +286,7 @@ components:
           type: integer
           format: int64
         ingestionFlowFileType:
-          type: string
-          enum:
-            - RECEIPT
-            - RECEIPT_PAGOPA
-            - PAYMENTS_REPORTING
-            - PAYMENTS_REPORTING_PAGOPA
-            - TREASURY_OPI
-            - TREASURY_CSV
-            - TREASURY_XLS
-            - TREASURY_POSTE
-            - DP_INSTALLMENTS
+          type: 'IngestionFlowFileType'
         flowDateTime:
           type: string
           format: date-time

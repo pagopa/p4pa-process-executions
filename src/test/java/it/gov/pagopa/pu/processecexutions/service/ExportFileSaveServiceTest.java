@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
@@ -47,7 +47,7 @@ class ExportFileSaveServiceTest {
   void whenSaveThenStoreAndInvokeWF_Classifications(){
     // Given
     ExportFileRequestDTO<ClassificationsExportFileFilter> requestDTO = new ClassificationsExportFileRequestDTO();
-    requestDTO.setExportFileType(ExportFileType.CLASSIFICATIONS);
+    requestDTO.setExportFileType(ExportFileTypeEnum.CLASSIFICATIONS);
     ClassificationsExportFile newEntity = new ClassificationsExportFile();
     ClassificationsExportFile storedEntity = new ClassificationsExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -73,7 +73,7 @@ class ExportFileSaveServiceTest {
   void whenSaveThenStoreAndInvokeWF_Paid(){
     // Given
     ExportFileRequestDTO<PaidExportFileFilter> requestDTO = new PaidExportFileRequestDTO();
-    requestDTO.setExportFileType(ExportFileType.PAID);
+    requestDTO.setExportFileType(ExportFileTypeEnum.PAID);
     PaidExportFile newEntity = new PaidExportFile();
     PaidExportFile storedEntity = new PaidExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -99,7 +99,7 @@ class ExportFileSaveServiceTest {
   void whenSaveThenStoreAndInvokeWF_PaymentsReporting(){
     // Given
     ExportFileRequestDTO<PaymentsReportingExportFileFilter> requestDTO = new PaymentsReportingExportFileRequestDTO();
-    requestDTO.setExportFileType(ExportFileType.PAYMENTS_REPORTING);
+    requestDTO.setExportFileType(ExportFileTypeEnum.PAYMENTS_REPORTING);
     PaymentsReportingExportFile newEntity = new PaymentsReportingExportFile();
     PaymentsReportingExportFile storedEntity = new PaymentsReportingExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -125,7 +125,7 @@ class ExportFileSaveServiceTest {
   void whenSaveThenStoreAndInvokeWF_Archiving(){
     // Given
     ExportFileRequestDTO<ReceiptsArchivingExportFileFilter> requestDTO = new ReceiptsArchivingExportFileRequestDTO();
-    requestDTO.setExportFileType(ExportFileType.RECEIPTS_ARCHIVING);
+    requestDTO.setExportFileType(ExportFileTypeEnum.RECEIPTS_ARCHIVING);
     ReceiptsArchivingExportFile newEntity = new ReceiptsArchivingExportFile();
     ReceiptsArchivingExportFile storedEntity = new ReceiptsArchivingExportFile();
 

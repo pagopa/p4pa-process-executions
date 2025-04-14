@@ -1,8 +1,8 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub.client;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.config.WorkflowHubApisHolder;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.controller.generated.ExportFileApi;
-import it.gov.pagopa.pu.workflowhub.dto.generated.ExportFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

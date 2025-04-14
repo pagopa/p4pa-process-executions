@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
@@ -61,7 +61,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   @Override
-  public ResponseEntity<List<String>> getExportFileTypeVersions(ExportFileType exportFileType) {
+  public ResponseEntity<List<String>> getExportFileTypeVersions(ExportFileTypeEnum exportFileType) {
     return ResponseEntity.ok(ExportConstants.getAvailableVersions(exportFileType));
   }
 }

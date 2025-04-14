@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.client.IngestionFlowClient;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
@@ -36,7 +36,7 @@ class IngestionFlowFileServiceTest {
     // Given
     IngestionFlowFile ingestionFlowFile = new IngestionFlowFile();
     ingestionFlowFile.setIngestionFlowFileId(1L);
-    ingestionFlowFile.setIngestionFlowFileType(IngestionFlowFileType.PAYMENTS_REPORTING);
+    ingestionFlowFile.setIngestionFlowFileType(IngestionFlowFileTypeEnum.PAYMENTS_REPORTING);
     String accessToken = "ACCESSTOKEN";
     WorkflowCreatedDTO workflowCreatedDTO = new WorkflowCreatedDTO();
 

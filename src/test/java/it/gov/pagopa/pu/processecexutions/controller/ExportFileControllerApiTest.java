@@ -5,7 +5,7 @@ import it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExport
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.ClassificationsExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaidExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaymentsReportingExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ReceiptsArchivingExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
@@ -139,8 +139,8 @@ class ExportFileControllerApiTest {
   }
 
   @ParameterizedTest
-  @EnumSource(ExportFileType.class)
-  void givenExportFlowFileTypeWhenThenReturnAvailableVersions(ExportFileType exportFileType){
+  @EnumSource(ExportFileTypeEnum.class)
+  void givenExportFlowFileTypeWhenThenReturnAvailableVersions(ExportFileTypeEnum exportFileType){
     Assertions.assertSame(
       ExportConstants.getAvailableVersions(exportFileType),
       controller.getExportFileTypeVersions(exportFileType).getBody()

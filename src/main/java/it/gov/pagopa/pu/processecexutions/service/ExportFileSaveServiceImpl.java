@@ -2,7 +2,7 @@ package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
@@ -41,7 +41,7 @@ public class ExportFileSaveServiceImpl implements ExportFileSaveService {
     return saved;
   }
 
-  private ExportFile<?> createExportFileByType(ExportFileType fileType) {
+  private ExportFile<?> createExportFileByType(ExportFileTypeEnum fileType) {
     return switch (fileType) {
       case CLASSIFICATIONS -> new ClassificationsExportFile();
       case PAID -> new PaidExportFile();

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
@@ -62,7 +62,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     + "AND (:status IS NULL OR iff.status = :status) "
     + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
   Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,
-    @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileType> ingestionFlowFileTypes,
+    @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo") LocalDateTime creationDateTo,
     IngestionFlowFileStatus status,
