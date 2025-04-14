@@ -2,7 +2,6 @@ package it.gov.pagopa.pu.processecexutions.connector.workflowhub;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.client.ExportFileClient;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.workflowhub.dto.generated.ExportFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,7 @@ public class ExportFileServiceImpl implements ExportFileService{
   @Override
   public void invokeExportFileWorkflow(ExportFile<?> exportFile, String accessToken) {
     log.debug("Invoking export file workflow for ExportFileTypeEnum: {} , exportFileId: {}", exportFile.getExportFileType(), exportFile.getExportFileId());
-    String exportFileTypeString = exportFile.getExportFileType().toString();
-    WorkflowCreatedDTO response = exportFileClient.exportFile(exportFile.getExportFileId(), ExportFileTypeEnum.fromValue(exportFileTypeString), accessToken);
+    WorkflowCreatedDTO response = exportFileClient.exportFile(exportFile.getExportFileId(), exportFile.getExportFileType(), accessToken);
     log.info("Invoked workflow having workflowId:{}", response.getWorkflowId());
   }
 }

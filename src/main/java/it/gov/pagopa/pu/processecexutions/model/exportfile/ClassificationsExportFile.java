@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.model.exportfile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -18,12 +18,12 @@ import org.hibernate.type.SqlTypes;
 public class ClassificationsExportFile extends ExportFile<ClassificationsExportFileFilter> {
 
   public ClassificationsExportFile(){
-    setExportFileType(ExportFileType.CLASSIFICATIONS);
+    setExportFileType(ExportFileTypeEnum.CLASSIFICATIONS);
   }
 
   @Schema(type = "string", allowableValues = "CLASSIFICATIONS")
   @Override
-  public ExportFileType getExportFileType() {
+  public ExportFileTypeEnum getExportFileType() {
     return super.getExportFileType();
   }
 

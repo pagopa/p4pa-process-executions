@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.enums;
 
-public enum IngestionFlowFileType {
+public enum IngestionFlowFileTypeEnum {
   RECEIPT,
   RECEIPT_PAGOPA,
   PAYMENTS_REPORTING,

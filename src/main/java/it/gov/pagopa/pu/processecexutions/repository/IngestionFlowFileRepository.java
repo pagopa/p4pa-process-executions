@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource(path = "ingestion-flow-files")
 public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlowFile, Long> {
@@ -28,15 +29,27 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Override
   <S extends IngestionFlowFile> S save(@Nonnull S entity);
 
-  @Modifying
+  @RestResource(exported = false)@Modifying
   @Transactional
   @Query("update IngestionFlowFile" +
     " set status=:newStatus," +
+    " numCorrectlyImportedRows=:processedRows," +
+    " numTotalRows=:totalRows," +
     " errorDescription=:errorDescription," +
     " discardFileName=:discardFileName " +
     "where ingestionFlowFileId=:ingestionFlowFileId" +
     " and status=:oldStatus")
-  int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus, String errorDescription, String discardFileName);
+  int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
+                   long processedRows, long totalRows,
+                   String errorDescription, String discardFileName);
+
+  @RestResource(exported = false)@Modifying
+  @Transactional
+  @Query("update IngestionFlowFile" +
+    " set fileName=:fileName," +
+    " discardFileName=:discardFileName " +
+    "where ingestionFlowFileId=:ingestionFlowFileId")
+  int updateFileNames(Long ingestionFlowFileId, String fileName, String discardFileName);
 
   @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Query("SELECT iff "
@@ -49,7 +62,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     + "AND (:status IS NULL OR iff.status = :status) "
     + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
   Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,
-    @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileType> ingestionFlowFileTypes,
+    @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo") LocalDateTime creationDateTo,
     IngestionFlowFileStatus status,
@@ -73,4 +86,5 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     """)
   int updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
 
+  Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
 }

@@ -1,16 +1,11 @@
 package it.gov.pagopa.pu.processecexutions.service;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.ExportFileService;
-import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.mapper.ExportFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFileFilter;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileFilter;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFileFilter;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import it.gov.pagopa.pu.processecexutions.repository.exportfile.ExportFileRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -51,8 +46,8 @@ class ExportFileSaveServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_Classifications(){
     // Given
-    ExportFileRequestDTO<ClassificationsExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
-    requestDTO.setExportFileType(ExportFileType.CLASSIFICATIONS);
+    ExportFileRequestDTO<ClassificationsExportFileFilter> requestDTO = new ClassificationsExportFileRequestDTO();
+    requestDTO.setExportFileType(ExportFileTypeEnum.CLASSIFICATIONS);
     ClassificationsExportFile newEntity = new ClassificationsExportFile();
     ClassificationsExportFile storedEntity = new ClassificationsExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -77,8 +72,8 @@ class ExportFileSaveServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_Paid(){
     // Given
-    ExportFileRequestDTO<PaidExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
-    requestDTO.setExportFileType(ExportFileType.PAID);
+    ExportFileRequestDTO<PaidExportFileFilter> requestDTO = new PaidExportFileRequestDTO();
+    requestDTO.setExportFileType(ExportFileTypeEnum.PAID);
     PaidExportFile newEntity = new PaidExportFile();
     PaidExportFile storedEntity = new PaidExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -103,8 +98,8 @@ class ExportFileSaveServiceTest {
   @Test
   void whenSaveThenStoreAndInvokeWF_PaymentsReporting(){
     // Given
-    ExportFileRequestDTO<PaymentsReportingExportFileFilter> requestDTO = new ExportFileRequestDTO<>();
-    requestDTO.setExportFileType(ExportFileType.PAYMENTS_REPORTING);
+    ExportFileRequestDTO<PaymentsReportingExportFileFilter> requestDTO = new PaymentsReportingExportFileRequestDTO();
+    requestDTO.setExportFileType(ExportFileTypeEnum.PAYMENTS_REPORTING);
     PaymentsReportingExportFile newEntity = new PaymentsReportingExportFile();
     PaymentsReportingExportFile storedEntity = new PaymentsReportingExportFile();
     String operatorExternalId = "OPERATOREXTERNALID";
@@ -120,6 +115,33 @@ class ExportFileSaveServiceTest {
     // When
     ExportFile<?> result = service.save(requestDTO, operatorExternalId,
         accessToken);
+
+    // Then
+    Assertions.assertSame(storedEntity, result);
+    Mockito.verify(exportFileServiceMock).invokeExportFileWorkflow(result, accessToken);
+  }
+
+  @Test
+  void whenSaveThenStoreAndInvokeWF_Archiving(){
+    // Given
+    ExportFileRequestDTO<ReceiptsArchivingExportFileFilter> requestDTO = new ReceiptsArchivingExportFileRequestDTO();
+    requestDTO.setExportFileType(ExportFileTypeEnum.RECEIPTS_ARCHIVING);
+    ReceiptsArchivingExportFile newEntity = new ReceiptsArchivingExportFile();
+    ReceiptsArchivingExportFile storedEntity = new ReceiptsArchivingExportFile();
+
+    String operatorExternalId = "OPERATOREXTERNALID";
+    String accessToken = "ACCESSTOKEN";
+
+    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.any(
+        ReceiptsArchivingExportFile.class)))
+      .thenReturn(newEntity);
+
+    Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
+      .thenReturn(storedEntity);
+
+    // When
+    ExportFile<?> result = service.save(requestDTO, operatorExternalId,
+      accessToken);
 
     // Then
     Assertions.assertSame(storedEntity, result);

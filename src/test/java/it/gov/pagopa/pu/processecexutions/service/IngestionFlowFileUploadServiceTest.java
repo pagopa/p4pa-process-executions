@@ -102,4 +102,38 @@ class IngestionFlowFileUploadServiceTest {
       .save(Mockito.same(storedEntity));
 
   }
+
+  @Test
+  void givenGenericExceptionWhenHandleUploadedThenStoreError(){
+    // Given
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO();
+    IngestionFlowFile newEntity = new IngestionFlowFile();
+    IngestionFlowFile storedEntity = new IngestionFlowFile();
+    String operatorExternalId = "OPERATOREXTERNALID";
+    String accessToken = "ACCESSTOKEN";
+
+    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+      .thenReturn(newEntity);
+
+    Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
+      .thenReturn(storedEntity);
+
+    RuntimeException expectedException = new RuntimeException("DUMMY ERROR");
+    Mockito.doThrow(expectedException)
+      .when(workflowInvokerServiceMock)
+      .invokeIngestionWorkflow(Mockito.same(storedEntity), Mockito.same(accessToken));
+
+    // When
+    RuntimeException result = Assertions.assertThrows(expectedException.getClass(), () ->
+      service.handleUploaded(requestDTO, operatorExternalId, accessToken));
+
+    // Then
+    Assertions.assertSame(expectedException, result);
+    Assertions.assertEquals(IngestionFlowFileStatus.ERROR, storedEntity.getStatus());
+    Assertions.assertEquals("DUMMY ERROR", storedEntity.getErrorDescription());
+
+    Mockito.verify(repositoryMock)
+      .save(Mockito.same(storedEntity));
+
+  }
 }

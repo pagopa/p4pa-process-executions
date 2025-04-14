@@ -31,6 +31,11 @@ public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUplo
       saved.setStatus(IngestionFlowFileStatus.ERROR);
       saved.setErrorDescription("Flow type not supported");
       repository.save(saved);
+    } catch (RuntimeException e){
+      saved.setStatus(IngestionFlowFileStatus.ERROR);
+      saved.setErrorDescription(e.getMessage());
+      repository.save(saved);
+      throw e;
     }
     return saved;
   }

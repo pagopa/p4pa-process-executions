@@ -1,8 +1,9 @@
 package it.gov.pagopa.pu.processecexutions.repository.exportfile;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import jakarta.annotation.Nonnull;
 import java.time.LocalDateTime;
@@ -36,9 +37,9 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
     + "AND (:status IS NULL OR ef.status = :status) ")
   Page<ExportFile<?>> findByOrganizationIDFlowTypeCreateDate(
     @Parameter(required = true) @Param("organizationId") Long organizationId,
-    @Parameter(required = true) @Param("exportFileType") ExportFileType exportFileType,
-    LocalDateTime creationDateFrom,
-    LocalDateTime creationDateTo,
+    @Parameter(required = true) @Param("exportFileType") ExportFileTypeEnum exportFileType,
+    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
+    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo")LocalDateTime creationDateTo,
     String operatorExternalId,
     ExportFileStatus status,
     String fileName,

@@ -17,19 +17,19 @@ import org.hibernate.type.SqlTypes;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@DiscriminatorValue("PAID")
-public class PaidExportFile extends ExportFile<PaidExportFileFilter> {
+@DiscriminatorValue("RECEIPTS_ARCHIVING")
+public class ReceiptsArchivingExportFile extends ExportFile<ReceiptsArchivingExportFileFilter> {
 
-  public PaidExportFile(){
-    setExportFileType(ExportFileTypeEnum.PAID);
+  public ReceiptsArchivingExportFile(){
+    setExportFileType(ExportFileTypeEnum.RECEIPTS_ARCHIVING);
   }
 
-  @Schema(type = "string", allowableValues = "PAID")
+  @Schema(type = "string", allowableValues = "RECEIPTS_ARCHIVING")
   @Override
   public ExportFileTypeEnum getExportFileType() {
     return super.getExportFileType();
   }
 
   @JdbcTypeCode(SqlTypes.JSON)
-  private PaidExportFileFilter filterFields;
+  private ReceiptsArchivingExportFileFilter filterFields;
 }

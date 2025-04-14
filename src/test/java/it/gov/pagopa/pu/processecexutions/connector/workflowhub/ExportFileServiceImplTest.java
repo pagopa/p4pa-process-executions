@@ -1,9 +1,8 @@
 package it.gov.pagopa.pu.processecexutions.connector.workflowhub;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.client.ExportFileClient;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
-import it.gov.pagopa.pu.workflowhub.dto.generated.ExportFileTypeEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +37,7 @@ class ExportFileServiceImplTest {
     //given
     PaidExportFile paidExportFile = new PaidExportFile();
     paidExportFile.setExportFileId(1L);
-    paidExportFile.setExportFileType(ExportFileType.PAID);
+    paidExportFile.setExportFileType(ExportFileTypeEnum.PAID);
     String accessToken = "ACCESSTOKEN";
 
     WorkflowCreatedDTO workflowCreatedDTO = new WorkflowCreatedDTO();
@@ -48,7 +47,7 @@ class ExportFileServiceImplTest {
     exportFileService.invokeExportFileWorkflow(paidExportFile, accessToken);
     //then
 
-    Mockito.verify(exportFileClientMock).exportFile(paidExportFile.getExportFileId(), ExportFileTypeEnum.fromValue(ExportFileType.PAID.name()), accessToken);
+    Mockito.verify(exportFileClientMock).exportFile(paidExportFile.getExportFileId(), ExportFileTypeEnum.PAID, accessToken);
 
   }
 }

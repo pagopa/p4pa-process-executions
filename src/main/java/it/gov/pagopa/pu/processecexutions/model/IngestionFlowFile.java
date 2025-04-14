@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.model;
 
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileType;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -34,7 +34,7 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   private Long fileSize;
   @Enumerated(EnumType.STRING)
   @NotNull
-  private IngestionFlowFileType ingestionFlowFileType;
+  private IngestionFlowFileTypeEnum ingestionFlowFileType;
   @Enumerated(EnumType.STRING)
   @NotNull
   private IngestionFlowFileStatus status;

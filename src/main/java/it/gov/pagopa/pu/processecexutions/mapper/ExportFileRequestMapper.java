@@ -1,8 +1,8 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
-import it.gov.pagopa.pu.processecexutions.dto.ExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.ExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
-import it.gov.pagopa.pu.processecexutions.enums.ExportFileType;
+import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.exception.ExportFlowFileVersionNotSupportedException;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
@@ -25,7 +25,7 @@ public class ExportFileRequestMapper {
     return exportFile;
   }
 
-  private @NotNull String transcodeFileVersion(@NotNull ExportFileType exportFileType, @NotNull String fileVersion) {
+  private @NotNull String transcodeFileVersion(@NotNull ExportFileTypeEnum exportFileType, @NotNull String fileVersion) {
     List<String> availableVersions = ExportConstants.getAvailableVersions(exportFileType);
     if(availableVersions.contains(fileVersion)){
       return fileVersion;
