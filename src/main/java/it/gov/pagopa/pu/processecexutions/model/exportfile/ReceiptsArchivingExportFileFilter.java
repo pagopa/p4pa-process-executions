@@ -1,6 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.model.exportfile;
 
-import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
+import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReceiptsArchivingExportFileFilter implements ExportFileFilter {
 
-  private OffsetDateTimeIntervalFilter paymentDate;
+  private LocalDateIntervalFilter paymentDate;
 }
