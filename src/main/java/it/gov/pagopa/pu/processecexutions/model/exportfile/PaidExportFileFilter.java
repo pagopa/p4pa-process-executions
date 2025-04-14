@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaidExportFileFilter implements ExportFileFilter {
 
-  private LocalDateIntervalFilter paidPaymentDate;
+  private LocalDateIntervalFilter paymentDate;
   private Long debtPositionTypeOrgId;
 }
