@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReceiptsArchivingExportFileFilter implements ExportFileFilter {
 
-  private OffsetDateTimeIntervalFilter paymentDate;
+  private OffsetDateTimeIntervalFilter receiptsArchivingPaymentDate;
 }
