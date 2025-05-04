@@ -54,7 +54,8 @@ class IngestionFlowFileRequestMapperTest {
       "pdfGenerated",
       "creationDate",
       "updateDate",
-      "updateOperatorExternalId"
+      "updateOperatorExternalId",
+      "updateTraceId"
     );
   }
 }
