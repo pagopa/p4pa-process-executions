@@ -29,7 +29,7 @@ public class ClassificationsExportFileFilter implements ExportFileFilter {
 
   private String regulationUniqueIdentifier;
   private String accountRegistryCode;
-  private String billAmountCents;
+  private Long billAmountCents;
   private String remittanceInformation;
   private String pspCompanyName;
   private String pspLastName;
