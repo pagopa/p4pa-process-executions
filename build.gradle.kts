@@ -119,7 +119,8 @@ tasks.register("dependenciesBuild") {
 
   dependsOn(
     "openApiGeneratePROCESSEXECUTIONS",
-    "openApiGenerateWORKFLOWHUB"
+    "openApiGenerateWORKFLOWHUB",
+    "openApiGenerateCLASSIFICATIONS"
   )
 }
 
@@ -185,6 +186,34 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   outputDir.set("$projectDir/build/generated")
   apiPackage.set("it.gov.pagopa.pu.workflowhub.controller.generated")
   modelPackage.set("it.gov.pagopa.pu.workflowhub.dto.generated")
+  importMappings.set(mapOf(
+    "ExportFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum",
+    "IngestionFlowFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum"
+  ))
+  configOptions.set(mapOf(
+    "swaggerAnnotations" to "false",
+    "openApiNullable" to "false",
+    "dateLibrary" to "java8",
+    "useSpringBoot3" to "true",
+    "useJakartaEe" to "true",
+    "serializationLibrary" to "jackson",
+    "generateSupportingFiles" to "true",
+    "generateConstructorWithAllArgs" to "true",
+    "generatedConstructorWithRequiredArgs" to "true",
+    "additionalModelTypeAnnotations" to "@lombok.experimental.SuperBuilder"
+  ))
+  library.set("resttemplate")
+}
+
+tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGenerateCLASSIFICATIONS") {
+  group = "openapi"
+  description = "description"
+
+  generatorName.set("java")
+  remoteInputSpec.set("https://raw.githubusercontent.com/pagopa/p4pa-classification/refs/heads/$targetEnv/openapi/generated.openapi.json")
+  outputDir.set("$projectDir/build/generated")
+  apiPackage.set("it.gov.pagopa.pu.classification.controller.generated")
+  modelPackage.set("it.gov.pagopa.pu.classification.dto.generated")
   importMappings.set(mapOf(
     "ExportFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum",
     "IngestionFlowFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum"

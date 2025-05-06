@@ -48,7 +48,8 @@ class ExportFileRequestMapperTest {
       "creationDate",
       "updateDate",
       "expirationDate",
-      "updateOperatorExternalId"
+      "updateOperatorExternalId",
+      "updateTraceId"
     );
   }
 
