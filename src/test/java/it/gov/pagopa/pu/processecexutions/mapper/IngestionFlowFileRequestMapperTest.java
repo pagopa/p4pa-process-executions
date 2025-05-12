@@ -52,6 +52,7 @@ class IngestionFlowFileRequestMapperTest {
       "numTotalRows",
       "numCorrectlyImportedRows",
       "pdfGenerated",
+      "pdfGeneratedId",
       "creationDate",
       "updateDate",
       "updateOperatorExternalId",
