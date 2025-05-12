@@ -42,7 +42,7 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   private String discardFileName;
   private Long numTotalRows;
   private Long numCorrectlyImportedRows;
-  private Long pdfGenerated;
+  private Long pdfGeneratedId;
   private String pspIdentifier;
   private OffsetDateTime flowDateTime;
   @NotNull
