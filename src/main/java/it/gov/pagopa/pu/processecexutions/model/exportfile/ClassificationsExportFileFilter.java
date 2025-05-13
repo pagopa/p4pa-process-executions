@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.model.exportfile;
 
 import it.gov.pagopa.pu.classification.dto.generated.ClassificationsEnum;
-import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
+import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,12 +20,12 @@ public class ClassificationsExportFileFilter implements ExportFileFilter {
 
   private ClassificationsEnum label;
 
-  private OffsetDateTimeIntervalFilter lastClassificationDate;
-  private OffsetDateTimeIntervalFilter payDate;
-  private OffsetDateTimeIntervalFilter paymentDate;
-  private OffsetDateTimeIntervalFilter regulationDate;
-  private OffsetDateTimeIntervalFilter billDate;
-  private OffsetDateTimeIntervalFilter regionValueDate;
+  private LocalDateIntervalFilter lastClassificationDate;
+  private LocalDateIntervalFilter payDate;
+  private LocalDateIntervalFilter paymentDate;
+  private LocalDateIntervalFilter regulationDate;
+  private LocalDateIntervalFilter billDate;
+  private LocalDateIntervalFilter regionValueDate;
 
   private String regulationUniqueIdentifier;
   private String accountRegistryCode;

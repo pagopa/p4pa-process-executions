@@ -1709,22 +1709,22 @@
             "enum" : [ "DOPPI", "RT_NO_IUF", "RT_NO_IUD", "IUV_NO_RT", "TES_NO_IUF_OR_IUV", "IUF_NO_TES", "IUD_RT_IUF", "RT_IUF", "RT_TES", "IUD_RT_IUF_TES", "RT_IUF_TES", "IUF_TES_DIV_IMP", "IUD_NO_RT", "TES_NO_MATCH", "UNKNOWN" ]
           },
           "lastClassificationDate" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
           },
           "payDate" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
           },
           "paymentDate" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
           },
           "regulationDate" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
           },
           "billDate" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
           },
           "regionValueDate" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
+            "$ref" : "#/components/schemas/LocalDateIntervalFilter"
           },
           "regulationUniqueIdentifier" : {
             "type" : "string"
@@ -1751,16 +1751,16 @@
         "type" : "string",
         "enum" : [ "REQUESTED", "PROCESSING", "COMPLETED", "EXPIRED", "ERROR" ]
       },
-      "OffsetDateTimeIntervalFilter" : {
+      "LocalDateIntervalFilter" : {
         "type" : "object",
         "properties" : {
           "from" : {
             "type" : "string",
-            "format" : "date-time"
+            "format" : "date"
           },
           "to" : {
             "type" : "string",
-            "format" : "date-time"
+            "format" : "date"
           }
         }
       },
@@ -1805,10 +1805,23 @@
           "$ref" : "#/components/schemas/ReceiptsArchivingExportFileFilter"
         } ]
       },
+      "OffsetDateTimeIntervalFilter" : {
+        "type" : "object",
+        "properties" : {
+          "from" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "to" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
       "PaidExportFileFilter" : {
         "type" : "object",
         "properties" : {
-          "paymentDate" : {
+          "paymentDateTime" : {
             "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
           },
           "debtPositionTypeOrgId" : {
@@ -1820,7 +1833,7 @@
       "ReceiptsArchivingExportFileFilter" : {
         "type" : "object",
         "properties" : {
-          "paymentDate" : {
+          "paymentDateTime" : {
             "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
           }
         }
