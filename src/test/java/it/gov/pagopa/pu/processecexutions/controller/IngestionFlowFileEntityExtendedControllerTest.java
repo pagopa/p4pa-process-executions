@@ -83,4 +83,41 @@ class IngestionFlowFileEntityExtendedControllerTest {
     // Then
     Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
   }
+
+  @Test
+  void whenUpdatePdfGeneratedThenInvokeRepository() {
+    // Given
+    long pdfGeneratedId = 10L;
+    long pdfGenerated = 1L;
+    String folderId = "100";
+    int expectedResult = 1;
+
+    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(pdfGeneratedId, pdfGenerated, folderId))
+      .thenReturn(expectedResult);
+
+    // When
+    Integer result = controller.updatePdfGenerated(pdfGeneratedId, pdfGenerated, folderId)
+      .getBody();
+
+    // Then
+    Assertions.assertEquals(expectedResult, result);
+  }
+
+  @Test
+  void whenUpdatePdfGeneratedThenNotFound() {
+    // Given
+    long pdfGeneratedId = 10L;
+    long pdfGenerated = 1L;
+    String folderId = "100";
+
+    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(pdfGeneratedId, pdfGenerated, folderId))
+      .thenReturn(0);
+
+    // When
+    HttpStatusCode result = controller.updatePdfGenerated(pdfGeneratedId, pdfGenerated, folderId)
+      .getStatusCode();
+
+    // Then
+    Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
+  }
 }
