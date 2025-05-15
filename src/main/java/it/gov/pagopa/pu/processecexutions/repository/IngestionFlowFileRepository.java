@@ -88,6 +88,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
 
   Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
 
+  @RestResource(exported = false)
   @Modifying
   @Transactional
   @Query("UPDATE IngestionFlowFile" +
