@@ -85,18 +85,55 @@ class IngestionFlowFileEntityExtendedControllerTest {
   }
 
   @Test
-  void whenUpdatePdfGeneratedThenInvokeRepository() {
+  void whenUpdateFileNamesThenInvokeRepository() {
     // Given
-    long pdfGeneratedId = 10L;
-    long pdfGenerated = 1L;
-    String folderId = "100";
+    long ingestionFlowFileId = 1L;
+    String fileName = "fileName";
+    String discardFileName = "discardFileName";
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(pdfGeneratedId, pdfGenerated, folderId))
+    Mockito.when(repositoryMock.updateFileNames(ingestionFlowFileId, fileName, discardFileName))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updatePdfGenerated(pdfGeneratedId, pdfGenerated, folderId)
+    Integer result = controller.updateFileNames(ingestionFlowFileId, fileName, discardFileName)
+      .getBody();
+
+    // Then
+    Assertions.assertEquals(expectedResult, result);
+  }
+
+  @Test
+  void whenUpdateFileNamesThenNotFound() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    String fileName = "fileName";
+    String discardFileName = "discardFileName";
+
+    Mockito.when(repositoryMock.updateFileNames(ingestionFlowFileId, fileName, discardFileName))
+      .thenReturn(0);
+
+    // When
+    HttpStatusCode result = controller.updateFileNames(ingestionFlowFileId, fileName, discardFileName)
+      .getStatusCode();
+
+    // Then
+    Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
+  }
+
+  @Test
+  void whenUpdatePdfGeneratedThenInvokeRepository() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    long pdfGenerated = 10L;
+    String folderId = "100";
+    int expectedResult = 1;
+
+    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, folderId))
+      .thenReturn(expectedResult);
+
+    // When
+    Integer result = controller.updatePdfGenerated(ingestionFlowFileId, pdfGenerated, folderId)
       .getBody();
 
     // Then
@@ -106,15 +143,15 @@ class IngestionFlowFileEntityExtendedControllerTest {
   @Test
   void whenUpdatePdfGeneratedThenNotFound() {
     // Given
-    long pdfGeneratedId = 10L;
-    long pdfGenerated = 1L;
+    long ingestionFlowFileId = 1L;
+    long pdfGenerated = 10L;
     String folderId = "100";
 
-    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(pdfGeneratedId, pdfGenerated, folderId))
+    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, folderId))
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updatePdfGenerated(pdfGeneratedId, pdfGenerated, folderId)
+    HttpStatusCode result = controller.updatePdfGenerated(ingestionFlowFileId, pdfGenerated, folderId)
       .getStatusCode();
 
     // Then
