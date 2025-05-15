@@ -87,4 +87,15 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   int updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
 
   Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
+
+  @RestResource(exported = false)
+  @Modifying
+  @Transactional
+  @Query("UPDATE IngestionFlowFile" +
+    " SET pdfGenerated=:pdfGenerated," +
+    " pdfGeneratedId=:folderId " +
+    "where ingestionFlowFileId=:ingestionFlowFileId")
+  int updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
+                                          @Param("pdfGenerated") long pdfGenerated,
+                                          @Param("pdfGeneratedId") String folderId);
 }

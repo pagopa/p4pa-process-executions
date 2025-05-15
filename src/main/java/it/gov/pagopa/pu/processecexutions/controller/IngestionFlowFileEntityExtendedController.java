@@ -22,9 +22,9 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
   @Override
   public ResponseEntity<Integer> updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
                                               Long processedRows, Long totalRows,
-                                              String errorDescription,String discardFile) {
+                                              String errorDescription, String discardFile) {
     int result = repository.updateStatus(ingestionFlowFileId, oldStatus, newStatus, processedRows, totalRows, errorDescription, discardFile);
-    if(result>0){
+    if (result > 0) {
       return ResponseEntity.ok(result);
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -34,7 +34,17 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
   @Override
   public ResponseEntity<Integer> updateFileNames(Long ingestionFlowFileId, String fileName, String discardFileName) {
     int result = repository.updateFileNames(ingestionFlowFileId, fileName, discardFileName);
-    if(result>0){
+    if (result > 0) {
+      return ResponseEntity.ok(result);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+  }
+
+  @Override
+  public ResponseEntity<Integer> updatePdfGenerated(Long ingestionFlowFileId, Long pdfGenerated, String folderId) {
+    int result = repository.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, folderId);
+    if (result > 0) {
       return ResponseEntity.ok(result);
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
