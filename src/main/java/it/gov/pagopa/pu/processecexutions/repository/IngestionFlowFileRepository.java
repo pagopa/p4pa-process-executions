@@ -55,14 +55,14 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Query("SELECT iff "
     + "FROM IngestionFlowFile iff "
     + "WHERE iff.organizationId = :organizationId "
-    + "AND iff.ingestionFlowFileType IN :ingestionFlowFileTypes "
+    + "AND (:ingestionFlowFileTypes IS NULL OR iff.ingestionFlowFileType IN :ingestionFlowFileTypes) "
     + "AND (cast(:creationDateFrom as date) IS NULL OR iff.creationDate >= :creationDateFrom) "
     + "AND (cast(:creationDateTo as date) IS NULL OR iff.creationDate <= :creationDateTo) "
     + "AND (:fileName IS NULL OR iff.fileName ILIKE CONCAT('%', cast(:fileName as text), '%')) "
     + "AND (:status IS NULL OR iff.status = :status) "
     + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
   Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,
-    @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
+    @Parameter(array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo") LocalDateTime creationDateTo,
     IngestionFlowFileStatus status,

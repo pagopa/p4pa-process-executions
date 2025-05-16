@@ -29,7 +29,7 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
   @Query("SELECT ef "
     + "FROM ExportFile ef "
     + "WHERE ef.organizationId = :organizationId "
-    + "AND ef.exportFileType = :exportFileType "
+    + "AND (:exportFileType IS NULL OR ef.exportFileType = :exportFileType) "
     + "AND (cast(:creationDateFrom as date) IS NULL OR ef.creationDate >= :creationDateFrom) "
     + "AND (cast(:creationDateTo as date) IS NULL OR ef.creationDate <= :creationDateTo) "
     + "AND (:operatorExternalId IS NULL OR ef.operatorExternalId = :operatorExternalId) "
@@ -37,7 +37,7 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
     + "AND (:status IS NULL OR ef.status = :status) ")
   Page<ExportFile<?>> findByOrganizationIDFlowTypeCreateDate(
     @Parameter(required = true) @Param("organizationId") Long organizationId,
-    @Parameter(required = true) @Param("exportFileType") ExportFileTypeEnum exportFileType,
+    @Param("exportFileType") ExportFileTypeEnum exportFileType,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
     @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo")LocalDateTime creationDateTo,
     String operatorExternalId,
