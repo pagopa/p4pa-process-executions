@@ -19,6 +19,11 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: fileVersion
+          in: query
+          required: false
+          schema:
+            type: string
         - name: oldStatus
           in: query
           required: true
@@ -346,7 +351,7 @@ components:
           type: string
         fileOrigin:
           type: string
-        ingestionFlowFileVersion:
+        fileVersion:
           type: string
     ProcessExecutionsErrorDTO:
       type: object
