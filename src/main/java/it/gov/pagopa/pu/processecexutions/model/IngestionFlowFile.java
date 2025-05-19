@@ -48,5 +48,6 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   private OffsetDateTime flowDateTime;
   @NotNull
   private String fileOrigin;
+  private String fileVersion;
 
 }
