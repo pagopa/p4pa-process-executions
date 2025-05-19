@@ -27,7 +27,7 @@ class IngestionFlowFileRequestMapperTest {
       .flowDateTime(OffsetDateTime.MIN)
       .pspIdentifier("PSPIDENTIFIER")
       .fileOrigin("portal")
-      .ingestionFlowFileVersion(DpInstallmentsIngestionFlowFileVersion.V1_0.getValue())
+      .fileVersion(DpInstallmentsIngestionFlowFileVersion.V1_0.getValue())
       .build();
 
     // When

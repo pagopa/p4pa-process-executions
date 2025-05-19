@@ -39,11 +39,12 @@ class IngestionFlowFileEntityExtendedControllerTest {
     IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
     long processedRows = 10L;
     long totalRows = 100L;
+    String fileVersion = "FILEVERSION";
     String errorDescription = "ERRORDESCRIPTION";
     String discardFilename = "DISCARDFILENAME";
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus,
         processedRows, totalRows,
         errorDescription, discardFilename))
       .thenReturn(expectedResult);
@@ -51,7 +52,7 @@ class IngestionFlowFileEntityExtendedControllerTest {
     // When
     Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
         processedRows, totalRows,
-        errorDescription, discardFilename)
+        fileVersion, errorDescription, discardFilename)
       .getBody();
 
     // Then
@@ -66,10 +67,11 @@ class IngestionFlowFileEntityExtendedControllerTest {
     IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
     long processedRows = 10L;
     long totalRows = 100L;
+    String fileVersion = "FILEVERSION";
     String errorDescription = "ERRORDESCRIPTION";
     String discardFilename = "DISCARDFILENAME";
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus,
         processedRows, totalRows,
         errorDescription, discardFilename))
       .thenReturn(0);
@@ -77,7 +79,7 @@ class IngestionFlowFileEntityExtendedControllerTest {
     // When
     HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
         processedRows, totalRows,
-        errorDescription, discardFilename)
+        fileVersion, errorDescription, discardFilename)
       .getStatusCode();
 
     // Then

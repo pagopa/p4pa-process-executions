@@ -20,10 +20,10 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
   }
 
   @Override
-  public ResponseEntity<Integer> updateStatus(Long ingestionFlowFileId, String fileVersion,
+  public ResponseEntity<Integer> updateStatus(Long ingestionFlowFileId,
                                               IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
                                               Long processedRows, Long totalRows,
-                                              String errorDescription, String discardFile) {
+                                              String fileVersion, String errorDescription, String discardFile) {
     int result = repository.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus, processedRows, totalRows, errorDescription, discardFile);
     if (result > 0) {
       return ResponseEntity.ok(result);
