@@ -20,6 +20,7 @@ public class IngestionFlowFileRequestMapper {
       .flowDateTime(dto.getFlowDateTime())
       .pspIdentifier(dto.getPspIdentifier())
       .fileOrigin(dto.getFileOrigin())
+      .fileVersion(dto.getIngestionFlowFileVersion())
       .build();
   }
 }

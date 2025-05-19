@@ -2,14 +2,18 @@ package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileUploadService;
+import it.gov.pagopa.pu.processecexutions.util.IngestionFlowFileConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -64,5 +68,14 @@ class IngestionFlowFileControllerApiTest {
     // Then
     Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
+  }
+
+  @ParameterizedTest
+  @EnumSource(IngestionFlowFileTypeEnum.class)
+  void givenExportFlowFileTypeWhenThenReturnAvailableVersions(IngestionFlowFileTypeEnum ingestionFlowFileTypeEnum){
+    Assertions.assertSame(
+      IngestionFlowFileConstants.getAvailableVersions(ingestionFlowFileTypeEnum),
+      controller.getIngestionFlowFileVersion(ingestionFlowFileTypeEnum).getBody()
+    );
   }
 }
