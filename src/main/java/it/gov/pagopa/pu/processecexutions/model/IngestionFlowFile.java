@@ -1,6 +1,5 @@
 package it.gov.pagopa.pu.processecexutions.model;
 
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileVersion;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import jakarta.persistence.*;
@@ -49,6 +48,5 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   private OffsetDateTime flowDateTime;
   @NotNull
   private String fileOrigin;
-  @Enumerated(EnumType.STRING)
-  private IngestionFlowFileVersion fileVersion;
+  private String fileVersion;
 }

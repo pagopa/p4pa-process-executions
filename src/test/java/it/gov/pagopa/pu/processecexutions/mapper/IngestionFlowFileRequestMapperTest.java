@@ -1,9 +1,9 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.enums.DpInstallmentsIngestionFlowFileVersion;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileVersion;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +27,7 @@ class IngestionFlowFileRequestMapperTest {
       .flowDateTime(OffsetDateTime.MIN)
       .pspIdentifier("PSPIDENTIFIER")
       .fileOrigin("portal")
-      .ingestionFlowFileVersion(IngestionFlowFileVersion.V1_0)
+      .ingestionFlowFileVersion(DpInstallmentsIngestionFlowFileVersion.V1_0.getValue())
       .build();
 
     // When
@@ -46,7 +46,7 @@ class IngestionFlowFileRequestMapperTest {
     Assertions.assertSame(dto.getFlowDateTime(), result.getFlowDateTime());
     Assertions.assertEquals(dto.getPspIdentifier(), result.getPspIdentifier());
     Assertions.assertEquals("portal", result.getFileOrigin());
-    Assertions.assertEquals(IngestionFlowFileVersion.V1_0, result.getFileVersion());
+    Assertions.assertEquals(DpInstallmentsIngestionFlowFileVersion.V1_0.getValue(), result.getFileVersion());
 
     TestUtils.checkNotNullFields(result,
       "ingestionFlowFileId",

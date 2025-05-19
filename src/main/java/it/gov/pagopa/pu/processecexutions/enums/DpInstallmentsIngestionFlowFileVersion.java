@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum IngestionFlowFileVersion {
+public enum DpInstallmentsIngestionFlowFileVersion {
   V1_0("1.0"),
   V1_1("1.1"),
   V1_2("1.2"),
@@ -17,12 +17,12 @@ public enum IngestionFlowFileVersion {
 
   private final String value;
 
-  IngestionFlowFileVersion(String value) {
+  DpInstallmentsIngestionFlowFileVersion(String value) {
     this.value = value;
   }
 
   @JsonCreator
-  public static IngestionFlowFileVersion forValue(String value) {
+  public static DpInstallmentsIngestionFlowFileVersion forValue(String value) {
     return Arrays.stream(values())
       .filter(v -> v.value.equals(value))
       .findFirst()

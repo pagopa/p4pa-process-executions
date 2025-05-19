@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.util;
 
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileVersion;
+import it.gov.pagopa.pu.processecexutions.enums.DpInstallmentsIngestionFlowFileVersion;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ public class IngestionConstants {
 
   static {
     availableVersions = Map.of(
-      IngestionFlowFileTypeEnum.DP_INSTALLMENTS, Arrays.stream(IngestionFlowFileVersion.values()).map(IngestionFlowFileVersion::getValue).toList()
+      IngestionFlowFileTypeEnum.DP_INSTALLMENTS, Arrays.stream(DpInstallmentsIngestionFlowFileVersion.values()).map(DpInstallmentsIngestionFlowFileVersion::getValue).toList()
     );
   }
 

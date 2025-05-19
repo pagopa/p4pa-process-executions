@@ -347,7 +347,7 @@ components:
         fileOrigin:
           type: string
         ingestionFlowFileVersion:
-          type: 'IngestionFlowFileVersion'
+          type: string
     ProcessExecutionsErrorDTO:
       type: object
       required:
