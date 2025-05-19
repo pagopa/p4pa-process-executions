@@ -49,5 +49,4 @@ public class IngestionFlowFile extends BaseEntity implements Serializable {
   @NotNull
   private String fileOrigin;
   private String fileVersion;
-
 }
