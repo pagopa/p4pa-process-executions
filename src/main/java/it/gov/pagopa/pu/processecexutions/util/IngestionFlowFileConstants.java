@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class IngestionConstants {
-  private IngestionConstants() {
+public class IngestionFlowFileConstants {
+  private IngestionFlowFileConstants() {
   }
 
   private static final Map<IngestionFlowFileTypeEnum, List<String>> availableVersions;

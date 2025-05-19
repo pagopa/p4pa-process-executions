@@ -5,7 +5,7 @@ import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequest
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileUploadService;
-import it.gov.pagopa.pu.processecexutions.util.IngestionConstants;
+import it.gov.pagopa.pu.processecexutions.util.IngestionFlowFileConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -74,7 +74,7 @@ class IngestionFlowFileControllerApiTest {
   @EnumSource(IngestionFlowFileTypeEnum.class)
   void givenExportFlowFileTypeWhenThenReturnAvailableVersions(IngestionFlowFileTypeEnum ingestionFlowFileTypeEnum){
     Assertions.assertSame(
-      IngestionConstants.getAvailableVersions(ingestionFlowFileTypeEnum),
+      IngestionFlowFileConstants.getAvailableVersions(ingestionFlowFileTypeEnum),
       controller.getIngestionFlowFileVersion(ingestionFlowFileTypeEnum).getBody()
     );
   }

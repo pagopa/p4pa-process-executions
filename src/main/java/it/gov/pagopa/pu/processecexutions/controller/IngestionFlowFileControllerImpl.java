@@ -4,7 +4,7 @@ import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFile
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileUploadService;
-import it.gov.pagopa.pu.processecexutions.util.IngestionConstants;
+import it.gov.pagopa.pu.processecexutions.util.IngestionFlowFileConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import java.net.URI;
 import java.util.List;
@@ -30,6 +30,6 @@ public class IngestionFlowFileControllerImpl implements IngestionFlowFileControl
 
   @Override
   public ResponseEntity<List<String>> getIngestionFlowFileVersion(IngestionFlowFileTypeEnum ingestionFlowFileType) {
-    return ResponseEntity.ok(IngestionConstants.getAvailableVersions(ingestionFlowFileType));
+    return ResponseEntity.ok(IngestionFlowFileConstants.getAvailableVersions(ingestionFlowFileType));
   }
 }
