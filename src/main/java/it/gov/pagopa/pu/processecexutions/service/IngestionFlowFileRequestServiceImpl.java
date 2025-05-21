@@ -9,14 +9,14 @@ import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository
 import org.springframework.stereotype.Service;
 
 @Service
-public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUploadService {
+public class IngestionFlowFileRequestServiceImpl implements IngestionFlowFileRequestService {
 
-  private final IngestionFlowFileRequestMapper uploadedRequestMapper;
+  private final IngestionFlowFileRequestMapper requestMapper;
   private final IngestionFlowFileRepository repository;
   private final IngestionFlowFileService workflowInvokerService;
 
-  public IngestionFlowFileUploadServiceImpl(IngestionFlowFileRequestMapper uploadedRequestMapper, IngestionFlowFileRepository repository, IngestionFlowFileService workflowInvokerService) {
-    this.uploadedRequestMapper = uploadedRequestMapper;
+  public IngestionFlowFileRequestServiceImpl(IngestionFlowFileRequestMapper requestMapper, IngestionFlowFileRepository repository, IngestionFlowFileService workflowInvokerService) {
+    this.requestMapper = requestMapper;
     this.repository = repository;
     this.workflowInvokerService = workflowInvokerService;
   }
@@ -24,7 +24,7 @@ public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUplo
   @Override
   public IngestionFlowFile handleUploaded(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId,
     String accessToken) {
-    IngestionFlowFile saved = repository.save(uploadedRequestMapper.map(requestDTO, operatorExternalId));
+    IngestionFlowFile saved = repository.save(requestMapper.map(requestDTO, operatorExternalId, IngestionFlowFileStatus.UPLOADED));
     try{
       workflowInvokerService.invokeIngestionWorkflow(saved, accessToken);
     } catch (UnsupportedOperationException e){
@@ -38,5 +38,10 @@ public class IngestionFlowFileUploadServiceImpl implements IngestionFlowFileUplo
       throw e;
     }
     return saved;
+  }
+
+  @Override
+  public IngestionFlowFile handleReservation(IngestionFlowFileRequestDTO requestDTO, String operatorExternalId) {
+    return repository.save(requestMapper.map(requestDTO, operatorExternalId, IngestionFlowFileStatus.WAITING_FILE));
   }
 }
