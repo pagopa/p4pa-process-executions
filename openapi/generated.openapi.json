@@ -1251,6 +1251,39 @@
         } ]
       }
     },
+    "/ingestion-flow-files/reservation" : {
+      "post" : {
+        "tags" : [ "ingestion-flow-file-controller" ],
+        "summary" : "create-ingestion-flow-file-reservation",
+        "operationId" : "createIngestionFlowFileReservation",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/IngestionFlowFileRequestDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int64"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ]
+      }
+    },
     "/export-files/receipts-archiving" : {
       "post" : {
         "tags" : [ "export-file-controller" ],
@@ -1778,7 +1811,7 @@
       },
       "IngestionFlowFileStatus" : {
         "type" : "string",
-        "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR" ]
+        "enum" : [ "UPLOADED", "PROCESSING", "COMPLETED", "ERROR", "WAITING_FILE" ]
       },
       "PageMetadata" : {
         "type" : "object",
@@ -1932,6 +1965,10 @@
       "IngestionFlowFileRequestDTO" : {
         "type" : "object",
         "properties" : {
+          "ingestionFlowFileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
           "organizationId" : {
             "type" : "integer",
             "format" : "int64"
