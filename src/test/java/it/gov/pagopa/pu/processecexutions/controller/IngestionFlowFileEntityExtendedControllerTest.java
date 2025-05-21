@@ -39,11 +39,12 @@ class IngestionFlowFileEntityExtendedControllerTest {
     IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
     long processedRows = 10L;
     long totalRows = 100L;
+    String fileVersion = "FILEVERSION";
     String errorDescription = "ERRORDESCRIPTION";
     String discardFilename = "DISCARDFILENAME";
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus,
         processedRows, totalRows,
         errorDescription, discardFilename))
       .thenReturn(expectedResult);
@@ -51,7 +52,7 @@ class IngestionFlowFileEntityExtendedControllerTest {
     // When
     Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
         processedRows, totalRows,
-        errorDescription, discardFilename)
+        fileVersion, errorDescription, discardFilename)
       .getBody();
 
     // Then
@@ -66,10 +67,11 @@ class IngestionFlowFileEntityExtendedControllerTest {
     IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
     long processedRows = 10L;
     long totalRows = 100L;
+    String fileVersion = "FILEVERSION";
     String errorDescription = "ERRORDESCRIPTION";
     String discardFilename = "DISCARDFILENAME";
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus,
         processedRows, totalRows,
         errorDescription, discardFilename))
       .thenReturn(0);
@@ -77,7 +79,81 @@ class IngestionFlowFileEntityExtendedControllerTest {
     // When
     HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
         processedRows, totalRows,
-        errorDescription, discardFilename)
+        fileVersion, errorDescription, discardFilename)
+      .getStatusCode();
+
+    // Then
+    Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
+  }
+
+  @Test
+  void whenUpdateFileNamesThenInvokeRepository() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    String fileName = "fileName";
+    String discardFileName = "discardFileName";
+    int expectedResult = 1;
+
+    Mockito.when(repositoryMock.updateFileNames(ingestionFlowFileId, fileName, discardFileName))
+      .thenReturn(expectedResult);
+
+    // When
+    Integer result = controller.updateFileNames(ingestionFlowFileId, fileName, discardFileName)
+      .getBody();
+
+    // Then
+    Assertions.assertEquals(expectedResult, result);
+  }
+
+  @Test
+  void whenUpdateFileNamesThenNotFound() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    String fileName = "fileName";
+    String discardFileName = "discardFileName";
+
+    Mockito.when(repositoryMock.updateFileNames(ingestionFlowFileId, fileName, discardFileName))
+      .thenReturn(0);
+
+    // When
+    HttpStatusCode result = controller.updateFileNames(ingestionFlowFileId, fileName, discardFileName)
+      .getStatusCode();
+
+    // Then
+    Assertions.assertEquals(HttpStatus.NOT_FOUND, result);
+  }
+
+  @Test
+  void whenUpdatePdfGeneratedThenInvokeRepository() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    long pdfGenerated = 10L;
+    String folderId = "100";
+    int expectedResult = 1;
+
+    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, folderId))
+      .thenReturn(expectedResult);
+
+    // When
+    Integer result = controller.updatePdfGenerated(ingestionFlowFileId, pdfGenerated, folderId)
+      .getBody();
+
+    // Then
+    Assertions.assertEquals(expectedResult, result);
+  }
+
+  @Test
+  void whenUpdatePdfGeneratedThenNotFound() {
+    // Given
+    long ingestionFlowFileId = 1L;
+    long pdfGenerated = 10L;
+    String folderId = "100";
+
+    Mockito.when(repositoryMock.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, folderId))
+      .thenReturn(0);
+
+    // When
+    HttpStatusCode result = controller.updatePdfGenerated(ingestionFlowFileId, pdfGenerated, folderId)
       .getStatusCode();
 
     // Then

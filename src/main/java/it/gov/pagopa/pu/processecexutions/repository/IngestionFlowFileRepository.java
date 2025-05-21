@@ -33,13 +33,14 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Transactional
   @Query("update IngestionFlowFile" +
     " set status=:newStatus," +
+    " fileVersion=:fileVersion," +
     " numCorrectlyImportedRows=:processedRows," +
     " numTotalRows=:totalRows," +
     " errorDescription=:errorDescription," +
     " discardFileName=:discardFileName " +
     "where ingestionFlowFileId=:ingestionFlowFileId" +
     " and status=:oldStatus")
-  int updateStatus(Long ingestionFlowFileId, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
+  int updateStatus(Long ingestionFlowFileId, String fileVersion, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
                    long processedRows, long totalRows,
                    String errorDescription, String discardFileName);
 
@@ -87,4 +88,15 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   int updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
 
   Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
+
+  @RestResource(exported = false)
+  @Modifying
+  @Transactional
+  @Query("UPDATE IngestionFlowFile" +
+    " SET pdfGenerated=:pdfGenerated," +
+    " pdfGeneratedId=:pdfGeneratedId " +
+    "where ingestionFlowFileId=:ingestionFlowFileId")
+  int updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
+                                          @Param("pdfGenerated") long pdfGenerated,
+                                          @Param("pdfGeneratedId") String pdfGeneratedId);
 }

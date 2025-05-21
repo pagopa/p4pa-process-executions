@@ -1,6 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.enums.DpInstallmentsIngestionFlowFileVersion;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
@@ -26,6 +27,7 @@ class IngestionFlowFileRequestMapperTest {
       .flowDateTime(OffsetDateTime.MIN)
       .pspIdentifier("PSPIDENTIFIER")
       .fileOrigin("portal")
+      .fileVersion(DpInstallmentsIngestionFlowFileVersion.V1_0.getValue())
       .build();
 
     // When
@@ -44,6 +46,7 @@ class IngestionFlowFileRequestMapperTest {
     Assertions.assertSame(dto.getFlowDateTime(), result.getFlowDateTime());
     Assertions.assertEquals(dto.getPspIdentifier(), result.getPspIdentifier());
     Assertions.assertEquals("portal", result.getFileOrigin());
+    Assertions.assertEquals(DpInstallmentsIngestionFlowFileVersion.V1_0.getValue(), result.getFileVersion());
 
     TestUtils.checkNotNullFields(result,
       "ingestionFlowFileId",
@@ -52,6 +55,7 @@ class IngestionFlowFileRequestMapperTest {
       "numTotalRows",
       "numCorrectlyImportedRows",
       "pdfGenerated",
+      "pdfGeneratedId",
       "creationDate",
       "updateDate",
       "updateOperatorExternalId",
