@@ -1454,7 +1454,7 @@
             "format" : "int64"
           }
         }, {
-          "name" : "pdfGeneratedId",
+          "name" : "folderId",
           "in" : "query",
           "required" : true,
           "schema" : {

@@ -94,7 +94,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Transactional
   @Query("UPDATE IngestionFlowFile" +
     " SET pdfGenerated=:pdfGenerated," +
-    " pdfGeneratedId=:folderId " +
+    " pdfGeneratedId=:pdfGeneratedId " +
     "where ingestionFlowFileId=:ingestionFlowFileId")
   int updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
                                           @Param("pdfGenerated") long pdfGenerated,
