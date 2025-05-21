@@ -43,8 +43,8 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
   }
 
   @Override
-  public ResponseEntity<Integer> updatePdfGenerated(Long ingestionFlowFileId, Long pdfGenerated, String folderId) {
-    int result = repository.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, folderId);
+  public ResponseEntity<Integer> updatePdfGenerated(Long ingestionFlowFileId, Long pdfGenerated, String pdfGeneratedId) {
+    int result = repository.updatePdfGeneratedAndPdfGeneratedId(ingestionFlowFileId, pdfGenerated, pdfGeneratedId);
     if (result > 0) {
       return ResponseEntity.ok(result);
     } else {

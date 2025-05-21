@@ -98,5 +98,5 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     "where ingestionFlowFileId=:ingestionFlowFileId")
   int updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
                                           @Param("pdfGenerated") long pdfGenerated,
-                                          @Param("pdfGeneratedId") String folderId);
+                                          @Param("pdfGeneratedId") String pdfGeneratedId);
 }
