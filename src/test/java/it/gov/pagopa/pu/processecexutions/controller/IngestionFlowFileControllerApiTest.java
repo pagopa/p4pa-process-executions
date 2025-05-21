@@ -4,7 +4,7 @@ import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFile
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
-import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileUploadService;
+import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileRequestService;
 import it.gov.pagopa.pu.processecexutions.util.IngestionFlowFileConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
 import org.junit.jupiter.api.AfterEach;
@@ -29,7 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 class IngestionFlowFileControllerApiTest {
 
   @Mock
-  private IngestionFlowFileUploadService serviceMock;
+  private IngestionFlowFileRequestService serviceMock;
 
   private IngestionFlowFileControllerApi controller;
 
@@ -68,6 +68,28 @@ class IngestionFlowFileControllerApiTest {
     // Then
     Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
+  }
+
+  @Test
+  void whenHandleReservationThenInvokeService(){
+    // Given
+    Long expectedResult = 1L;
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO();
+    IngestionFlowFile ingestionFlowFile = IngestionFlowFile.builder()
+      .ingestionFlowFileId(1L)
+      .build();
+
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+
+    Mockito.when(serviceMock.handleReservation(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+      .thenReturn(ingestionFlowFile);
+
+    // When
+    Long result = controller.createIngestionFlowFileReservation(requestDTO).getBody();
+
+    // Then
+    Assertions.assertEquals(expectedResult, result);
   }
 
   @ParameterizedTest

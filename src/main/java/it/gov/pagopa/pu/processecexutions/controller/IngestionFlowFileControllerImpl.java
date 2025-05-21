@@ -3,7 +3,7 @@ package it.gov.pagopa.pu.processecexutions.controller;
 import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
-import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileUploadService;
+import it.gov.pagopa.pu.processecexutions.service.IngestionFlowFileRequestService;
 import it.gov.pagopa.pu.processecexutions.util.IngestionFlowFileConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import java.net.URI;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IngestionFlowFileControllerImpl implements IngestionFlowFileControllerApi {
 
-  private final IngestionFlowFileUploadService service;
+  private final IngestionFlowFileRequestService service;
 
-  public IngestionFlowFileControllerImpl(IngestionFlowFileUploadService service) {
+  public IngestionFlowFileControllerImpl(IngestionFlowFileRequestService service) {
     this.service = service;
   }
 
@@ -26,6 +26,11 @@ public class IngestionFlowFileControllerImpl implements IngestionFlowFileControl
     return ResponseEntity
       .created(URI.create(String.valueOf(service.handleUploaded(ingestionFlowFileRequestDTO, SecurityUtils.getCurrentUserExternalId(), SecurityUtils.getAccessToken()).getIngestionFlowFileId())))
       .build();
+  }
+
+  @Override
+  public ResponseEntity<Long> createIngestionFlowFileReservation(IngestionFlowFileRequestDTO ingestionFlowFileRequestDTO) {
+    return ResponseEntity.ok(service.handleReservation(ingestionFlowFileRequestDTO, SecurityUtils.getCurrentUserExternalId()).getIngestionFlowFileId());
   }
 
   @Override
