@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class IngestionFlowFileRequestMapper {
 
-  public IngestionFlowFile map(IngestionFlowFileRequestDTO dto, String operatorExternalId) {
+  public IngestionFlowFile map(IngestionFlowFileRequestDTO dto, String operatorExternalId, IngestionFlowFileStatus status) {
     return IngestionFlowFile.builder()
       .organizationId(dto.getOrganizationId())
       .operatorExternalId(operatorExternalId)
@@ -16,7 +16,7 @@ public class IngestionFlowFileRequestMapper {
       .fileName(dto.getFileName())
       .fileSize(dto.getFileSize())
       .ingestionFlowFileType(dto.getIngestionFlowFileType())
-      .status(IngestionFlowFileStatus.UPLOADED)
+      .status(status)
       .flowDateTime(dto.getFlowDateTime())
       .pspIdentifier(dto.getPspIdentifier())
       .fileOrigin(dto.getFileOrigin())
