@@ -140,6 +140,26 @@ paths:
       responses:
         '201':
           description: OK
+  /ingestion-flow-files/reservation:
+    post:
+      summary: create-ingestion-flow-file-reservation
+      tags:
+        - ingestion-flow-file-controller
+      operationId: createIngestionFlowFileReservation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestionFlowFileRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
   /ingestion-flow-files/{ingestionFlowFileType}/versions:
     get:
       summary: get-ingestion-flow-file-versions
@@ -332,6 +352,9 @@ components:
         - ingestionFlowFileType
         - fileOrigin
       properties:
+        ingestionFlowFileId:
+          type: integer
+          format: int64
         organizationId:
           type: integer
           format: int64
