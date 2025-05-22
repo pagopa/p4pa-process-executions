@@ -14,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class IngestionFlowFileRequestServiceTest {
@@ -160,5 +163,65 @@ class IngestionFlowFileRequestServiceTest {
 
     // Then
     Assertions.assertSame(storedEntity, result);
+  }
+
+  @Test
+  void whenHandleUploadedWithIdAndWaitingFileStatusThenUpdateAndInvokeWF() {
+    // Given
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO();
+    Long id = 123L;
+    requestDTO.setIngestionFlowFileId(id);
+    IngestionFlowFile existingEntity = new IngestionFlowFile();
+    existingEntity.setStatus(IngestionFlowFileStatus.WAITING_FILE);
+    IngestionFlowFile updatedEntity = new IngestionFlowFile();
+    IngestionFlowFile storedEntity = new IngestionFlowFile();
+    String operatorExternalId = "OPERATOR";
+    String accessToken = "TOKEN";
+
+    Mockito.when(repositoryMock.findById(id)).thenReturn(Optional.of(existingEntity));
+    Mockito.when(requestMapperMock.update(existingEntity, requestDTO, operatorExternalId, IngestionFlowFileStatus.UPLOADED))
+      .thenReturn(updatedEntity);
+    Mockito.when(repositoryMock.save(updatedEntity)).thenReturn(storedEntity);
+
+    // When
+    IngestionFlowFile result = service.handleUploaded(requestDTO, operatorExternalId, accessToken);
+
+    // Then
+    Assertions.assertSame(storedEntity, result);
+    Mockito.verify(workflowInvokerServiceMock).invokeIngestionWorkflow(storedEntity, accessToken);
+  }
+
+  @Test
+  void whenHandleUploadedWithIdAndNotWaitingFileStatusThenThrow() {
+    // Given
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO();
+    Long id = 123L;
+    requestDTO.setIngestionFlowFileId(id);
+    IngestionFlowFile existingEntity = new IngestionFlowFile();
+    existingEntity.setStatus(IngestionFlowFileStatus.UPLOADED);
+    String operatorExternalId = "OPERATOR";
+    String accessToken = "TOKEN";
+
+    Mockito.when(repositoryMock.findById(id)).thenReturn(Optional.of(existingEntity));
+
+    // When & Then
+    Assertions.assertThrows(ResourceNotFoundException.class, () ->
+      service.handleUploaded(requestDTO, operatorExternalId, accessToken));
+  }
+
+  @Test
+  void whenHandleUploadedWithIdAndEntityNotFoundThenThrow() {
+    // Given
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO();
+    Long id = 123L;
+    requestDTO.setIngestionFlowFileId(id);
+    String operatorExternalId = "OPERATOR";
+    String accessToken = "TOKEN";
+
+    Mockito.when(repositoryMock.findById(id)).thenReturn(Optional.empty());
+
+    // When & Then
+    Assertions.assertThrows(ResourceNotFoundException.class, () ->
+      service.handleUploaded(requestDTO, operatorExternalId, accessToken));
   }
 }

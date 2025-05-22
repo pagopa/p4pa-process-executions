@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @Table(name = "ingestion_flow_file")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Data
 @EqualsAndHashCode(of = "ingestionFlowFileId", callSuper = false)
 public class IngestionFlowFile extends BaseEntity implements Serializable {
