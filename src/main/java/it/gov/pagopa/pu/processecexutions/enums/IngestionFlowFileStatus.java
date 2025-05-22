@@ -7,5 +7,6 @@ public enum IngestionFlowFileStatus {
   UPLOADED,
   PROCESSING,
   COMPLETED,
-  ERROR
+  ERROR,
+  WAITING_FILE
 }
