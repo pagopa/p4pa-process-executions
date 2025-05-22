@@ -7,16 +7,20 @@ import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
+import java.util.stream.Stream;
 
 class IngestionFlowFileRequestMapperTest {
 
   private final IngestionFlowFileRequestMapper mapper = new IngestionFlowFileRequestMapper();
 
-  @Test
-  void test() {
+  @ParameterizedTest
+  @MethodSource("provideEnums")
+  void test(IngestionFlowFileStatus status) {
     // Given
     IngestionFlowFileRequestDTO dto = IngestionFlowFileRequestDTO.builder()
       .organizationId(0L)
@@ -31,7 +35,7 @@ class IngestionFlowFileRequestMapperTest {
       .build();
 
     // When
-    IngestionFlowFile result = mapper.map(dto, "OPERATOREXTERNALID");
+    IngestionFlowFile result = mapper.map(dto, "OPERATOREXTERNALID", status);
 
     // Then
     Assertions.assertNotNull(result);
@@ -42,7 +46,7 @@ class IngestionFlowFileRequestMapperTest {
     Assertions.assertEquals("FILENAME", result.getFileName());
     Assertions.assertEquals(1L, result.getFileSize());
     Assertions.assertEquals(IngestionFlowFileTypeEnum.PAYMENTS_REPORTING, result.getIngestionFlowFileType());
-    Assertions.assertEquals(IngestionFlowFileStatus.UPLOADED, result.getStatus());
+    Assertions.assertEquals(status, result.getStatus());
     Assertions.assertSame(dto.getFlowDateTime(), result.getFlowDateTime());
     Assertions.assertEquals(dto.getPspIdentifier(), result.getPspIdentifier());
     Assertions.assertEquals("portal", result.getFileOrigin());
@@ -60,6 +64,13 @@ class IngestionFlowFileRequestMapperTest {
       "updateDate",
       "updateOperatorExternalId",
       "updateTraceId"
+    );
+  }
+
+  public static Stream<Arguments> provideEnums() {
+    return Stream.of(
+      Arguments.of(IngestionFlowFileStatus.UPLOADED),
+      Arguments.of(IngestionFlowFileStatus.WAITING_FILE)
     );
   }
 }

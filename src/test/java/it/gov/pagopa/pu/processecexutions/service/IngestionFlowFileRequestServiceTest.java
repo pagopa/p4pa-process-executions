@@ -16,21 +16,21 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class IngestionFlowFileUploadServiceTest {
+class IngestionFlowFileRequestServiceTest {
 
   @Mock
-  private IngestionFlowFileRequestMapper uploadedRequestMapperMock;
+  private IngestionFlowFileRequestMapper requestMapperMock;
   @Mock
   private IngestionFlowFileRepository repositoryMock;
   @Mock
   private IngestionFlowFileService workflowInvokerServiceMock;
 
-  private IngestionFlowFileUploadService service;
+  private IngestionFlowFileRequestService service;
 
   @BeforeEach
   void init(){
-    service = new IngestionFlowFileUploadServiceImpl(
-      uploadedRequestMapperMock,
+    service = new IngestionFlowFileRequestServiceImpl(
+      requestMapperMock,
       repositoryMock,
       workflowInvokerServiceMock);
   }
@@ -38,7 +38,7 @@ class IngestionFlowFileUploadServiceTest {
   @AfterEach
   void verifyNoMoreInteractions(){
     Mockito.verifyNoMoreInteractions(
-      uploadedRequestMapperMock,
+      requestMapperMock,
       repositoryMock,
       workflowInvokerServiceMock
     );
@@ -53,7 +53,8 @@ class IngestionFlowFileUploadServiceTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     String accessToken = "ACCESSTOKEN";
 
-    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+    Mockito.when(requestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+        Mockito.same(IngestionFlowFileStatus.UPLOADED)))
       .thenReturn(newEntity);
 
     Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
@@ -79,7 +80,8 @@ class IngestionFlowFileUploadServiceTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     String accessToken = "ACCESSTOKEN";
 
-    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+    Mockito.when(requestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+        Mockito.same(IngestionFlowFileStatus.UPLOADED)))
       .thenReturn(newEntity);
 
     Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
@@ -112,7 +114,8 @@ class IngestionFlowFileUploadServiceTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     String accessToken = "ACCESSTOKEN";
 
-    Mockito.when(uploadedRequestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+    Mockito.when(requestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+        Mockito.same(IngestionFlowFileStatus.UPLOADED)))
       .thenReturn(newEntity);
 
     Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
@@ -135,5 +138,27 @@ class IngestionFlowFileUploadServiceTest {
     Mockito.verify(repositoryMock)
       .save(Mockito.same(storedEntity));
 
+  }
+
+  @Test
+  void whenHandleReservationThenStore() {
+    // Given
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO();
+    IngestionFlowFile newEntity = new IngestionFlowFile();
+    IngestionFlowFile storedEntity = new IngestionFlowFile();
+    String operatorExternalId = "OPERATOREXTERNALID";
+
+    Mockito.when(requestMapperMock.map(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+        Mockito.same(IngestionFlowFileStatus.WAITING_FILE)))
+      .thenReturn(newEntity);
+
+    Mockito.when(repositoryMock.save(Mockito.same(newEntity)))
+      .thenReturn(storedEntity);
+
+    // When
+    IngestionFlowFile result = service.handleReservation(requestDTO, operatorExternalId);
+
+    // Then
+    Assertions.assertSame(storedEntity, result);
   }
 }
