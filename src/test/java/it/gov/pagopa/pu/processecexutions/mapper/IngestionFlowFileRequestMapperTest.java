@@ -122,7 +122,6 @@ class IngestionFlowFileRequestMapperTest {
     Assertions.assertEquals(DpInstallmentsIngestionFlowFileVersion.V2_0.getValue(), result.getFileVersion());
 
     TestUtils.checkNotNullFields(result,
-      "ingestionFlowFileId",
       "errorDescription",
       "discardFileName",
       "numTotalRows",

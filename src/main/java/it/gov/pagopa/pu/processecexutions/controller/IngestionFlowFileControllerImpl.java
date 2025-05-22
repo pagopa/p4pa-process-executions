@@ -9,8 +9,6 @@ import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +23,9 @@ public class IngestionFlowFileControllerImpl implements IngestionFlowFileControl
 
   @Override
   public ResponseEntity<Void> createIngestionFlowFile(IngestionFlowFileRequestDTO ingestionFlowFileRequestDTO) {
-    try {
-      return ResponseEntity
-        .created(URI.create(String.valueOf(service.handleUploaded(ingestionFlowFileRequestDTO, SecurityUtils.getCurrentUserExternalId(), SecurityUtils.getAccessToken()).getIngestionFlowFileId())))
-        .build();
-    } catch (ResourceNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+    return ResponseEntity
+      .created(URI.create(String.valueOf(service.handleUploaded(ingestionFlowFileRequestDTO, SecurityUtils.getCurrentUserExternalId(), SecurityUtils.getAccessToken()).getIngestionFlowFileId())))
+      .build();
   }
 
   @Override

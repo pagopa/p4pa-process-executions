@@ -57,10 +57,8 @@ class IngestionFlowFileControllerApiTest {
     Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
             Mockito.anyString()))
       .thenThrow(new ResourceNotFoundException("IngestionFlowFile with id 1 and status WAITING_FILE not found"));
-    // When
-    ResponseEntity<Void> result = controller.createIngestionFlowFile(requestDTO);
-    // Then
-    Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+    // When & Then
+    Assertions.assertThrows(ResourceNotFoundException.class, () -> controller.createIngestionFlowFile(requestDTO));
   }
 
   @Test
