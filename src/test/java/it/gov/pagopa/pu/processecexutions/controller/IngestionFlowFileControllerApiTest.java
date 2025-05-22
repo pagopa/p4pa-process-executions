@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,21 @@ class IngestionFlowFileControllerApiTest {
   @AfterEach
   void verifyNoMoreInteractions(){
     Mockito.verifyNoMoreInteractions(serviceMock);
+  }
+
+  @Test
+  void whenHandleUploadedThenNotFound(){
+    // Given
+    IngestionFlowFileRequestDTO requestDTO = new IngestionFlowFileRequestDTO().ingestionFlowFileId(1L);
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+            Mockito.anyString()))
+      .thenThrow(new ResourceNotFoundException("IngestionFlowFile with id 1 and status WAITING_FILE not found"));
+    // When
+    ResponseEntity<Void> result = controller.createIngestionFlowFile(requestDTO);
+    // Then
+    Assertions.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
   }
 
   @Test
