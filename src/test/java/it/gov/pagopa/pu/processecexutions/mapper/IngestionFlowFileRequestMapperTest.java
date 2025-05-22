@@ -91,6 +91,7 @@ class IngestionFlowFileRequestMapperTest {
       .build();
 
     IngestionFlowFile existingEntity = IngestionFlowFile.builder()
+      .ingestionFlowFileId(1L)
       .organizationId(0L)
       .filePathName("FILEPATHNAME")
       .fileName("FILENAME")
