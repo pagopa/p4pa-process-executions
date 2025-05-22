@@ -108,8 +108,7 @@ class IngestionFlowFileRequestMapperTest {
     IngestionFlowFile result = mapper.update(existingEntity, dto, "UPDATED_OPERATOREXTERNALID", IngestionFlowFileStatus.UPLOADED);
 
     // Then
-    Assertions.assertNotNull(result);
-
+    Assertions.assertEquals(existingEntity.getIngestionFlowFileId(), result.getIngestionFlowFileId());
     Assertions.assertEquals(1L, result.getOrganizationId());
     Assertions.assertEquals("UPDATED_OPERATOREXTERNALID", result.getOperatorExternalId());
     Assertions.assertEquals("UPDATED_FILEPATHNAME", result.getFilePathName());
