@@ -13,6 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
+import java.time.LocalDate;
+
 @ExtendWith(MockitoExtension.class)
 class ExportFileEntityExtendedControllerTest {
 
@@ -42,13 +44,14 @@ class ExportFileEntityExtendedControllerTest {
     String fileName = "fileName";
     Long numTotalRows = 2L;
     Long fileSize = 3L;
+    LocalDate expirationDate = LocalDate.now().plusDays(5L);
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError))
+    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError, expirationDate))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError).getBody();
+    Integer result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError, expirationDate).getBody();
 
     // Then
     Assertions.assertEquals(expectedResult, result);
@@ -65,12 +68,13 @@ class ExportFileEntityExtendedControllerTest {
     String fileName = "fileName";
     Long numTotalRows = 2L;
     Long fileSize = 3L;
+    LocalDate expirationDate = LocalDate.now().plusDays(5L);
 
-    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError))
+    Mockito.when(repositoryMock.updateStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError, expirationDate))
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError).getStatusCode();
+    HttpStatusCode result = controller.updateExportFileStatus(exportFileId, oldStatus, newStatus, filePathName, fileName, fileSize, numTotalRows, codError, expirationDate).getStatusCode();
 
     // Then
     Assertions.assertEquals(HttpStatus.NOT_FOUND, result);

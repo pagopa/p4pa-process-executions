@@ -6,6 +6,8 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
 import jakarta.annotation.Nonnull;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,9 +57,10 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
     "fileName=:fileName, " +
     "fileSize=:fileSize, " +
     "numTotalRows=:numTotalRows, " +
-    "errorDescription=:errorDescription " +
+    "errorDescription=:errorDescription, " +
+    "expirationDate=:expirationDate" +
     "WHERE exportFileId=:exportFileId " +
     "AND status=:oldStatus")
-  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String filePathName, String fileName, Long fileSize, Long numTotalRows, String errorDescription);
+  int updateStatus(Long exportFileId, ExportFileStatus oldStatus, ExportFileStatus newStatus, String filePathName, String fileName, Long fileSize, Long numTotalRows, String errorDescription, LocalDate expirationDate);
 
 }
