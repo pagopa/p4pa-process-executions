@@ -326,6 +326,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: expirationDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: OK
