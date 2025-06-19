@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
-public enum ClassificationsExportFileVersion {
+public enum ClassificationsExportFileVersion implements ExportFileTypeVersions {
 
   V1_3("v1.3"),
   V1_4("v1.4");
@@ -24,5 +24,10 @@ public enum ClassificationsExportFileVersion {
   @JsonValue
   public String getValue() {
     return value;
+  }
+
+  @Override
+  public String toString() {
+    return getValue();
   }
 }

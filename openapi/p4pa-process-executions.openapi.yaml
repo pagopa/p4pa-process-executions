@@ -297,7 +297,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
+                  type: 'ExportFileTypeVersions'
   /crud-ext/export-files/{exportFileId}/set-status:
     patch:
       tags:

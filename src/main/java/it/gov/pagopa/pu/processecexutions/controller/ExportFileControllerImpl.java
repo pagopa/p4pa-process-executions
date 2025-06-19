@@ -4,14 +4,16 @@ import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControl
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileTypeVersions;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
-import java.net.URI;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -61,7 +63,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   @Override
-  public ResponseEntity<List<String>> getExportFileTypeVersions(ExportFileTypeEnum exportFileType) {
+  public ResponseEntity<List<ExportFileTypeVersions>> getExportFileTypeVersions(ExportFileTypeEnum exportFileType) {
     return ResponseEntity.ok(ExportConstants.getAvailableVersions(exportFileType));
   }
 }

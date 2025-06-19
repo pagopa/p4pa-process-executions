@@ -153,7 +153,7 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
     "ReceiptsArchivingExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO",
     "ExportFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum",
     "ExportFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus",
-    "PaidExportFileVersion" to "it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion",
+    "ExportFileTypeVersions" to "it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileTypeVersions"
   ))
   additionalProperties.set(mapOf(
     "removeEnumValuePrefix" to "false"
