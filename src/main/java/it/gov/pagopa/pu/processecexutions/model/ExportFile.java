@@ -5,22 +5,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
