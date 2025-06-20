@@ -64,6 +64,8 @@ paths:
               schema:
                 type: integer
                 format: int32
+        '404':
+          description: NotFound
   /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-file-names:
     patch:
       tags:
@@ -94,6 +96,8 @@ paths:
               schema:
                 type: integer
                 format: int32
+        '404':
+          description: NotFound
   /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-pdf-generated:
     patch:
       tags:
@@ -125,6 +129,8 @@ paths:
               schema:
                 type: integer
                 format: int32
+        '404':
+          description: NotFound
   /ingestion-flow-files:
     post:
       summary: create-ingestion-flow-file
@@ -140,6 +146,12 @@ paths:
       responses:
         '201':
           description: OK
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessExecutionsErrorDTO'
   /ingestion-flow-files/reservation:
     post:
       summary: create-ingestion-flow-file-reservation
@@ -196,6 +208,12 @@ paths:
       responses:
         '201':
           description: OK
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessExecutionsErrorDTO'
   /export-files/classifications:
     post:
       summary: create-classifications-export-file
@@ -211,6 +229,12 @@ paths:
       responses:
         '201':
           description: OK
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessExecutionsErrorDTO'
   /export-files/payments-reporting:
     post:
       summary: create-payments-reporting-export-file
@@ -226,6 +250,12 @@ paths:
       responses:
         '201':
           description: OK
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessExecutionsErrorDTO'
   /export-files/receipts-archiving:
     post:
       summary: create-receipts-archiving-export-file
@@ -241,6 +271,12 @@ paths:
       responses:
         '201':
           description: OK
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessExecutionsErrorDTO'
   /export-files/{exportFileType}:
     get:
       summary: get-export-file-type-versions
@@ -261,22 +297,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
-  /export-files/PAID:
-    get:
-      summary: get-paid-export-file-versions
-      tags:
-        - export-file-controller
-      operationId: getPaidExportFileVersions
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: 'PaidExportFileVersion'
+                  type: 'ExportFileTypeVersions'
   /crud-ext/export-files/{exportFileId}/set-status:
     patch:
       tags:
@@ -340,6 +361,8 @@ paths:
               schema:
                 type: integer
                 format: int32
+        '404':
+          description: NotFound
 security:
   - BearerAuth: []
 components:
@@ -395,6 +418,8 @@ components:
             - PROCESS_EXECUTIONS_CONFLICT
             - PROCESS_EXECUTIONS_BAD_REQUEST
             - PROCESS_EXECUTIONS_GENERIC_ERROR
+            - PROCESS_EXECUTIONS_INVALID_FILE_VERSION
+            - PROCESS_EXECUTIONS_INVALID_TIME_RANGE
         message:
           type: string
 

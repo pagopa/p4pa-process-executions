@@ -7,6 +7,7 @@ import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.exception.ExportFlowFileVersionNotSupportedException;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileFilter;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileVersion;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +36,7 @@ class ExportFileRequestMapperTest {
     Assertions.assertEquals(0L, result.getOrganizationId());
     Assertions.assertEquals("OPERATOREXTERNALID", result.getOperatorExternalId());
     Assertions.assertEquals(ExportFileTypeEnum.PAID, result.getExportFileType());
-    Assertions.assertEquals("v1.0", result.getFileVersion());
+    Assertions.assertEquals(PaidExportFileVersion.V1.toString(), result.getFileVersion());
     Assertions.assertEquals(ExportFileStatus.REQUESTED, result.getStatus());
 
     TestUtils.checkNotNullFields(result,
