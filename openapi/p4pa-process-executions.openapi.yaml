@@ -420,6 +420,7 @@ components:
             - PROCESS_EXECUTIONS_GENERIC_ERROR
             - PROCESS_EXECUTIONS_INVALID_FILE_VERSION
             - PROCESS_EXECUTIONS_INVALID_TIME_RANGE
+            - PROCESS_EXECUTIONS_INVALID_DEBT_POSITION_TYPE
         message:
           type: string
 
