@@ -1,16 +1,15 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
+import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.ClassificationsExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaidExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaymentsReportingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.exception.InvalidParamException;
 import it.gov.pagopa.pu.processecexutions.model.ExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ReceiptsArchivingExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ClassificationsExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFile;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaymentsReportingExportFile;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtilsTest;
@@ -31,6 +30,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.time.OffsetDateTime;
 
 @ExtendWith(MockitoExtension.class)
 class ExportFileControllerApiTest {
@@ -92,6 +93,66 @@ class ExportFileControllerApiTest {
     ResponseEntity<Void> result = controller.createPaidExportFile(requestDTO);
 
     // Then
+    Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
+    Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
+  }
+
+  @Test
+  void whenBothDateRangesProvided_thenThrowInvalidDatesException() {
+    OffsetDateTime now = OffsetDateTime.now();
+
+    OffsetDateTimeIntervalFilter paymentDate = new OffsetDateTimeIntervalFilter();
+    paymentDate.setFrom(now.minusDays(5));
+    paymentDate.setTo(now);
+
+    OffsetDateTimeIntervalFilter installmentDate = new OffsetDateTimeIntervalFilter();
+    installmentDate.setFrom(now.minusDays(10));
+    installmentDate.setTo(now.minusDays(1));
+
+    PaidExportFileFilter filter = new PaidExportFileFilter();
+    filter.setPaymentDateTime(paymentDate);
+    filter.setInstallmentUpdateDateTime(installmentDate);
+
+    PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    Assertions.assertThrows(InvalidParamException.class, () ->
+      controller.createPaidExportFile(requestDTO));
+  }
+
+  @Test
+  void whenNoDateRangesProvided_thenThrowInvalidDatesException() {
+    PaidExportFileFilter filter = new PaidExportFileFilter(); // no dates
+
+    PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    Assertions.assertThrows(InvalidParamException.class, () ->
+      controller.createPaidExportFile(requestDTO));
+  }
+
+  @Test
+  void whenOnlyInstallmentUpdateDateProvided_thenInvokeService() {
+    OffsetDateTimeIntervalFilter installmentDate = new OffsetDateTimeIntervalFilter();
+    installmentDate.setFrom(OffsetDateTime.now().minusDays(10));
+    installmentDate.setTo(OffsetDateTime.now());
+
+    PaidExportFileFilter filter = new PaidExportFileFilter();
+    filter.setInstallmentUpdateDateTime(installmentDate);
+
+    PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    ExportFile<?> exportFile = new PaidExportFile();
+    exportFile.setExportFileId(1L);
+
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+
+    Mockito.doReturn(exportFile).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+
+    ResponseEntity<Void> result = controller.createPaidExportFile(requestDTO);
+
     Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
   }
