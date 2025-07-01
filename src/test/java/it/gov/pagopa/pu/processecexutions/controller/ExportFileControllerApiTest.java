@@ -132,6 +132,32 @@ class ExportFileControllerApiTest {
   }
 
   @Test
+  void whenOnlyPaymentDateProvided_thenInvokeService() {
+    OffsetDateTimeIntervalFilter paymentDate = new OffsetDateTimeIntervalFilter();
+    paymentDate.setFrom(OffsetDateTime.now().minusDays(5));
+    paymentDate.setTo(OffsetDateTime.now());
+
+    PaidExportFileFilter filter = new PaidExportFileFilter();
+    filter.setPaymentDateTime(paymentDate);
+
+    PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    ExportFile<?> exportFile = new PaidExportFile();
+    exportFile.setExportFileId(1L);
+
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+
+    Mockito.doReturn(exportFile).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+
+    ResponseEntity<Void> result = controller.createPaidExportFile(requestDTO);
+
+    Assertions.assertEquals(HttpStatus.CREATED, result.getStatusCode());
+    Assertions.assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
+  }
+
+  @Test
   void whenOnlyInstallmentUpdateDateProvided_thenInvokeService() {
     OffsetDateTimeIntervalFilter installmentDate = new OffsetDateTimeIntervalFilter();
     installmentDate.setFrom(OffsetDateTime.now().minusDays(10));
