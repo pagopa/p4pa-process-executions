@@ -139,6 +139,7 @@ class ExportFileControllerApiTest {
 
     PaidExportFileFilter filter = new PaidExportFileFilter();
     filter.setPaymentDateTime(paymentDate);
+    filter.setInstallmentUpdateDateTime(null);
 
     PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
     requestDTO.setFilterFields(filter);
@@ -165,6 +166,7 @@ class ExportFileControllerApiTest {
 
     PaidExportFileFilter filter = new PaidExportFileFilter();
     filter.setInstallmentUpdateDateTime(installmentDate);
+    filter.setPaymentDateTime(null);
 
     PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
     requestDTO.setFilterFields(filter);
