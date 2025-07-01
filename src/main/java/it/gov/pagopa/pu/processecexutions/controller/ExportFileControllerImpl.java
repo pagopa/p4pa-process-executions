@@ -1,10 +1,13 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
+import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.exception.InvalidParamException;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileTypeVersions;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileFilter;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
@@ -26,9 +29,26 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   @Override
-  public ResponseEntity<Void> createPaidExportFile(
-    PaidExportFileRequestDTO paidExportFileRequestDTO) {
+  public ResponseEntity<Void> createPaidExportFile(PaidExportFileRequestDTO paidExportFileRequestDTO) {
+    PaidExportFileFilter filterFields = paidExportFileRequestDTO.getFilterFields();
+
+    if (filterFields != null){
+      validatePaidExportFilterFieldsDate(filterFields);
+    }
     return createExportFile(paidExportFileRequestDTO);
+  }
+
+  private static void validatePaidExportFilterFieldsDate(PaidExportFileFilter filterFields) {
+    OffsetDateTimeIntervalFilter paymentDateTime = filterFields.getPaymentDateTime();
+    OffsetDateTimeIntervalFilter installmentUpdateDateTime = filterFields.getInstallmentUpdateDateTime();
+    boolean hasPaymentDates = paymentDateTime != null && paymentDateTime .getFrom() != null && paymentDateTime.getTo() != null;
+    boolean hasInstallmentDates = installmentUpdateDateTime != null && installmentUpdateDateTime.getFrom() != null && installmentUpdateDateTime.getTo() != null;
+
+    if (hasPaymentDates == hasInstallmentDates) {
+      throw new InvalidParamException(
+        "You must provide only one of the following date ranges: either the payment date range (paymentDateFrom and paymentDateTo) or the installment update date range (installmentUpdateDateTimeFrom and installmentUpdateDateTimeTo). Providing both or neither is not allowed"
+      );
+    }
   }
 
   @Override
