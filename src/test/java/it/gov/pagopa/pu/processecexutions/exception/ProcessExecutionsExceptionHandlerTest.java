@@ -255,4 +255,14 @@ class ProcessExecutionsExceptionHandlerTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Unsupported version"));
   }
+
+  @Test
+  void handleInvalidParamException() throws Exception {
+    doThrow(new InvalidParamException("error")).when(testControllerSpy).testEndpoint(DATA, BODY);
+
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("error"));
+  }
 }

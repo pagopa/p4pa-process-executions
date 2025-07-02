@@ -83,6 +83,11 @@ public class ProcessExecutionsExceptionHandler {
     return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_GENERIC_ERROR);
   }
 
+  @ExceptionHandler({InvalidParamException.class})
+  public ResponseEntity<ProcessExecutionsErrorDTO> handleInvalidParamException(Exception ex, HttpServletRequest request) {
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
+  }
+
   static ResponseEntity<ProcessExecutionsErrorDTO> handleException(Exception ex, HttpServletRequest request, HttpStatusCode httpStatus, ProcessExecutionsErrorDTO.CodeEnum errorEnum) {
     logException(ex, request, httpStatus);
 
