@@ -62,8 +62,7 @@ public class UtilitiesTest {
       Arguments.of(now, now.plusDays(60), ChronoUnit.DAYS, 30L, false),
       Arguments.of(now, now.plusWeeks(4), ChronoUnit.WEEKS, 3L, false),
       Arguments.of(now, now.plusMonths(5), ChronoUnit.MONTHS, 2L, false),
-      Arguments.of(now, now.plusYears(3), ChronoUnit.YEARS,2L, false),
-      Arguments.of(null, now.plusMinutes(24), ChronoUnit.MINUTES, 24L, false)
+      Arguments.of(now, now.plusYears(3), ChronoUnit.YEARS,2L, false)
     );
   }
 

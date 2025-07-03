@@ -104,8 +104,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   private void validateOffsetDateTimeRange(OffsetDateTimeIntervalFilter range, String filterName, int maxMonths) {
-    if (range != null && range.getFrom() != null && range.getTo() != null &&
-      !Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), filterName, ChronoUnit.MONTHS, maxMonths)) {
+    if (range != null && !Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), filterName, ChronoUnit.MONTHS, maxMonths)) {
         throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
     }
   }

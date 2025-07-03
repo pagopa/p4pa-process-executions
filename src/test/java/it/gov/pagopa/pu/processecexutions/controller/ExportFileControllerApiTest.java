@@ -248,6 +248,11 @@ class ExportFileControllerApiTest {
         OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
         d.setFrom(now);
         f.setPaymentDateTime(d);
+      },
+      f -> {
+        OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
+        d.setTo(now);
+        f.setPaymentDateTime(d);
       }
     );
   }
