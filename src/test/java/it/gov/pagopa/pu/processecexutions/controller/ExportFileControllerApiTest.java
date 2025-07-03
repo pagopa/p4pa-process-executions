@@ -3,10 +3,10 @@ package it.gov.pagopa.pu.processecexutions.controller;
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
 import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
-import it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.ClassificationsExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaidExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.PaymentsReportingExportFileRequestDTO;
+import it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.exception.InvalidParamException;
 import it.gov.pagopa.pu.processecexutions.exception.InvalidTimeRangeException;
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,6 +36,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -246,21 +249,39 @@ class ExportFileControllerApiTest {
     assertThrows(InvalidTimeRangeException.class, () -> controller.createPaidExportFile(requestDTO));
   }
 
-  @Test
-  void whenInvalidClassificationDate_thenThrowInvalidTimeRangeException() {
-    LocalDate now = LocalDate.now();
-    LocalDateIntervalFilter classificationDate = new LocalDateIntervalFilter();
-    classificationDate.setFrom(now.minusMonths(MAX_MONTHS_RANGE + 1));
-    classificationDate.setTo(now);
+
+  @ParameterizedTest
+  @MethodSource("provideInvalidClassificationDateFilters")
+  void whenInvalidClassificationDateField_thenThrowInvalidTimeRangeException(
+    Consumer<ClassificationsExportFileFilter> filterSetter) {
 
     ClassificationsExportFileFilter filter = new ClassificationsExportFileFilter();
-    filter.setLastClassificationDate(classificationDate);
+    filterSetter.accept(filter);
 
     ClassificationsExportFileRequestDTO requestDTO = new ClassificationsExportFileRequestDTO();
     requestDTO.setFilterFields(filter);
 
-    assertThrows(InvalidTimeRangeException.class, () -> controller.createClassificationsExportFile(requestDTO));
+    assertThrows(InvalidTimeRangeException.class, () ->
+      controller.createClassificationsExportFile(requestDTO));
   }
+
+  private static Stream<Consumer<ClassificationsExportFileFilter>> provideInvalidClassificationDateFilters() {
+    LocalDate now = LocalDate.now();
+    LocalDateIntervalFilter date = new LocalDateIntervalFilter();
+    date.setFrom(now.minusMonths(MAX_MONTHS_RANGE + 1));
+    date.setTo(now);
+
+    return Stream.of(
+      f -> f.setLastClassificationDate(date),
+      f -> f.setPayDate(date),
+      f -> f.setPaymentDate(date),
+      f -> f.setRegulationDate(date),
+      f -> f.setBillDate(date),
+      f -> f.setRegionValueDate(date)
+    );
+  }
+
+
 
   @Test
   void whenInvalidArchivingPaymentDate_thenThrowInvalidTimeRangeException() {

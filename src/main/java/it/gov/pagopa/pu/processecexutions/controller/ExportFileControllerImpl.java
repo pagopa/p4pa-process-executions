@@ -103,16 +103,19 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   }
 
   private void validateOffsetDateTimeRange(OffsetDateTimeIntervalFilter range, int maxMonths) {
-    if (!Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), ChronoUnit.MONTHS, maxMonths)) {
-      throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
+    if (range != null && range.getFrom() != null && range.getTo() != null &&
+      !Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), ChronoUnit.MONTHS, maxMonths)) {
+        throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
     }
   }
 
   private void validateLocalDateRange(LocalDateIntervalFilter range, int maxMonths) {
-    if (!Utilities.isValidIntervalBetweenLocalDate(range.getFrom(), range.getTo(), ChronoUnit.MONTHS, maxMonths)) {
-      throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
+    if (range != null && range.getFrom() != null && range.getTo() != null &&
+      !Utilities.isValidIntervalBetweenLocalDate(range.getFrom(), range.getTo(), ChronoUnit.MONTHS, maxMonths)) {
+        throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
     }
   }
+
 
   private <R extends ExportFileFilter> ResponseEntity<Void> createExportFile(
     ExportFileRequestDTO<R> exportFileRequestDTO) {
