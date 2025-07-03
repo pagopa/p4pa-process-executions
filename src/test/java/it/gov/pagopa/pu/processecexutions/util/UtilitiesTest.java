@@ -1,8 +1,21 @@
 package it.gov.pagopa.pu.processecexutions.util;
 
+import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
+import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.MDC;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UtilitiesTest {
 
@@ -25,5 +38,138 @@ public class UtilitiesTest {
   }
   public static void clearTraceIdContext(){
     MDC.clear();
+  }
+
+  @ParameterizedTest
+  @MethodSource("valueSource")
+  void testIsValidIntervalBetweenOffsetDateTime(OffsetDateTime dateFrom, OffsetDateTime dateTo, ChronoUnit chronoUnit, Long maxInterval, Boolean expectedResult){
+
+    boolean result = Utilities.isValidIntervalBetweenOffsetDateTime(dateFrom, dateTo, "paymentDateTime", chronoUnit, maxInterval);
+
+    assertEquals(expectedResult, result);
+  }
+
+  static Stream<Arguments> valueSource() {
+    OffsetDateTime now = OffsetDateTime.now();
+    return Stream.of(
+      Arguments.of(now, now.plusMinutes(24), ChronoUnit.MINUTES, 24L, true),
+      Arguments.of(now, now.plusHours(20), ChronoUnit.HOURS, 20L, true),
+      Arguments.of(now, now.plusDays(60), ChronoUnit.DAYS, 60L, true),
+      Arguments.of(now, now.plusWeeks(4), ChronoUnit.WEEKS, 4L, true),
+      Arguments.of(now, now.plusMonths(5), ChronoUnit.MONTHS, 5L, true),
+      Arguments.of(now, now.plusYears(3), ChronoUnit.YEARS,3L, true),
+      Arguments.of(now, now.plusHours(20), ChronoUnit.HOURS, 10L, false),
+      Arguments.of(now, now.plusDays(60), ChronoUnit.DAYS, 30L, false),
+      Arguments.of(now, now.plusWeeks(4), ChronoUnit.WEEKS, 3L, false),
+      Arguments.of(now, now.plusMonths(5), ChronoUnit.MONTHS, 2L, false),
+      Arguments.of(now, now.plusYears(3), ChronoUnit.YEARS,2L, false)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("valueSourceLocalDate")
+  void testIsValidIntervalBetweenLocalDate(LocalDate dateFrom, LocalDate dateTo, ChronoUnit chronoUnit, Long maxInterval, Boolean expectedResult){
+
+    boolean result = Utilities.isValidIntervalBetweenLocalDate(dateFrom, dateTo,"paymentDateTime", chronoUnit, maxInterval);
+
+    assertEquals(expectedResult, result);
+  }
+
+  static Stream<Arguments> valueSourceLocalDate() {
+    LocalDate now = LocalDate.now();
+    return Stream.of(
+      Arguments.of(now, now.plusDays(60), ChronoUnit.DAYS, 60L, true),
+      Arguments.of(now, now.plusWeeks(4), ChronoUnit.WEEKS, 4L, true),
+      Arguments.of(now, now.plusMonths(5), ChronoUnit.MONTHS, 5L, true),
+      Arguments.of(now, now.plusYears(3), ChronoUnit.YEARS,3L, true),
+      Arguments.of(now, now.plusDays(60), ChronoUnit.DAYS, 30L, false),
+      Arguments.of(now, now.plusWeeks(4), ChronoUnit.WEEKS, 3L, false),
+      Arguments.of(now, now.plusMonths(5), ChronoUnit.MONTHS, 2L, false),
+      Arguments.of(now, now.plusYears(3), ChronoUnit.YEARS,2L, false)
+    );
+  }
+
+  @Test
+  void givenBothDatesWhenValidateDateFiltersThenNoException() {
+    LocalDate from = LocalDate.now().minusDays(10);
+    LocalDate to = LocalDate.now();
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(from, to);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
+
+  @Test
+  void givenBothDatesNullWhenValidateDateFiltersThenNoException() {
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(null, null);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
+
+  @Test
+  void givenOnlyFromDateWhenValidateDateFiltersThenThrowException() {
+    LocalDate from = LocalDate.now().minusDays(10);
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(from, null);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  void givenOnlyToDateWhenValidateDateFiltersThenThrowException() {
+    LocalDate to = LocalDate.now();
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(null, to);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  void givenBothOffsetDateTimesWhenValidateDateFiltersThenNoException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = OffsetDateTime.now().plusDays(1);
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(from, to);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
+
+  @Test
+  void givenBothOffsetDateTimesNullWhenValidateDateFiltersThenNoException() {
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(null, null);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
+
+  @Test
+  void givenOnlyFromOffsetDateTimeWhenValidateDateFiltersThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(from,null);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  void givenOnlyToDateOffsetDateTimeWhenValidateDateFiltersThenThrowException() {
+    OffsetDateTime to = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(null,to);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
   }
 }

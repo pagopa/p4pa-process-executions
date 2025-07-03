@@ -1,21 +1,24 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.ExportFileControllerApi;
+import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.exportFile.*;
 import it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processecexutions.exception.InvalidParamException;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileFilter;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileTypeVersions;
-import it.gov.pagopa.pu.processecexutions.model.exportfile.PaidExportFileFilter;
+import it.gov.pagopa.pu.processecexutions.exception.InvalidTimeRangeException;
+import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
+import it.gov.pagopa.pu.processecexutions.util.Utilities;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
@@ -23,9 +26,20 @@ import java.util.List;
 public class ExportFileControllerImpl implements ExportFileControllerApi {
 
   private final ExportFileSaveService service;
+  private final Integer exportPaidMaxMonthsInterval;
+  private final Integer exportArchivingMaxMonthsInterval;
+  private final Integer classificationMaxMonthsInterval;
+  private static final String INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE = "The date interval between %s and %s cannot exceed %d months";
+  private static final String PAYMENT_DATE_TIME_FILTER_NAME = "paymentDateTime";
 
-  public ExportFileControllerImpl(ExportFileSaveService service) {
+  public ExportFileControllerImpl(ExportFileSaveService service,
+                                  @Value("${data-export.installment-paid-view.max-months-interval}") Integer exportPaidMaxMonthsInterval,
+                                  @Value("${data-export.receipt-archiving-view.max-months-interval}") Integer exportArchivingMaxMonthsInterval,
+                                  @Value("${data-export.classification-view.max-months-interval}") Integer classificationMaxMonthsInterval) {
     this.service = service;
+    this.exportPaidMaxMonthsInterval = exportPaidMaxMonthsInterval;
+    this.exportArchivingMaxMonthsInterval = exportArchivingMaxMonthsInterval;
+    this.classificationMaxMonthsInterval = classificationMaxMonthsInterval;
   }
 
   @Override
@@ -38,23 +52,39 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
     return createExportFile(paidExportFileRequestDTO);
   }
 
-  private static void validatePaidExportFilterFieldsDate(PaidExportFileFilter filterFields) {
+  private void validatePaidExportFilterFieldsDate(PaidExportFileFilter filterFields) {
     OffsetDateTimeIntervalFilter paymentDateTime = filterFields.getPaymentDateTime();
     OffsetDateTimeIntervalFilter installmentUpdateDateTime = filterFields.getInstallmentUpdateDateTime();
-    boolean hasPaymentDates = paymentDateTime != null && paymentDateTime .getFrom() != null && paymentDateTime.getTo() != null;
-    boolean hasInstallmentDates = installmentUpdateDateTime != null && installmentUpdateDateTime.getFrom() != null && installmentUpdateDateTime.getTo() != null;
+    boolean hasPaymentDates = paymentDateTime != null && Utilities.validateDateFilters(paymentDateTime,PAYMENT_DATE_TIME_FILTER_NAME);
+    boolean hasInstallmentDates = installmentUpdateDateTime != null && Utilities.validateDateFilters(installmentUpdateDateTime, "installmentUpdateDateTime");
 
     if (hasPaymentDates == hasInstallmentDates) {
       throw new InvalidParamException(
-        "You must provide only one of the following date ranges: either the payment date range (paymentDateFrom and paymentDateTo) or the installment update date range (installmentUpdateDateTimeFrom and installmentUpdateDateTimeTo). Providing both or neither is not allowed"
+        "You must provide only one of the following date ranges: either the payment date range (paymentDateTimeFrom and paymentDateTimeTo) or the installment update date range (installmentUpdateDateTimeFrom and installmentUpdateDateTimeTo). Providing both or neither is not allowed"
       );
+    }
+
+    if (hasPaymentDates) {
+      validateOffsetDateTimeRange(paymentDateTime, PAYMENT_DATE_TIME_FILTER_NAME, exportPaidMaxMonthsInterval);
+    }
+
+    if (hasInstallmentDates) {
+      validateOffsetDateTimeRange(installmentUpdateDateTime, "installmentUpdateDateTime", exportPaidMaxMonthsInterval);
     }
   }
 
   @Override
-  public ResponseEntity<Void> createClassificationsExportFile(
-    ClassificationsExportFileRequestDTO classificationExportFileRequestDTO) {
-    return createExportFile(classificationExportFileRequestDTO);
+  public ResponseEntity<Void> createClassificationsExportFile(ClassificationsExportFileRequestDTO request) {
+    ClassificationsExportFileFilter filter = request.getFilterFields();
+    if (filter != null) {
+      validateLocalDateRange(filter.getLastClassificationDate(),"lastClassificationDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getPayDate(),"payDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getPaymentDate(), "paymentDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getRegulationDate(), "regulationDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getBillDate(), "billDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getRegionValueDate(), "regionValueDate", classificationMaxMonthsInterval);
+    }
+    return createExportFile(request);
   }
 
   @Override
@@ -65,8 +95,26 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
 
   @Override
   public ResponseEntity<Void> createReceiptsArchivingExportFile(ReceiptsArchivingExportFileRequestDTO receiptsArchivingExportFileRequestDTO) {
+    ReceiptsArchivingExportFileFilter filterFields = receiptsArchivingExportFileRequestDTO.getFilterFields();
+    if (filterFields != null){
+      validateOffsetDateTimeRange(filterFields.getPaymentDateTime(), PAYMENT_DATE_TIME_FILTER_NAME,  exportArchivingMaxMonthsInterval);
+    }
+
     return createExportFile(receiptsArchivingExportFileRequestDTO);
   }
+
+  private void validateOffsetDateTimeRange(OffsetDateTimeIntervalFilter range, String filterName, int maxMonths) {
+    if (range != null && !Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), filterName, ChronoUnit.MONTHS, maxMonths)) {
+        throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
+    }
+  }
+
+  private void validateLocalDateRange(LocalDateIntervalFilter range, String filterName, int maxMonths) {
+    if (range != null && !Utilities.isValidIntervalBetweenLocalDate(range.getFrom(), range.getTo(), filterName,ChronoUnit.MONTHS, maxMonths)) {
+        throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
+    }
+  }
+
 
   private <R extends ExportFileFilter> ResponseEntity<Void> createExportFile(
     ExportFileRequestDTO<R> exportFileRequestDTO) {
