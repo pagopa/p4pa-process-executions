@@ -30,6 +30,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   private final Integer exportArchivingMaxMonthsInterval;
   private final Integer classificationMaxMonthsInterval;
   private static final String INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE = "The date interval between %s and %s cannot exceed %d months";
+  private static final String PAYMENT_DATE_TIME_FILTER_NAME = "paymentDateTime";
 
   public ExportFileControllerImpl(ExportFileSaveService service,
                                   @Value("${data-export.installment-paid-view.max-months-interval}") Integer exportPaidMaxMonthsInterval,
@@ -54,8 +55,8 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   private void validatePaidExportFilterFieldsDate(PaidExportFileFilter filterFields) {
     OffsetDateTimeIntervalFilter paymentDateTime = filterFields.getPaymentDateTime();
     OffsetDateTimeIntervalFilter installmentUpdateDateTime = filterFields.getInstallmentUpdateDateTime();
-    boolean hasPaymentDates = paymentDateTime != null && paymentDateTime .getFrom() != null && paymentDateTime.getTo() != null;
-    boolean hasInstallmentDates = installmentUpdateDateTime != null && installmentUpdateDateTime.getFrom() != null && installmentUpdateDateTime.getTo() != null;
+    boolean hasPaymentDates = paymentDateTime != null && Utilities.validateDateFilters(paymentDateTime,PAYMENT_DATE_TIME_FILTER_NAME);
+    boolean hasInstallmentDates = installmentUpdateDateTime != null && Utilities.validateDateFilters(installmentUpdateDateTime, "installmentUpdateDateTime");
 
     if (hasPaymentDates == hasInstallmentDates) {
       throw new InvalidParamException(
@@ -64,11 +65,11 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
     }
 
     if (hasPaymentDates) {
-      validateOffsetDateTimeRange(paymentDateTime, exportPaidMaxMonthsInterval);
+      validateOffsetDateTimeRange(paymentDateTime, PAYMENT_DATE_TIME_FILTER_NAME, exportPaidMaxMonthsInterval);
     }
 
     if (hasInstallmentDates) {
-      validateOffsetDateTimeRange(installmentUpdateDateTime, exportPaidMaxMonthsInterval);
+      validateOffsetDateTimeRange(installmentUpdateDateTime, "installmentUpdateDateTime", exportPaidMaxMonthsInterval);
     }
   }
 
@@ -76,12 +77,12 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   public ResponseEntity<Void> createClassificationsExportFile(ClassificationsExportFileRequestDTO request) {
     ClassificationsExportFileFilter filter = request.getFilterFields();
     if (filter != null) {
-      validateLocalDateRange(filter.getLastClassificationDate(), classificationMaxMonthsInterval);
-      validateLocalDateRange(filter.getPayDate(), classificationMaxMonthsInterval);
-      validateLocalDateRange(filter.getPaymentDate(), classificationMaxMonthsInterval);
-      validateLocalDateRange(filter.getRegulationDate(), classificationMaxMonthsInterval);
-      validateLocalDateRange(filter.getBillDate(), classificationMaxMonthsInterval);
-      validateLocalDateRange(filter.getRegionValueDate(), classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getLastClassificationDate(),"lastClassificationDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getPayDate(),"payDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getPaymentDate(), "paymentDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getRegulationDate(), "regulationDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getBillDate(), "billDate", classificationMaxMonthsInterval);
+      validateLocalDateRange(filter.getRegionValueDate(), "regionValueDate", classificationMaxMonthsInterval);
     }
     return createExportFile(request);
   }
@@ -96,22 +97,21 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   public ResponseEntity<Void> createReceiptsArchivingExportFile(ReceiptsArchivingExportFileRequestDTO receiptsArchivingExportFileRequestDTO) {
     ReceiptsArchivingExportFileFilter filterFields = receiptsArchivingExportFileRequestDTO.getFilterFields();
     if (filterFields != null){
-      validateOffsetDateTimeRange(filterFields.getPaymentDateTime(), exportArchivingMaxMonthsInterval);
+      validateOffsetDateTimeRange(filterFields.getPaymentDateTime(), PAYMENT_DATE_TIME_FILTER_NAME,  exportArchivingMaxMonthsInterval);
     }
 
     return createExportFile(receiptsArchivingExportFileRequestDTO);
   }
 
-  private void validateOffsetDateTimeRange(OffsetDateTimeIntervalFilter range, int maxMonths) {
+  private void validateOffsetDateTimeRange(OffsetDateTimeIntervalFilter range, String filterName, int maxMonths) {
     if (range != null && range.getFrom() != null && range.getTo() != null &&
-      !Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), ChronoUnit.MONTHS, maxMonths)) {
+      !Utilities.isValidIntervalBetweenOffsetDateTime(range.getFrom(), range.getTo(), filterName, ChronoUnit.MONTHS, maxMonths)) {
         throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
     }
   }
 
-  private void validateLocalDateRange(LocalDateIntervalFilter range, int maxMonths) {
-    if (range != null && range.getFrom() != null && range.getTo() != null &&
-      !Utilities.isValidIntervalBetweenLocalDate(range.getFrom(), range.getTo(), ChronoUnit.MONTHS, maxMonths)) {
+  private void validateLocalDateRange(LocalDateIntervalFilter range, String filterName, int maxMonths) {
+    if (range != null && !Utilities.isValidIntervalBetweenLocalDate(range.getFrom(), range.getTo(), filterName,ChronoUnit.MONTHS, maxMonths)) {
         throw new InvalidTimeRangeException(INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE.formatted(range.getFrom(), range.getTo(), maxMonths));
     }
   }

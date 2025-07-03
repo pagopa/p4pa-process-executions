@@ -183,6 +183,76 @@ class ExportFileControllerApiTest {
     assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
   }
 
+  @ParameterizedTest
+  @MethodSource("provideInvalidPartialOffsetDateTimeFilters")
+  void whenPaidExportFileDateHasOnlyFromOrTo_thenThrowIllegalArgumentException(
+    Consumer<PaidExportFileFilter> filterSetter) {
+
+    PaidExportFileFilter filter = new PaidExportFileFilter();
+    filterSetter.accept(filter);
+
+    PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    assertThrows(IllegalArgumentException.class, () -> controller.createPaidExportFile(requestDTO));
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideInvalidPartialOffsetDateTimeFiltersForArchiving")
+  void whenArchivingExportFileDateHasOnlyFromOrTo_thenThrowIllegalArgumentException(
+    Consumer<ReceiptsArchivingExportFileFilter> filterSetter) {
+
+    ReceiptsArchivingExportFileFilter filter = new ReceiptsArchivingExportFileFilter();
+    filterSetter.accept(filter);
+
+    ReceiptsArchivingExportFileRequestDTO requestDTO = new ReceiptsArchivingExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    assertThrows(IllegalArgumentException.class, () -> controller.createReceiptsArchivingExportFile(requestDTO));
+  }
+
+  private static Stream<Consumer<PaidExportFileFilter>> provideInvalidPartialOffsetDateTimeFilters() {
+    OffsetDateTime now = OffsetDateTime.now();
+
+    return Stream.of(
+      // paymentDateTime
+      f -> {
+        OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
+        d.setFrom(now);
+        f.setPaymentDateTime(d);
+      },
+      f -> {
+        OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
+        d.setTo(now);
+        f.setPaymentDateTime(d);
+      },
+      // installmentUpdateDateTime
+      f -> {
+        OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
+        d.setFrom(now);
+        f.setInstallmentUpdateDateTime(d);
+      },
+      f -> {
+        OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
+        d.setTo(now);
+        f.setInstallmentUpdateDateTime(d);
+      }
+    );
+  }
+
+  private static Stream<Consumer<ReceiptsArchivingExportFileFilter>> provideInvalidPartialOffsetDateTimeFiltersForArchiving() {
+    OffsetDateTime now = OffsetDateTime.now();
+
+    return Stream.of(
+      f -> {
+        OffsetDateTimeIntervalFilter d = new OffsetDateTimeIntervalFilter();
+        d.setFrom(now);
+        f.setPaymentDateTime(d);
+      }
+    );
+  }
+
+
   @Test
   void whenCreatePaymentsReportingExportFileThenInvokeService() {
     PaymentsReportingExportFileRequestDTO requestDTO = new PaymentsReportingExportFileRequestDTO();
@@ -195,23 +265,6 @@ class ExportFileControllerApiTest {
     Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createPaymentsReportingExportFile(requestDTO);
-
-    assertEquals(HttpStatus.CREATED, result.getStatusCode());
-    assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
-  }
-
-  @Test
-  void whenCreateArchivingExportFileThenInvokeService() {
-    ReceiptsArchivingExportFileRequestDTO requestDTO = new ReceiptsArchivingExportFileRequestDTO();
-    ExportFile<?> t = new ReceiptsArchivingExportFile();
-    t.setExportFileId(1L);
-
-    String operatorExternalId = "OPERATOREXTERNALID";
-    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
-
-    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
-
-    ResponseEntity<Void> result = controller.createReceiptsArchivingExportFile(requestDTO);
 
     assertEquals(HttpStatus.CREATED, result.getStatusCode());
     assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
@@ -249,7 +302,6 @@ class ExportFileControllerApiTest {
     assertThrows(InvalidTimeRangeException.class, () -> controller.createPaidExportFile(requestDTO));
   }
 
-
   @ParameterizedTest
   @MethodSource("provideInvalidClassificationDateFilters")
   void whenInvalidClassificationDateField_thenThrowInvalidTimeRangeException(
@@ -281,7 +333,110 @@ class ExportFileControllerApiTest {
     );
   }
 
+  @ParameterizedTest
+  @MethodSource("provideInvalidPartialLocalDateFilters")
+  void whenClassificationExportFileDateHasOnlyFromOrTo_thenThrowIllegalArgumentException(
+    Consumer<ClassificationsExportFileFilter> filterSetter) {
 
+    ClassificationsExportFileFilter filter = new ClassificationsExportFileFilter();
+    filterSetter.accept(filter);
+
+    ClassificationsExportFileRequestDTO requestDTO = new ClassificationsExportFileRequestDTO();
+    requestDTO.setFilterFields(filter);
+
+    assertThrows(IllegalArgumentException.class, () -> controller.createClassificationsExportFile(requestDTO));
+  }
+
+  private static Stream<Consumer<ClassificationsExportFileFilter>> provideInvalidPartialLocalDateFilters() {
+    LocalDate now = LocalDate.now();
+
+    return Stream.of(
+      // lastClassificationDate
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setFrom(now);
+        f.setLastClassificationDate(d);
+      },
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setTo(now);
+        f.setLastClassificationDate(d);
+      },
+      // payDate
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setFrom(now);
+        f.setPayDate(d);
+      },
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setTo(now);
+        f.setPayDate(d);
+      },
+      // paymentDate
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setFrom(now);
+        f.setPaymentDate(d);
+      },
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setTo(now);
+        f.setPaymentDate(d);
+      },
+      // regulationDate
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setFrom(now);
+        f.setRegulationDate(d);
+      },
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setTo(now);
+        f.setRegulationDate(d);
+      },
+      // billDate
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setFrom(now);
+        f.setBillDate(d);
+      },
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setTo(now);
+        f.setBillDate(d);
+      },
+      // regionValueDate
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setFrom(now);
+        f.setRegionValueDate(d);
+      },
+      f -> {
+        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
+        d.setTo(now);
+        f.setRegionValueDate(d);
+      }
+    );
+  }
+
+
+  @Test
+  void whenCreateArchivingExportFileThenInvokeService() {
+    ReceiptsArchivingExportFileRequestDTO requestDTO = new ReceiptsArchivingExportFileRequestDTO();
+    ExportFile<?> t = new ReceiptsArchivingExportFile();
+    t.setExportFileId(1L);
+
+    String operatorExternalId = "OPERATOREXTERNALID";
+    SecurityUtilsTest.configureSecurityContext(operatorExternalId);
+
+    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+
+    ResponseEntity<Void> result = controller.createReceiptsArchivingExportFile(requestDTO);
+
+    assertEquals(HttpStatus.CREATED, result.getStatusCode());
+    assertEquals("1", result.getHeaders().getFirst(HttpHeaders.LOCATION));
+  }
 
   @Test
   void whenInvalidArchivingPaymentDate_thenThrowInvalidTimeRangeException() {
