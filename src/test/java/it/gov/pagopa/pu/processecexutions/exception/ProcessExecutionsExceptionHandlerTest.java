@@ -252,7 +252,7 @@ class ProcessExecutionsExceptionHandlerTest {
 
     performRequest(DATA, MediaType.APPLICATION_JSON)
       .andExpect(MockMvcResultMatchers.status().isBadRequest())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_INVALID_FILE_VERSION"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Unsupported version"));
   }
 
@@ -265,4 +265,15 @@ class ProcessExecutionsExceptionHandlerTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_BAD_REQUEST"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("error"));
   }
+
+  @Test
+  void handleInvalidTimeRangeException() throws Exception {
+    doThrow(new InvalidTimeRangeException("error")).when(testControllerSpy).testEndpoint(DATA, BODY);
+
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_INVALID_TIME_RANGE"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("error"));
+  }
+
 }

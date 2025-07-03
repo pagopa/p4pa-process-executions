@@ -36,7 +36,7 @@ public class ProcessExecutionsExceptionHandler {
 
   @ExceptionHandler({ExportFlowFileVersionNotSupportedException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleBadRequestExceptions(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_INVALID_FILE_VERSION);
   }
 
   @ExceptionHandler({ResourceNotFoundException.class})
@@ -86,6 +86,11 @@ public class ProcessExecutionsExceptionHandler {
   @ExceptionHandler({InvalidParamException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleInvalidParamException(Exception ex, HttpServletRequest request) {
     return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
+  }
+
+  @ExceptionHandler({InvalidTimeRangeException.class})
+  public ResponseEntity<ProcessExecutionsErrorDTO> handleInvalidTimeRangeException(Exception ex, HttpServletRequest request) {
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_INVALID_TIME_RANGE);
   }
 
   static ResponseEntity<ProcessExecutionsErrorDTO> handleException(Exception ex, HttpServletRequest request, HttpStatusCode httpStatus, ProcessExecutionsErrorDTO.CodeEnum errorEnum) {

@@ -40,6 +40,7 @@ class ExportFileControllerApiTest {
   private ExportFileSaveService serviceMock;
 
   private ExportFileControllerApi controller;
+  private static final Integer MAX_MONTHS_RANGE = 6;
 
   @BeforeEach
   void init(){
@@ -47,7 +48,7 @@ class ExportFileControllerApiTest {
     SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
     securityContext.setAuthentication(authentication);
     SecurityContextHolder.setContext(securityContext);
-    controller = new ExportFileControllerImpl(serviceMock);
+    controller = new ExportFileControllerImpl(serviceMock, MAX_MONTHS_RANGE, MAX_MONTHS_RANGE, MAX_MONTHS_RANGE);
   }
 
   @AfterEach
