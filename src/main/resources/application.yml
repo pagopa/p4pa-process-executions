@@ -106,3 +106,13 @@ rest:
     max-attempts: "\${WORKFLOW_HUB_MAX_ATTEMPTS:3}" # It's counting also the first attempt
     wait-time-millis: "\${WORKFLOW_HUB_WAIT_TIME_MILLIS:500}"
     print-body-when-error: "\${WORKFLOW_HUB_PRINT_BODY_WHEN_ERROR:true}"
+
+data-export:
+  default:
+    max-months-interval: "${DATA_EXPORT_MAX_MONTHS_INTERVAL: 6}"
+  installment-paid-view:
+    max-months-interval: "\${INSTALLMENT_PAID_VIEW_MAX_MONTHS_INTERVAL:\${data-export.default.max-months-interval}}"
+  receipt-archiving-view:
+    max-months-interval: "\${RECEIPT_ARCHIVING_VIEW_MAX_MONTHS_INTERVAL:\${data-export.default.max-months-interval}}"
+  classification-view:
+    max-months-interval: "\${CLASSIFICATION_VIEW_MAX_MONTHS_INTERVAL:\${data-export.default.max-months-interval}}"
