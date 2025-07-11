@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,10 +17,10 @@ public class ClassificationsExportFileFilter implements ExportFileFilter {
 
   private String iuf;
   private String iud;
-  private String iuv;
-  private String iur;
+  private List<String> iuv;
+  private List<String> iur;
 
-  private ClassificationsEnum label;
+  private List<ClassificationsEnum> label;
 
   private LocalDateIntervalFilter lastClassificationDate;
   private LocalDateIntervalFilter payDate;
@@ -33,5 +35,6 @@ public class ClassificationsExportFileFilter implements ExportFileFilter {
   private String remittanceInformation;
   private String pspCompanyName;
   private String pspLastName;
+  private List<String> debtPositionTypeOrgCodes;
 
 }
