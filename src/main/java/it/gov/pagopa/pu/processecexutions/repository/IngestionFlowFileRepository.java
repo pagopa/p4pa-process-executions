@@ -29,11 +29,12 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
   @Override
   <S extends IngestionFlowFile> S save(@Nonnull S entity);
 
-  @RestResource(exported = false)@Modifying
+  @RestResource(exported = false)
+  @Modifying
   @Transactional
   @Query("update IngestionFlowFile" +
     " set status=:newStatus," +
-    " fileVersion=:fileVersion," +
+    " fileVersion = COALESCE(:fileVersion, fileVersion)," +
     " numCorrectlyImportedRows=:processedRows," +
     " numTotalRows=:totalRows," +
     " errorDescription=:errorDescription," +
