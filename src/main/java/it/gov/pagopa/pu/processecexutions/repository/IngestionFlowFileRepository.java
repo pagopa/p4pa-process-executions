@@ -41,7 +41,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     " discardFileName=:discardFileName " +
     "where ingestionFlowFileId=:ingestionFlowFileId" +
     " and status=:oldStatus")
-  int updateStatus(Long ingestionFlowFileId, String fileVersion, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
+  Integer updateStatus(Long ingestionFlowFileId, String fileVersion, IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
                    long processedRows, long totalRows,
                    String errorDescription, String discardFileName);
 
@@ -51,7 +51,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     " set fileName=:fileName," +
     " discardFileName=:discardFileName " +
     "where ingestionFlowFileId=:ingestionFlowFileId")
-  int updateFileNames(Long ingestionFlowFileId, String fileName, String discardFileName);
+  Integer updateFileNames(Long ingestionFlowFileId, String fileName, String discardFileName);
 
   @SuppressWarnings("squid:S107") // suppressing too many parameters warning: it's allowed in query methods
   @Query("SELECT iff "
@@ -86,7 +86,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
         AND other.ingestionFlowFileId <> iff.ingestionFlowFileId
     )
     """)
-  int updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
+  Integer updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
 
   Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
 
@@ -97,7 +97,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     " SET pdfGenerated=:pdfGenerated," +
     " pdfGeneratedId=:pdfGeneratedId " +
     "where ingestionFlowFileId=:ingestionFlowFileId")
-  int updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
+  Integer updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
                                           @Param("pdfGenerated") long pdfGenerated,
                                           @Param("pdfGeneratedId") String pdfGeneratedId);
 }
