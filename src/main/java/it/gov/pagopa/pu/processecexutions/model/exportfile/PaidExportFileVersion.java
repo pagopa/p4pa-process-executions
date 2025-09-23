@@ -9,7 +9,8 @@ public enum PaidExportFileVersion implements ExportFileTypeVersions {
   V1("v1.0"),
   V1_1("v1.1"),
   V1_2("v1.2"),
-  V1_3("v1.3");
+  V1_3("v1.3"),
+  V1_4("v1.4");
 
   final String value;
 
