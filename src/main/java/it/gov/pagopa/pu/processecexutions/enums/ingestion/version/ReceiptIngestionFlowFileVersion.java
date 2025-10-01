@@ -1,13 +1,11 @@
-package it.gov.pagopa.pu.processecexutions.enums;
+package it.gov.pagopa.pu.processecexutions.enums.ingestion.version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Arrays;
-
 @Schema(enumAsRef = true)
-public enum ReceiptIngestionFlowFileVersion {
+public enum ReceiptIngestionFlowFileVersion implements VersionEnum {
   V1_0("1.0"),
   V1_1("1.1"),
   V1_2("1.2"),
@@ -21,10 +19,7 @@ public enum ReceiptIngestionFlowFileVersion {
 
   @JsonCreator
   public static ReceiptIngestionFlowFileVersion forValue(String value) {
-    return Arrays.stream(values())
-      .filter(v -> v.value.equals(value))
-      .findFirst()
-      .orElseThrow(() -> new IllegalArgumentException("Invalid value: " + value));
+    return VersionEnumUtils.fromValue(ReceiptIngestionFlowFileVersion.class, value);
   }
 
   @JsonValue
@@ -32,4 +27,3 @@ public enum ReceiptIngestionFlowFileVersion {
     return value;
   }
 }
-
