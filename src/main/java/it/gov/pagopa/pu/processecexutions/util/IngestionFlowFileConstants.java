@@ -25,6 +25,7 @@ public class IngestionFlowFileConstants {
       entry(IngestionFlowFileTypeEnum.TREASURY_POSTE, extractVersions(TreasuryPosteIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.TREASURY_CSV, extractVersions(TreasuryCsvIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.TREASURY_CSV_COMPLETE, extractVersions(TreasuryCsvCompletengestionFlowFileVersion.values())),
+      entry(IngestionFlowFileTypeEnum.TREASURY_XLS, extractVersions(TreasuryCsvCompletengestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.PAYMENT_NOTIFICATION, extractVersions(PaymentNotificationIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.ORGANIZATIONS, extractVersions(OrganizationIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.DEBT_POSITIONS_TYPE, extractVersions(DebtPositionTypeIngestionFlowFileVersion.values())),
