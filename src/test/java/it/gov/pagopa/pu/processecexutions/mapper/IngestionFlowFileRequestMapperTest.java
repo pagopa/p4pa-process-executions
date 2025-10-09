@@ -1,9 +1,9 @@
 package it.gov.pagopa.pu.processecexutions.mapper;
 
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
-import it.gov.pagopa.pu.processecexutions.enums.DpInstallmentsIngestionFlowFileVersion;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.enums.ingestion.version.DpInstallmentsIngestionFlowFileVersion;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
