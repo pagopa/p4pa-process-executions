@@ -19,8 +19,6 @@ public class IngestionFlowFileConstants {
     availableVersions = Map.ofEntries(
       entry(IngestionFlowFileTypeEnum.DP_INSTALLMENTS, extractVersions(DpInstallmentsIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.RECEIPT, extractVersions(ReceiptIngestionFlowFileVersion.values())),
-      entry(IngestionFlowFileTypeEnum.PAYMENTS_REPORTING, extractVersions(PaymentsReportingIngestionFlowFileVersion.values())),
-      entry(IngestionFlowFileTypeEnum.PAYMENTS_REPORTING_PAGOPA, extractVersions(PaymentsReportingPagoPaIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.TREASURY_OPI, extractVersions(TreasuryOpiIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.TREASURY_POSTE, extractVersions(TreasuryPosteIngestionFlowFileVersion.values())),
       entry(IngestionFlowFileTypeEnum.TREASURY_CSV, extractVersions(TreasuryCsvIngestionFlowFileVersion.values())),
