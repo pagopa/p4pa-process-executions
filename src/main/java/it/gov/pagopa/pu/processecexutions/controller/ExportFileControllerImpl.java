@@ -55,8 +55,16 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   private void validatePaidExportFilterFieldsDate(PaidExportFileFilter filterFields) {
     OffsetDateTimeIntervalFilter paymentDateTime = filterFields.getPaymentDateTime();
     OffsetDateTimeIntervalFilter installmentUpdateDateTime = filterFields.getInstallmentUpdateDateTime();
-    boolean hasPaymentDates = paymentDateTime != null && Utilities.validateDateFilters(paymentDateTime,PAYMENT_DATE_TIME_FILTER_NAME);
-    boolean hasInstallmentDates = installmentUpdateDateTime != null && Utilities.validateDateFilters(installmentUpdateDateTime, "installmentUpdateDateTime");
+
+    if (paymentDateTime != null){
+      Utilities.validateDateFilters(paymentDateTime,PAYMENT_DATE_TIME_FILTER_NAME);
+    }
+    if (installmentUpdateDateTime != null){
+      Utilities.validateDateFilters(installmentUpdateDateTime, "installmentUpdateDateTime");
+    }
+
+    boolean hasPaymentDates = paymentDateTime != null && paymentDateTime.getFrom() != null && paymentDateTime.getTo() != null;
+    boolean hasInstallmentDates = installmentUpdateDateTime != null && installmentUpdateDateTime.getFrom() != null && installmentUpdateDateTime.getTo() != null;
 
     if (hasPaymentDates == hasInstallmentDates) {
       throw new InvalidParamException(
