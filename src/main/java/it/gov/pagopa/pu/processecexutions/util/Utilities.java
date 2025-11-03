@@ -41,7 +41,7 @@ public class Utilities {
   }
 
   public static boolean isDateFilterConfigured(OffsetDateTimeIntervalFilter dateFilter, String filterName) {
-    return dateFilter != null && Utilities.validateDateFilters(dateFilter, filterName) && dateFilter.getFrom() != null && dateFilter.getTo() != null;
+    return dateFilter != null && Utilities.validateDateFilters(dateFilter, filterName) && dateFilter.getFrom() != null;
   }
 
 }
