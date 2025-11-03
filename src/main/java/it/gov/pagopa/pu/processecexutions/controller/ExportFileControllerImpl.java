@@ -21,6 +21,8 @@ import java.net.URI;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static it.gov.pagopa.pu.processecexutions.util.Utilities.isDateFilterConfigured;
+
 @RestController
 @Slf4j
 public class ExportFileControllerImpl implements ExportFileControllerApi {
@@ -56,15 +58,8 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
     OffsetDateTimeIntervalFilter paymentDateTime = filterFields.getPaymentDateTime();
     OffsetDateTimeIntervalFilter installmentUpdateDateTime = filterFields.getInstallmentUpdateDateTime();
 
-    if (paymentDateTime != null){
-      Utilities.validateDateFilters(paymentDateTime,PAYMENT_DATE_TIME_FILTER_NAME);
-    }
-    if (installmentUpdateDateTime != null){
-      Utilities.validateDateFilters(installmentUpdateDateTime, "installmentUpdateDateTime");
-    }
-
-    boolean hasPaymentDates = paymentDateTime != null && paymentDateTime.getFrom() != null && paymentDateTime.getTo() != null;
-    boolean hasInstallmentDates = installmentUpdateDateTime != null && installmentUpdateDateTime.getFrom() != null && installmentUpdateDateTime.getTo() != null;
+    boolean hasPaymentDates = isDateFilterConfigured(paymentDateTime, PAYMENT_DATE_TIME_FILTER_NAME);
+    boolean hasInstallmentDates = isDateFilterConfigured(installmentUpdateDateTime, "installmentUpdateDateTime");
 
     if (hasPaymentDates == hasInstallmentDates) {
       throw new InvalidParamException(
