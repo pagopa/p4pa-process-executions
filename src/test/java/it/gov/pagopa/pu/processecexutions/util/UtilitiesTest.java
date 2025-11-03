@@ -213,4 +213,17 @@ public class UtilitiesTest {
     assertTrue(exception.getMessage().contains(expectedMessage));
   }
 
+  @Test
+  void givenOnlyToSetToNullWhenIsDateFilterConfiguredThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, null);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      Utilities.isDateFilterConfigured(filter, "testFilter");
+    });
+
+    String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
+    assertTrue(exception.getMessage().contains(expectedMessage));
+  }
+
 }
