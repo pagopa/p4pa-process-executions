@@ -2,6 +2,7 @@ package it.gov.pagopa.pu.processecexutions.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import it.gov.pagopa.pu.processecexutions.dto.generated.ProcessExecutionsErrorDTO;
+import it.gov.pagopa.pu.processecexutions.util.Utilities;
 import jakarta.persistence.RollbackException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -101,7 +102,7 @@ public class ProcessExecutionsExceptionHandler {
     return ResponseEntity
       .status(httpStatus)
       .contentType(MediaType.APPLICATION_JSON)
-      .body(new ProcessExecutionsErrorDTO(errorEnum, message));
+      .body(new ProcessExecutionsErrorDTO(errorEnum, message, Utilities.getTraceId()));
   }
 
   private static void logException(Exception ex, HttpServletRequest request, HttpStatusCode httpStatus) {

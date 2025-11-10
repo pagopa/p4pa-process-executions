@@ -422,4 +422,5 @@ components:
             - PROCESS_EXECUTIONS_INVALID_TIME_RANGE
         message:
           type: string
-
+        traceId:
+          type: string
