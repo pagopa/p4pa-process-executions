@@ -8,7 +8,7 @@ servers:
     description: Generated server url
 paths:
   /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-status:
-    patch:
+    post:
       tags:
         - ingestion-flow-file-entity-extended-controller
       operationId: updateStatus
@@ -299,7 +299,7 @@ paths:
                 items:
                   type: 'ExportFileTypeVersions'
   /crud-ext/export-files/{exportFileId}/set-status:
-    patch:
+    post:
       tags:
         - export-file-entity-extended-controller
       operationId: updateExportFileStatus
