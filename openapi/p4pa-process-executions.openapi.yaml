@@ -377,13 +377,10 @@ components:
     IngestionFlowFileUpdateStatusRequestDTO:
       type: object
       required:
-        - fileVersion
         - oldStatus
         - newStatus
         - processedRows
         - totalRows
-        - errorDescription
-        - discardFile
       properties:
         fileVersion:
           type: string
