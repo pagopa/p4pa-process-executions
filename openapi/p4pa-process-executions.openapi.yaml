@@ -8,7 +8,7 @@ servers:
     description: Generated server url
 paths:
   /crud-ext/ingestion-flow-files/{ingestionFlowFileId}/set-status:
-    patch:
+    post:
       tags:
         - ingestion-flow-file-entity-extended-controller
       operationId: updateStatus
@@ -19,43 +19,12 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: fileVersion
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: oldStatus
-          in: query
-          required: true
-          schema:
-            type: "IngestionFlowFileStatusEnum"
-        - name: newStatus
-          in: query
-          required: true
-          schema:
-            type: "IngestionFlowFileStatusEnum"
-        - name: processedRows
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: totalRows
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: errorDescription
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: discardFile
-          in: query
-          required: false
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestionFlowFileUpdateStatusRequestDTO'
+        required: true
       responses:
         '200':
           description: OK
@@ -299,7 +268,7 @@ paths:
                 items:
                   type: 'ExportFileTypeVersions'
   /crud-ext/export-files/{exportFileId}/set-status:
-    patch:
+    post:
       tags:
         - export-file-entity-extended-controller
       operationId: updateExportFileStatus
@@ -405,6 +374,30 @@ components:
           type: string
         fileVersion:
           type: string
+    IngestionFlowFileUpdateStatusRequestDTO:
+      type: object
+      required:
+        - oldStatus
+        - newStatus
+        - processedRows
+        - totalRows
+      properties:
+        fileVersion:
+          type: string
+        oldStatus:
+          type: "IngestionFlowFileStatusEnum"
+        newStatus:
+          type: "IngestionFlowFileStatusEnum"
+        processedRows:
+          type: integer
+          format: int64
+        totalRows:
+          type: integer
+          format: int64
+        errorDescription:
+          type: string
+        discardFile:
+          type: string
     ProcessExecutionsErrorDTO:
       type: object
       required:
@@ -422,4 +415,5 @@ components:
             - PROCESS_EXECUTIONS_INVALID_TIME_RANGE
         message:
           type: string
-
+        traceId:
+          type: string

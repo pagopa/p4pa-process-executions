@@ -16,10 +16,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class ClassificationsExportFileFilter implements ExportFileFilter {
 
-  private String iuf;
+  private List<String> iufs;
   private String iud;
-  private List<String> iuv;
-  private List<String> iur;
+  private List<String> iuvs;
+  private List<String> iurs;
 
   private Set<ClassificationsEnum> label;
 

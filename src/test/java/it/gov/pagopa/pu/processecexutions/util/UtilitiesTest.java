@@ -172,4 +172,57 @@ public class UtilitiesTest {
 
     assertTrue(actualMessage.contains(expectedMessage));
   }
+
+  @Test
+  void givenValidFilterConfiguredWhenIsDateFilterConfiguredThenReturnTrue() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = OffsetDateTime.now().plusDays(1);
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, to);
+
+    boolean result = Utilities.isDateFilterConfigured(filter, "testFilter");
+
+    assertTrue(result);
+  }
+
+  @Test
+  void givenNullFilterConfiguredWhenIsDateFilterConfiguredThenReturnFalse() {
+    boolean result = Utilities.isDateFilterConfigured(null, "testFilter");
+
+    assertFalse(result);
+  }
+
+  @Test
+  void givenFromAndToSetToNullConfiguredWhenIsDateFilterConfiguredThenReturnFalse() {
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(null, null);
+
+    boolean result = Utilities.isDateFilterConfigured(filter, "testFilter");
+
+    assertFalse(result);
+  }
+
+  @Test
+  void givenOnlyFromSetToNullWhenIsDateFilterConfiguredThenThrowException() {
+    OffsetDateTime to = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(null, to);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      Utilities.isDateFilterConfigured(filter, "testFilter");
+    });
+
+    String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
+    assertTrue(exception.getMessage().contains(expectedMessage));
+  }
+
+  @Test
+  void givenOnlyToSetToNullWhenIsDateFilterConfiguredThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, null);
+
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      Utilities.isDateFilterConfigured(filter, "testFilter");
+    });
+
+    String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
+    assertTrue(exception.getMessage().contains(expectedMessage));
+  }
 }

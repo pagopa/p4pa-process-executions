@@ -1,7 +1,7 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
 import it.gov.pagopa.pu.processecexutions.controller.generated.IngestionFlowFileEntityExtendedControllerApi;
-import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
+import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileUpdateStatusRequestDTO;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +21,8 @@ public class IngestionFlowFileEntityExtendedController implements IngestionFlowF
 
   @Override
   public ResponseEntity<Integer> updateStatus(Long ingestionFlowFileId,
-                                              IngestionFlowFileStatus oldStatus, IngestionFlowFileStatus newStatus,
-                                              Long processedRows, Long totalRows,
-                                              String fileVersion, String errorDescription, String discardFile) {
-    int result = repository.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus, processedRows, totalRows, errorDescription, discardFile);
+                                              IngestionFlowFileUpdateStatusRequestDTO requestDTO) {
+    int result = repository.updateStatus(ingestionFlowFileId, requestDTO.getFileVersion(), requestDTO.getOldStatus(), requestDTO.getNewStatus(), requestDTO.getProcessedRows(), requestDTO.getTotalRows(), requestDTO.getErrorDescription(), requestDTO.getDiscardFile());
     if (result > 0) {
       return ResponseEntity.ok(result);
     } else {

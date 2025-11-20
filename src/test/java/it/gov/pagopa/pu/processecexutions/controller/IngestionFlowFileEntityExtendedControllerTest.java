@@ -1,5 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.controller;
 
+import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileUpdateStatusRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -35,24 +36,23 @@ class IngestionFlowFileEntityExtendedControllerTest {
   void whenUpdateStatusThenInvokeRepository() {
     // Given
     long ingestionFlowFileId = 1L;
-    IngestionFlowFileStatus oldStatus = IngestionFlowFileStatus.UPLOADED;
-    IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
-    long processedRows = 10L;
-    long totalRows = 100L;
-    String fileVersion = "FILEVERSION";
-    String errorDescription = "ERRORDESCRIPTION";
-    String discardFilename = "DISCARDFILENAME";
+    IngestionFlowFileUpdateStatusRequestDTO requestDTO = new IngestionFlowFileUpdateStatusRequestDTO();
+    requestDTO.setOldStatus(IngestionFlowFileStatus.UPLOADED);
+    requestDTO.setNewStatus(IngestionFlowFileStatus.PROCESSING);
+    requestDTO.setProcessedRows(10L);
+    requestDTO.setTotalRows(100L);
+    requestDTO.setFileVersion("FILEVERSION");
+    requestDTO.setErrorDescription("ERRORDESCRIPTION");
+    requestDTO.setDiscardFile("DISCARDFILENAME");
     int expectedResult = 1;
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus,
-        processedRows, totalRows,
-        errorDescription, discardFilename))
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, requestDTO.getFileVersion(), requestDTO.getOldStatus(), requestDTO.getNewStatus(),
+        requestDTO.getProcessedRows(), requestDTO.getTotalRows(),
+        requestDTO.getErrorDescription(), requestDTO.getDiscardFile()))
       .thenReturn(expectedResult);
 
     // When
-    Integer result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
-        processedRows, totalRows,
-        fileVersion, errorDescription, discardFilename)
+    Integer result = controller.updateStatus(ingestionFlowFileId, requestDTO)
       .getBody();
 
     // Then
@@ -63,23 +63,22 @@ class IngestionFlowFileEntityExtendedControllerTest {
   void givenZeroResultWhenUpdateStatusThenNotFound() {
     // Given
     long ingestionFlowFileId = 1L;
-    IngestionFlowFileStatus oldStatus = IngestionFlowFileStatus.UPLOADED;
-    IngestionFlowFileStatus newStatus = IngestionFlowFileStatus.PROCESSING;
-    long processedRows = 10L;
-    long totalRows = 100L;
-    String fileVersion = "FILEVERSION";
-    String errorDescription = "ERRORDESCRIPTION";
-    String discardFilename = "DISCARDFILENAME";
+    IngestionFlowFileUpdateStatusRequestDTO requestDTO = new IngestionFlowFileUpdateStatusRequestDTO();
+    requestDTO.setOldStatus(IngestionFlowFileStatus.UPLOADED);
+    requestDTO.setNewStatus(IngestionFlowFileStatus.PROCESSING);
+    requestDTO.setProcessedRows(10L);
+    requestDTO.setTotalRows(100L);
+    requestDTO.setFileVersion("FILEVERSION");
+    requestDTO.setErrorDescription("ERRORDESCRIPTION");
+    requestDTO.setDiscardFile("DISCARDFILENAME");
 
-    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, fileVersion, oldStatus, newStatus,
-        processedRows, totalRows,
-        errorDescription, discardFilename))
+    Mockito.when(repositoryMock.updateStatus(ingestionFlowFileId, requestDTO.getFileVersion(), requestDTO.getOldStatus(), requestDTO.getNewStatus(),
+        requestDTO.getProcessedRows(), requestDTO.getTotalRows(),
+        requestDTO.getErrorDescription(), requestDTO.getDiscardFile()))
       .thenReturn(0);
 
     // When
-    HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, oldStatus, newStatus,
-        processedRows, totalRows,
-        fileVersion, errorDescription, discardFilename)
+    HttpStatusCode result = controller.updateStatus(ingestionFlowFileId, requestDTO)
       .getStatusCode();
 
     // Then

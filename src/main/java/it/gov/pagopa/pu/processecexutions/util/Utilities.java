@@ -40,4 +40,12 @@ public class Utilities {
     return true;
   }
 
+  public static boolean isDateFilterConfigured(OffsetDateTimeIntervalFilter dateFilter, String filterName) {
+    if (dateFilter == null) {
+      return false;
+    }
+    Utilities.validateDateFilters(dateFilter, filterName);
+    return dateFilter.getFrom() != null;
+  }
+
 }
