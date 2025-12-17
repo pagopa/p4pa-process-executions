@@ -67,7 +67,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelClassificationsExportFile"
                 }
@@ -104,7 +104,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ClassificationsExportFile"
                 }
@@ -179,7 +179,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelExportFile"
                 }
@@ -283,7 +283,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelExportFile"
                 }
@@ -363,7 +363,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "type" : "integer",
                   "format" : "int32"
@@ -394,7 +394,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ExportFile"
                 }
@@ -469,7 +469,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelIngestionFlowFile"
                 }
@@ -576,7 +576,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelIngestionFlowFile"
                 }
@@ -617,7 +617,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/IngestionFlowFile"
                 }
@@ -646,7 +646,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "type" : "integer",
                   "format" : "int32"
@@ -677,7 +677,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/IngestionFlowFile"
                 }
@@ -752,7 +752,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelPaidExportFile"
                 }
@@ -789,7 +789,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PaidExportFile"
                 }
@@ -864,7 +864,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelPaymentsReportingExportFile"
                 }
@@ -901,7 +901,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PaymentsReportingExportFile"
                 }
@@ -943,7 +943,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/RepresentationModelObject"
                 }
@@ -1162,7 +1162,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PagedModelReceiptsArchivingExportFile"
                 }
@@ -1199,7 +1199,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "application/hal+json" : {
+              "application/vnd.hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ReceiptsArchivingExportFile"
                 }
@@ -1852,60 +1852,6 @@
           }
         }
       },
-      "ExportFileStatus" : {
-        "type" : "string",
-        "enum" : [ "REQUESTED", "PROCESSING", "COMPLETED", "EXPIRED", "ERROR" ]
-      },
-      "PageMetadata" : {
-        "type" : "object",
-        "properties" : {
-          "size" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "totalElements" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "number" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }
-      },
-      "PaymentsReportingExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "iuf" : {
-            "type" : "string"
-          }
-        }
-      },
-      "OffsetDateTimeIntervalFilter" : {
-        "type" : "object",
-        "properties" : {
-          "from" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "to" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "ReceiptsArchivingExportFileFilter" : {
-        "type" : "object",
-        "properties" : {
-          "paymentDateTime" : {
-            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
-          }
-        }
-      },
       "ClassificationsExportFileFilter" : {
         "type" : "object",
         "properties" : {
@@ -1984,16 +1930,9 @@
           }
         }
       },
-      "ExportFileFilter" : {
-        "oneOf" : [ {
-          "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
-        }, {
-          "$ref" : "#/components/schemas/PaidExportFileFilter"
-        }, {
-          "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
-        }, {
-          "$ref" : "#/components/schemas/ReceiptsArchivingExportFileFilter"
-        } ]
+      "ExportFileStatus" : {
+        "type" : "string",
+        "enum" : [ "REQUESTED", "PROCESSING", "COMPLETED", "EXPIRED", "ERROR" ]
       },
       "LocalDateIntervalFilter" : {
         "type" : "object",
@@ -2005,6 +1944,51 @@
           "to" : {
             "type" : "string",
             "format" : "date"
+          }
+        }
+      },
+      "PageMetadata" : {
+        "type" : "object",
+        "properties" : {
+          "size" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalElements" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalPages" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "number" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "ExportFileFilter" : {
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
+        }, {
+          "$ref" : "#/components/schemas/PaidExportFileFilter"
+        }, {
+          "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
+        }, {
+          "$ref" : "#/components/schemas/ReceiptsArchivingExportFileFilter"
+        } ]
+      },
+      "OffsetDateTimeIntervalFilter" : {
+        "type" : "object",
+        "properties" : {
+          "from" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "to" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },
@@ -2027,6 +2011,22 @@
               "type" : "string",
               "enum" : [ "ORDINARY", "ORDINARY_SIL", "SPONTANEOUS", "SPONTANEOUS_SIL", "SPONTANEOUS_MIXED", "SECONDARY_ORG", "RECEIPT_FILE", "RECEIPT_PAGOPA", "REPORTING_PAGOPA" ]
             }
+          }
+        }
+      },
+      "PaymentsReportingExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "iuf" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ReceiptsArchivingExportFileFilter" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDateTime" : {
+            "$ref" : "#/components/schemas/OffsetDateTimeIntervalFilter"
           }
         }
       },
@@ -2227,7 +2227,7 @@
         "type" : "string",
         "enum" : [ "v1.0" ]
       },
-      "PaymentsReportingExportFile" : {
+      "ClassificationsExportFile" : {
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -2267,7 +2267,7 @@
           },
           "exportFileType" : {
             "type" : "string",
-            "enum" : [ "PAYMENTS_REPORTING" ]
+            "enum" : [ "CLASSIFICATIONS" ]
           },
           "fileVersion" : {
             "type" : "string"
@@ -2287,7 +2287,7 @@
             "format" : "date-time"
           },
           "filterFields" : {
-            "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
+            "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
@@ -2295,7 +2295,7 @@
         },
         "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
       },
-      "PagedModelPaymentsReportingExportFile" : {
+      "PagedModelClassificationsExportFile" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
@@ -2304,97 +2304,7 @@
               "exportFiles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/PaymentsReportingExportFile"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "ReceiptsArchivingExportFile" : {
-        "type" : "object",
-        "properties" : {
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updateDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updateOperatorExternalId" : {
-            "type" : "string"
-          },
-          "updateTraceId" : {
-            "type" : "string"
-          },
-          "exportFileId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "organizationId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "operatorExternalId" : {
-            "type" : "string"
-          },
-          "filePathName" : {
-            "type" : "string"
-          },
-          "fileName" : {
-            "type" : "string"
-          },
-          "fileSize" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "exportFileType" : {
-            "type" : "string",
-            "enum" : [ "RECEIPTS_ARCHIVING" ]
-          },
-          "fileVersion" : {
-            "type" : "string"
-          },
-          "status" : {
-            "$ref" : "#/components/schemas/ExportFileStatus"
-          },
-          "errorDescription" : {
-            "type" : "string"
-          },
-          "numTotalRows" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "expirationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "filterFields" : {
-            "$ref" : "#/components/schemas/ReceiptsArchivingExportFileFilter"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
-      },
-      "PagedModelReceiptsArchivingExportFile" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "exportFiles" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/ReceiptsArchivingExportFile"
+                  "$ref" : "#/components/schemas/ClassificationsExportFile"
                 }
               }
             }
@@ -2497,7 +2407,7 @@
           }
         }
       },
-      "ClassificationsExportFile" : {
+      "ReceiptsArchivingExportFile" : {
         "type" : "object",
         "properties" : {
           "creationDate" : {
@@ -2537,7 +2447,7 @@
           },
           "exportFileType" : {
             "type" : "string",
-            "enum" : [ "CLASSIFICATIONS" ]
+            "enum" : [ "RECEIPTS_ARCHIVING" ]
           },
           "fileVersion" : {
             "type" : "string"
@@ -2557,7 +2467,7 @@
             "format" : "date-time"
           },
           "filterFields" : {
-            "$ref" : "#/components/schemas/ClassificationsExportFileFilter"
+            "$ref" : "#/components/schemas/ReceiptsArchivingExportFileFilter"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
@@ -2565,7 +2475,7 @@
         },
         "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
       },
-      "PagedModelClassificationsExportFile" : {
+      "PagedModelReceiptsArchivingExportFile" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
@@ -2574,97 +2484,7 @@
               "exportFiles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/ClassificationsExportFile"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "PaidExportFile" : {
-        "type" : "object",
-        "properties" : {
-          "creationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updateDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updateOperatorExternalId" : {
-            "type" : "string"
-          },
-          "updateTraceId" : {
-            "type" : "string"
-          },
-          "exportFileId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "organizationId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "operatorExternalId" : {
-            "type" : "string"
-          },
-          "filePathName" : {
-            "type" : "string"
-          },
-          "fileName" : {
-            "type" : "string"
-          },
-          "fileSize" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "exportFileType" : {
-            "type" : "string",
-            "enum" : [ "PAID" ]
-          },
-          "fileVersion" : {
-            "type" : "string"
-          },
-          "status" : {
-            "$ref" : "#/components/schemas/ExportFileStatus"
-          },
-          "errorDescription" : {
-            "type" : "string"
-          },
-          "numTotalRows" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "expirationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "filterFields" : {
-            "$ref" : "#/components/schemas/PaidExportFileFilter"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
-      },
-      "PagedModelPaidExportFile" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "exportFiles" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/PaidExportFile"
+                  "$ref" : "#/components/schemas/ReceiptsArchivingExportFile"
                 }
               }
             }
@@ -2772,6 +2592,186 @@
                 "type" : "array",
                 "items" : {
                   "$ref" : "#/components/schemas/IngestionFlowFile"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PaidExportFile" : {
+        "type" : "object",
+        "properties" : {
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updateDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updateOperatorExternalId" : {
+            "type" : "string"
+          },
+          "updateTraceId" : {
+            "type" : "string"
+          },
+          "exportFileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "organizationId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "operatorExternalId" : {
+            "type" : "string"
+          },
+          "filePathName" : {
+            "type" : "string"
+          },
+          "fileName" : {
+            "type" : "string"
+          },
+          "fileSize" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "exportFileType" : {
+            "type" : "string",
+            "enum" : [ "PAID" ]
+          },
+          "fileVersion" : {
+            "type" : "string"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/ExportFileStatus"
+          },
+          "errorDescription" : {
+            "type" : "string"
+          },
+          "numTotalRows" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "expirationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "filterFields" : {
+            "$ref" : "#/components/schemas/PaidExportFileFilter"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        },
+        "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
+      },
+      "PagedModelPaidExportFile" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "exportFiles" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/PaidExportFile"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PaymentsReportingExportFile" : {
+        "type" : "object",
+        "properties" : {
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updateDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updateOperatorExternalId" : {
+            "type" : "string"
+          },
+          "updateTraceId" : {
+            "type" : "string"
+          },
+          "exportFileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "organizationId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "operatorExternalId" : {
+            "type" : "string"
+          },
+          "filePathName" : {
+            "type" : "string"
+          },
+          "fileName" : {
+            "type" : "string"
+          },
+          "fileSize" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "exportFileType" : {
+            "type" : "string",
+            "enum" : [ "PAYMENTS_REPORTING" ]
+          },
+          "fileVersion" : {
+            "type" : "string"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/ExportFileStatus"
+          },
+          "errorDescription" : {
+            "type" : "string"
+          },
+          "numTotalRows" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "expirationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "filterFields" : {
+            "$ref" : "#/components/schemas/PaymentsReportingExportFileFilter"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        },
+        "required" : [ "fileVersion", "operatorExternalId", "organizationId", "status" ]
+      },
+      "PagedModelPaymentsReportingExportFile" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "exportFiles" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/PaymentsReportingExportFile"
                 }
               }
             }
