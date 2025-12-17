@@ -1,6 +1,5 @@
 package it.gov.pagopa.pu.processecexutions.exception;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import it.gov.pagopa.pu.processecexutions.dto.generated.ProcessExecutionsErrorDTO;
 import it.gov.pagopa.pu.processecexutions.util.Utilities;
 import jakarta.persistence.RollbackException;
