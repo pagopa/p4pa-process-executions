@@ -2,6 +2,7 @@ package it.gov.pagopa.pu.processecexutions.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.pu.processecexutions.config.json.JsonConfig;
+import it.gov.pagopa.pu.processecexutions.util.TestUtils;
 import it.gov.pagopa.pu.processecexutions.util.UtilitiesTest;
 import jakarta.persistence.RollbackException;
 import jakarta.servlet.ServletException;
@@ -77,6 +78,11 @@ class ProcessExecutionsExceptionHandlerTest {
     String testEndpoint(@RequestParam(DATA) String data, @Valid @RequestBody TestRequestBody body) {
       return "OK";
     }
+  }
+
+  @BeforeEach
+  void init() {
+    TestUtils.clearDefaultTimezone();
   }
 
   @Data
