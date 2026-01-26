@@ -29,7 +29,7 @@ public class IngestionFlowFileRequestServiceImpl implements IngestionFlowFileReq
     if (requestDTO.getIngestionFlowFileId() != null) {
       IngestionFlowFile entity = repository.findById(requestDTO.getIngestionFlowFileId())
         .filter(e -> e.getStatus().equals(IngestionFlowFileStatus.WAITING_FILE))
-        .orElseThrow(() -> new ResourceNotFoundException("IngestionFlowFile with id " + requestDTO.getIngestionFlowFileId() + " and status WAITING_FILE not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("[FILE_NOT_FOUND] IngestionFlowFile with id " + requestDTO.getIngestionFlowFileId() + " and status WAITING_FILE not found"));
       saved = repository.save(requestMapper.update(entity, requestDTO, operatorExternalId, IngestionFlowFileStatus.UPLOADED));
     } else {
       saved = repository.save(requestMapper.map(requestDTO, operatorExternalId, IngestionFlowFileStatus.UPLOADED));
