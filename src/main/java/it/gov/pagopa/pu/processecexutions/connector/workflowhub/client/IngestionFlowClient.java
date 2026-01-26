@@ -23,7 +23,7 @@ public class IngestionFlowClient {
         .ingestFlowFile(ingestionFlowFileId, IngestionFlowFileTypeEnum.valueOf(ingestionFlowFileType.name()));
     } catch (HttpClientErrorException.BadRequest e){
       if(e.getResponseBodyAsString().contains("WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED")){
-        throw new UnsupportedOperationException("IngestionFlowFile " + ingestionFlowFileType + " not supported!");
+        throw new UnsupportedOperationException("[INVALID_INGESTION_FLOW_FILE_TYPE] IngestionFlowFile " + ingestionFlowFileType + " not supported!");
       }
       throw e;
     }

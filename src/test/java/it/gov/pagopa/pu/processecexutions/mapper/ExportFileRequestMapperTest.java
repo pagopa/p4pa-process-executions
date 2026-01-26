@@ -69,7 +69,7 @@ class ExportFileRequestMapperTest {
     ExportFlowFileVersionNotSupportedException result = Assertions.assertThrows(ExportFlowFileVersionNotSupportedException.class, () -> mapper.map(dto, "OPERATOREXTERNALID", exportFile));
 
     // Then
-    Assertions.assertEquals("File version NOTVALID not supported for PAID: Available versions are: " + ExportConstants.getAvailableVersions(ExportFileTypeEnum.PAID),
+    Assertions.assertEquals("[INVALID_FILE_VERSION] File version NOTVALID not supported for PAID: Available versions are: " + ExportConstants.getAvailableVersions(ExportFileTypeEnum.PAID),
       result.getMessage());
   }
 }

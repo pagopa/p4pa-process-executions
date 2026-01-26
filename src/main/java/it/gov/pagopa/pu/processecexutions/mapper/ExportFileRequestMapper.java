@@ -33,7 +33,7 @@ public class ExportFileRequestMapper {
       .findFirst()
       .map(x -> fileVersion)
       .orElseThrow(() ->
-        new ExportFlowFileVersionNotSupportedException("File version " + fileVersion + " not supported for " + exportFileType + ": Available versions are: " + availableVersions)
+        new ExportFlowFileVersionNotSupportedException("[INVALID_FILE_VERSION] File version " + fileVersion + " not supported for " + exportFileType + ": Available versions are: " + availableVersions)
       );
   }
 
