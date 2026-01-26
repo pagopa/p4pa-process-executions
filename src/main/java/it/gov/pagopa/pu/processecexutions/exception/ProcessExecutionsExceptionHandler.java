@@ -164,7 +164,7 @@ public class ProcessExecutionsExceptionHandler {
       }
       default -> {
         if (ex.getCause() instanceof HttpHostConnectException) {
-          return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_GENERIC_ERROR.name(),
+          return String.format(ERROR_MESSAGE_FORMAT, String.format(ERROR_MESSAGE_FORMAT, "PROCESS_EXECUTIONS_CONNECTION_ERROR"),
             ex.getMessage());
         }
         return ex.getMessage();

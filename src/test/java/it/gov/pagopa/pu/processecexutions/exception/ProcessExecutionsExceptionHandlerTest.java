@@ -35,10 +35,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
@@ -54,6 +51,7 @@ import static org.mockito.Mockito.doThrow;
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = {
   ProcessExecutionsExceptionHandlerTest.TestController.class,
+  ProcessExecutionsExceptionHandlerTest.TestCrudController.class,
   ProcessExecutionsExceptionHandler.class,
   JsonConfig.class})
 class ProcessExecutionsExceptionHandlerTest {
@@ -69,6 +67,8 @@ class ProcessExecutionsExceptionHandlerTest {
   @MockitoSpyBean
   private TestController testControllerSpy;
   @MockitoSpyBean
+  private TestCrudController testCrudControllerSpy;
+  @MockitoSpyBean
   private RequestMappingHandlerAdapter requestMappingHandlerAdapterSpy;
 
   @RestController
@@ -83,6 +83,15 @@ class ProcessExecutionsExceptionHandlerTest {
   @BeforeEach
   void init() {
     TestUtils.clearDefaultTimezone();
+  }
+
+  @RestController
+  @Slf4j
+  static class TestCrudController {
+    @GetMapping(value = "/crud/export-files/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    String testCrudEndpoint(@PathVariable("id") Long id) {
+      return "OK";
+    }
   }
 
   @Data
@@ -310,6 +319,18 @@ class ProcessExecutionsExceptionHandlerTest {
       .andExpect(MockMvcResultMatchers.status().isBadRequest())
       .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_INVALID_TIME_RANGE"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("error"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.traceId").value(traceId));
+  }
+
+  @Test
+  void handleCrudResourceNotFoundException() throws Exception {
+    Long id = -12L;
+    doThrow(new ResourceNotFoundException()).when(testCrudControllerSpy).testCrudEndpoint(id);
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/crud/export-files/-12"))
+      .andExpect(MockMvcResultMatchers.status().isNotFound())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_NOT_FOUND"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("[EXPORT_FILE_NOT_FOUND] EntityRepresentationModel not found"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.traceId").value(traceId));
   }
 
