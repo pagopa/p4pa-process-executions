@@ -42,34 +42,34 @@ public class ProcessExecutionsExceptionHandler {
 
   @ExceptionHandler({ExportFlowFileVersionNotSupportedException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleBadRequestExceptions(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_INVALID_FILE_VERSION);
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_INVALID_FILE_VERSION);
   }
 
   @ExceptionHandler({ResourceNotFoundException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleResourceNotFoundException(RuntimeException ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.NOT_FOUND, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_NOT_FOUND);
+    return handleException(ex, request, HttpStatus.NOT_FOUND, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_NOT_FOUND);
   }
 
   @ExceptionHandler({DataIntegrityViolationException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleDataIntegrityViolationException(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.CONFLICT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_CONFLICT);
+    return handleException(ex, request, HttpStatus.CONFLICT, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_CONFLICT);
   }
 
   @ExceptionHandler({ValidationException.class, HttpMessageNotReadableException.class, MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleViolationException(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
   }
 
   @ExceptionHandler({ServletException.class, ErrorResponseException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleServletException(Exception ex, HttpServletRequest request) {
     HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    ProcessExecutionsErrorDTO.CodeEnum errorCode = ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_GENERIC_ERROR;
+    ProcessExecutionsErrorDTO.CategoryEnum errorCode = ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_GENERIC_ERROR;
     if (ex instanceof ErrorResponse errorResponse) {
       httpStatus =  HttpStatus.valueOf((errorResponse.getStatusCode().value()));
       if (httpStatus.isSameCodeAs(HttpStatus.NOT_FOUND)) {
-        errorCode = ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_NOT_FOUND;
+        errorCode = ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_NOT_FOUND;
       } else if (httpStatus.is4xxClientError()) {
-        errorCode = ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST;
+        errorCode = ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST;
       }
     }
     return handleException(ex, request, httpStatus, errorCode);
@@ -86,20 +86,20 @@ public class ProcessExecutionsExceptionHandler {
 
   @ExceptionHandler({RuntimeException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_GENERIC_ERROR);
+    return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_GENERIC_ERROR);
   }
 
   @ExceptionHandler({InvalidParamException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleInvalidParamException(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST);
   }
 
   @ExceptionHandler({InvalidTimeRangeException.class})
   public ResponseEntity<ProcessExecutionsErrorDTO> handleInvalidTimeRangeException(Exception ex, HttpServletRequest request) {
-    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_INVALID_TIME_RANGE);
+    return handleException(ex, request, HttpStatus.BAD_REQUEST, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_INVALID_TIME_RANGE);
   }
 
-  static ResponseEntity<ProcessExecutionsErrorDTO> handleException(Exception ex, HttpServletRequest request, HttpStatus httpStatus, ProcessExecutionsErrorDTO.CodeEnum errorEnum) {
+  static ResponseEntity<ProcessExecutionsErrorDTO> handleException(Exception ex, HttpServletRequest request, HttpStatus httpStatus, ProcessExecutionsErrorDTO.CategoryEnum errorEnum) {
     logException(ex, request, httpStatus);
 
     String message = Optional.of(request.getRequestURI())
@@ -133,17 +133,17 @@ public class ProcessExecutionsExceptionHandler {
     switch (ex) {
       case HttpMessageNotReadableException httpMessageNotReadableException -> {
         if (httpMessageNotReadableException.getCause() instanceof DatabindException jsonMappingException) {
-          return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(),
+          return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(),
             "Cannot parse body. " +
             jsonMappingException.getPath().stream()
               .map(JacksonException.Reference::getPropertyName)
               .collect(Collectors.joining(".")) +
             ": " + jsonMappingException.getOriginalMessage());
         }
-        return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(), "Required request body is missing");
+        return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(), "Required request body is missing");
       }
       case MethodArgumentNotValidException methodArgumentNotValidException -> {
-        return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(),
+        return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(),
           "Invalid request content." +
           methodArgumentNotValidException.getBindingResult()
             .getAllErrors().stream()
@@ -154,7 +154,7 @@ public class ProcessExecutionsExceptionHandler {
             .collect(Collectors.joining(";")));
       }
       case ConstraintViolationException constraintViolationException -> {
-        return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CodeEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(),
+        return String.format(ERROR_MESSAGE_FORMAT, ProcessExecutionsErrorDTO.CategoryEnum.PROCESS_EXECUTIONS_BAD_REQUEST.name(),
           "Invalid request content." +
           constraintViolationException.getConstraintViolations()
             .stream()
