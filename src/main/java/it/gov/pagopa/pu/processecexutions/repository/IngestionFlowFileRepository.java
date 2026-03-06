@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,8 +66,8 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
   Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,
     @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
-    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
-    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo") LocalDateTime creationDateTo,
+    @RequestParam(required = false) @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
+    @RequestParam(required = false) @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo") LocalDateTime creationDateTo,
     IngestionFlowFileStatus status,
     String fileName,
     String operatorExternalId,
@@ -97,7 +98,8 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     " SET pdfGenerated=:pdfGenerated," +
     " pdfGeneratedId=:pdfGeneratedId " +
     "where ingestionFlowFileId=:ingestionFlowFileId")
-  Integer updatePdfGeneratedAndPdfGeneratedId(@Param("ingestionFlowFileId") Long ingestionFlowFileId,
-                                          @Param("pdfGenerated") long pdfGenerated,
-                                          @Param("pdfGeneratedId") String pdfGeneratedId);
+  Integer updatePdfGeneratedAndPdfGeneratedId(
+    @Param("ingestionFlowFileId") Long ingestionFlowFileId,
+    @Param("pdfGenerated") long pdfGenerated,
+    @RequestParam(required = false) @Param("pdfGeneratedId") String pdfGeneratedId);
 }

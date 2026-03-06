@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -40,8 +41,8 @@ public interface ExportFileRepository extends JpaRepository<ExportFile<?>, Long>
   Page<ExportFile<?>> findByOrganizationIDFlowTypeCreateDate(
     @Parameter(required = true) @Param("organizationId") Long organizationId,
     @Parameter(required = true) @Param("exportFileType") ExportFileTypeEnum exportFileType,
-    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
-    @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo")LocalDateTime creationDateTo,
+    @RequestParam(required = false) @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
+    @RequestParam(required = false) @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo")LocalDateTime creationDateTo,
     String operatorExternalId,
     ExportFileStatus status,
     String fileName,
