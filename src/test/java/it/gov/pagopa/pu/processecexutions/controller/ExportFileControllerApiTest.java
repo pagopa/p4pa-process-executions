@@ -185,7 +185,7 @@ class ExportFileControllerApiTest {
 
   @ParameterizedTest
   @MethodSource("provideInvalidPartialOffsetDateTimeFilters")
-  void whenPaidExportFileDateHasOnlyFromOrTo_thenThrowIllegalArgumentException(
+  void whenPaidExportFileDateHasOnlyFromOrTo_thenThrowInvalidTimeRangeException(
     Consumer<PaidExportFileFilter> filterSetter) {
 
     PaidExportFileFilter filter = new PaidExportFileFilter();
@@ -194,12 +194,12 @@ class ExportFileControllerApiTest {
     PaidExportFileRequestDTO requestDTO = new PaidExportFileRequestDTO();
     requestDTO.setFilterFields(filter);
 
-    assertThrows(IllegalArgumentException.class, () -> controller.createPaidExportFile(requestDTO));
+    assertThrows(InvalidTimeRangeException.class, () -> controller.createPaidExportFile(requestDTO));
   }
 
   @ParameterizedTest
   @MethodSource("provideInvalidPartialOffsetDateTimeFiltersForArchiving")
-  void whenArchivingExportFileDateHasOnlyFromOrTo_thenThrowIllegalArgumentException(
+  void whenArchivingExportFileDateHasOnlyFromOrTo_thenThrowInvalidTimeRangeException(
     Consumer<ReceiptsArchivingExportFileFilter> filterSetter) {
 
     ReceiptsArchivingExportFileFilter filter = new ReceiptsArchivingExportFileFilter();
@@ -208,7 +208,7 @@ class ExportFileControllerApiTest {
     ReceiptsArchivingExportFileRequestDTO requestDTO = new ReceiptsArchivingExportFileRequestDTO();
     requestDTO.setFilterFields(filter);
 
-    assertThrows(IllegalArgumentException.class, () -> controller.createReceiptsArchivingExportFile(requestDTO));
+    assertThrows(InvalidTimeRangeException.class, () -> controller.createReceiptsArchivingExportFile(requestDTO));
   }
 
   private static Stream<Consumer<PaidExportFileFilter>> provideInvalidPartialOffsetDateTimeFilters() {
@@ -340,7 +340,7 @@ class ExportFileControllerApiTest {
 
   @ParameterizedTest
   @MethodSource("provideInvalidPartialLocalDateFilters")
-  void whenClassificationExportFileDateHasOnlyFromOrTo_thenThrowIllegalArgumentException(
+  void whenClassificationExportFileDateHasOnlyFromOrTo_thenThrowInvalidTimeRangeException(
     Consumer<ClassificationsExportFileFilter> filterSetter) {
 
     ClassificationsExportFileFilter filter = new ClassificationsExportFileFilter();
@@ -349,7 +349,7 @@ class ExportFileControllerApiTest {
     ClassificationsExportFileRequestDTO requestDTO = new ClassificationsExportFileRequestDTO();
     requestDTO.setFilterFields(filter);
 
-    assertThrows(IllegalArgumentException.class, () -> controller.createClassificationsExportFile(requestDTO));
+    assertThrows(InvalidTimeRangeException.class, () -> controller.createClassificationsExportFile(requestDTO));
   }
 
   private static Stream<Consumer<ClassificationsExportFileFilter>> provideInvalidPartialLocalDateFilters() {
