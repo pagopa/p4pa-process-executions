@@ -226,4 +226,53 @@ public class UtilitiesTest {
     String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
     assertTrue(exception.getMessage().contains(expectedMessage));
   }
+
+  @Test
+  void givenFromAfterToWhenValidateLocalDateFiltersThenThrowException() {
+    LocalDate from = LocalDate.now();
+    LocalDate to = from.minusDays(1);
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(from, to);
+
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    assertTrue(exception.getMessage().contains("testDateTo must be after testDateFrom"));
+  }
+
+  @Test
+  void givenFromAfterToWhenValidateOffsetDateTimeFiltersThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = from.minusDays(1);
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(from, to);
+
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    assertTrue(exception.getMessage().contains("testDateTo must be after testDateFrom"));
+  }
+
+  @Test
+  void givenFromAfterToWhenIsDateFilterConfiguredThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = from.minusDays(1);
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, to);
+
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.isDateFilterConfigured(filter, "testFilter"));
+
+    assertTrue(exception.getMessage().contains("testFilterTo must be after testFilterFrom"));
+  }
+
+  @Test
+  void givenFromEqualToToWhenValidateLocalDateFiltersThenNoException() {
+    LocalDate date = LocalDate.now();
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(date, date);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
+
+  @Test
+  void givenFromEqualToToWhenValidateOffsetDateTimeFiltersThenNoException() {
+    OffsetDateTime date = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(date, date);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
 }
