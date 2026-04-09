@@ -2,6 +2,7 @@ package it.gov.pagopa.pu.processecexutions.util;
 
 import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
+import it.gov.pagopa.pu.processecexutions.exception.InvalidTimeRangeException;
 import org.slf4j.MDC;
 
 import java.time.LocalDate;
@@ -28,14 +29,20 @@ public class Utilities {
 
   public static boolean validateDateFilters(LocalDateIntervalFilter dateFilter, String filterName) {
     if ((dateFilter.getFrom() != null ^ dateFilter.getTo() != null)) {
-      throw new IllegalArgumentException("Both " + filterName + "From and " + filterName + "To must be set or both must be null");
+      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] Both " + filterName + "From and " + filterName + "To must be set or both must be null");
+    }
+    if(isFromAfterTo(dateFilter.getFrom(), dateFilter.getTo())){
+      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] " + filterName + "To must be after " + filterName + "From");
     }
     return true;
   }
 
   public static boolean validateDateFilters(OffsetDateTimeIntervalFilter dateFilter, String filterName) {
     if ((dateFilter.getFrom() != null ^ dateFilter.getTo() != null)) {
-      throw new IllegalArgumentException("Both " + filterName + "From and " + filterName + "To must be set or both must be null");
+      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] Both " + filterName + "From and " + filterName + "To must be set or both must be null");
+    }
+    if(isFromAfterTo(dateFilter.getFrom(), dateFilter.getTo())){
+      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] " + filterName + "To must be after " + filterName + "From");
     }
     return true;
   }
@@ -48,4 +55,11 @@ public class Utilities {
     return dateFilter.getFrom() != null;
   }
 
+  public static boolean isFromAfterTo(OffsetDateTime from, OffsetDateTime to) {
+    return from != null && to != null && from.isAfter(to);
+  }
+
+  public static boolean isFromAfterTo(LocalDate from, LocalDate to) {
+    return from != null && to != null && from.isAfter(to);
+  }
 }
