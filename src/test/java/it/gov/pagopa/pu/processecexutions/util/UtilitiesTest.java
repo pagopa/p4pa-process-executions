@@ -2,6 +2,7 @@ package it.gov.pagopa.pu.processecexutions.util;
 
 import it.gov.pagopa.pu.processecexutions.dto.LocalDateIntervalFilter;
 import it.gov.pagopa.pu.processecexutions.dto.OffsetDateTimeIntervalFilter;
+import it.gov.pagopa.pu.processecexutions.exception.InvalidTimeRangeException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -110,7 +111,7 @@ public class UtilitiesTest {
     LocalDate from = LocalDate.now().minusDays(10);
     LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(from, null);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
 
     String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
     String actualMessage = exception.getMessage();
@@ -123,7 +124,7 @@ public class UtilitiesTest {
     LocalDate to = LocalDate.now();
     LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(null, to);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
 
     String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
     String actualMessage = exception.getMessage();
@@ -152,7 +153,7 @@ public class UtilitiesTest {
     OffsetDateTime from = OffsetDateTime.now();
     OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(from,null);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
 
     String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
     String actualMessage = exception.getMessage();
@@ -165,7 +166,7 @@ public class UtilitiesTest {
     OffsetDateTime to = OffsetDateTime.now();
     OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(null,to);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
 
     String expectedMessage = "Both testDateFrom and testDateTo must be set or both must be null";
     String actualMessage = exception.getMessage();
@@ -205,7 +206,7 @@ public class UtilitiesTest {
     OffsetDateTime to = OffsetDateTime.now();
     OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(null, to);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> {
       Utilities.isDateFilterConfigured(filter, "testFilter");
     });
 
@@ -218,11 +219,60 @@ public class UtilitiesTest {
     OffsetDateTime from = OffsetDateTime.now();
     OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, null);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> {
       Utilities.isDateFilterConfigured(filter, "testFilter");
     });
 
     String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
     assertTrue(exception.getMessage().contains(expectedMessage));
+  }
+
+  @Test
+  void givenFromAfterToWhenValidateLocalDateFiltersThenThrowException() {
+    LocalDate from = LocalDate.now();
+    LocalDate to = from.minusDays(1);
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(from, to);
+
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    assertTrue(exception.getMessage().contains("testDateTo must be after testDateFrom"));
+  }
+
+  @Test
+  void givenFromAfterToWhenValidateOffsetDateTimeFiltersThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = from.minusDays(1);
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(from, to);
+
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.validateDateFilters(dateFilter, "testDate"));
+
+    assertTrue(exception.getMessage().contains("testDateTo must be after testDateFrom"));
+  }
+
+  @Test
+  void givenFromAfterToWhenIsDateFilterConfiguredThenThrowException() {
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = from.minusDays(1);
+    OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, to);
+
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.isDateFilterConfigured(filter, "testFilter"));
+
+    assertTrue(exception.getMessage().contains("testFilterTo must be after testFilterFrom"));
+  }
+
+  @Test
+  void givenFromEqualToToWhenValidateLocalDateFiltersThenNoException() {
+    LocalDate date = LocalDate.now();
+    LocalDateIntervalFilter dateFilter = new LocalDateIntervalFilter(date, date);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
+  }
+
+  @Test
+  void givenFromEqualToToWhenValidateOffsetDateTimeFiltersThenNoException() {
+    OffsetDateTime date = OffsetDateTime.now();
+    OffsetDateTimeIntervalFilter dateFilter = new OffsetDateTimeIntervalFilter(date, date);
+
+    assertDoesNotThrow(() -> Utilities.validateDateFilters(dateFilter, "testDate"));
   }
 }
