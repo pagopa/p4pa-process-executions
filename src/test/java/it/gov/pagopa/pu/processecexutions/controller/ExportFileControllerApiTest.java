@@ -36,6 +36,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -308,8 +310,8 @@ class ExportFileControllerApiTest {
   }
 
   @ParameterizedTest
-  @MethodSource("provideInvalidClassificationDateFilters")
-  void whenInvalidClassificationDateField_thenThrowInvalidTimeRangeException(
+  @MethodSource("provideInvalidDateFilters")
+  void whenInvalidDateFilter_thenThrowInvalidTimeRangeException(
     Consumer<ClassificationsExportFileFilter> filterSetter) {
 
     ClassificationsExportFileFilter filter = new ClassificationsExportFileFilter();
@@ -322,109 +324,47 @@ class ExportFileControllerApiTest {
       controller.createClassificationsExportFile(requestDTO));
   }
 
-  private static Stream<Consumer<ClassificationsExportFileFilter>> provideInvalidClassificationDateFilters() {
-    LocalDate now = LocalDate.now();
-    LocalDateIntervalFilter date = new LocalDateIntervalFilter();
-    date.setFrom(now.minusMonths(MAX_MONTHS_RANGE + 1));
-    date.setTo(now);
-
-    return Stream.of(
-      f -> f.setLastClassificationDate(date),
-      f -> f.setPayDate(date),
-      f -> f.setPaymentDate(date),
-      f -> f.setRegulationDate(date),
-      f -> f.setBillDate(date),
-      f -> f.setRegionValueDate(date)
-    );
-  }
-
-  @ParameterizedTest
-  @MethodSource("provideInvalidPartialLocalDateFilters")
-  void whenClassificationExportFileDateHasOnlyFromOrTo_thenThrowInvalidTimeRangeException(
-    Consumer<ClassificationsExportFileFilter> filterSetter) {
-
-    ClassificationsExportFileFilter filter = new ClassificationsExportFileFilter();
-    filterSetter.accept(filter);
-
-    ClassificationsExportFileRequestDTO requestDTO = new ClassificationsExportFileRequestDTO();
-    requestDTO.setFilterFields(filter);
-
-    assertThrows(InvalidTimeRangeException.class, () -> controller.createClassificationsExportFile(requestDTO));
-  }
-
-  private static Stream<Consumer<ClassificationsExportFileFilter>> provideInvalidPartialLocalDateFilters() {
+  private static Stream<Consumer<ClassificationsExportFileFilter>> provideInvalidDateFilters() {
     LocalDate now = LocalDate.now();
 
-    return Stream.of(
-      // lastClassificationDate
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setFrom(now);
-        f.setLastClassificationDate(d);
-      },
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setTo(now);
-        f.setLastClassificationDate(d);
-      },
-      // payDate
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setFrom(now);
-        f.setPayDate(d);
-      },
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setTo(now);
-        f.setPayDate(d);
-      },
-      // paymentDate
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setFrom(now);
-        f.setPaymentDate(d);
-      },
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setTo(now);
-        f.setPaymentDate(d);
-      },
-      // regulationDate
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setFrom(now);
-        f.setRegulationDate(d);
-      },
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setTo(now);
-        f.setRegulationDate(d);
-      },
-      // billDate
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setFrom(now);
-        f.setBillDate(d);
-      },
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setTo(now);
-        f.setBillDate(d);
-      },
-      // regionValueDate
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setFrom(now);
-        f.setRegionValueDate(d);
-      },
-      f -> {
-        LocalDateIntervalFilter d = new LocalDateIntervalFilter();
-        d.setTo(now);
-        f.setRegionValueDate(d);
-      }
-    );
-  }
+    // range troppo ampio
+    LocalDateIntervalFilter tooWide = new LocalDateIntervalFilter();
+    tooWide.setFrom(now.minusMonths(MAX_MONTHS_RANGE + 1));
+    tooWide.setTo(now);
 
+    Stream<Consumer<ClassificationsExportFileFilter>> tooWideFilters = Stream.of(
+      f -> f.setLastClassificationDate(tooWide),
+      f -> f.setPayDate(tooWide),
+      f -> f.setPaymentDate(tooWide),
+      f -> f.setRegulationDate(tooWide),
+      f -> f.setBillDate(tooWide),
+      f -> f.setRegionValueDate(tooWide)
+    );
+
+    // solo from o solo to
+    List<BiConsumer<ClassificationsExportFileFilter, LocalDateIntervalFilter>> fieldSetters = List.of(
+      ClassificationsExportFileFilter::setLastClassificationDate,
+      ClassificationsExportFileFilter::setPayDate,
+      ClassificationsExportFileFilter::setPaymentDate,
+      ClassificationsExportFileFilter::setRegulationDate,
+      ClassificationsExportFileFilter::setBillDate,
+      ClassificationsExportFileFilter::setRegionValueDate
+    );
+
+    Stream<Consumer<ClassificationsExportFileFilter>> partialFilters = fieldSetters.stream()
+      .flatMap(setter -> {
+        LocalDateIntervalFilter onlyFrom = new LocalDateIntervalFilter();
+        onlyFrom.setFrom(now);
+        LocalDateIntervalFilter onlyTo = new LocalDateIntervalFilter();
+        onlyTo.setTo(now);
+        return Stream.of(
+          f -> setter.accept(f, onlyFrom),
+          f -> setter.accept(f, onlyTo)
+        );
+      });
+
+    return Stream.concat(tooWideFilters, partialFilters);
+  }
 
   @Test
   void whenCreateArchivingExportFileThenInvokeService() {
