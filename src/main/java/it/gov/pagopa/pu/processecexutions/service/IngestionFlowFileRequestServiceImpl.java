@@ -3,10 +3,11 @@ package it.gov.pagopa.pu.processecexutions.service;
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.IngestionFlowFileService;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
+import it.gov.pagopa.pu.processecexutions.exception.NotFoundException;
 import it.gov.pagopa.pu.processecexutions.mapper.IngestionFlowFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import it.gov.pagopa.pu.processecexutions.util.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,7 @@ public class IngestionFlowFileRequestServiceImpl implements IngestionFlowFileReq
     if (requestDTO.getIngestionFlowFileId() != null) {
       IngestionFlowFile entity = repository.findById(requestDTO.getIngestionFlowFileId())
         .filter(e -> e.getStatus().equals(IngestionFlowFileStatus.WAITING_FILE))
-        .orElseThrow(() -> new ResourceNotFoundException("[FILE_NOT_FOUND] IngestionFlowFile with id " + requestDTO.getIngestionFlowFileId() + " and status WAITING_FILE not found"));
+        .orElseThrow(() -> new NotFoundException(ErrorCodeConstants.ERROR_CODE_FILE_NOT_FOUND, "IngestionFlowFile with id " + requestDTO.getIngestionFlowFileId() + " and status WAITING_FILE not found"));
       saved = repository.save(requestMapper.update(entity, requestDTO, operatorExternalId, IngestionFlowFileStatus.UPLOADED));
     } else {
       saved = repository.save(requestMapper.map(requestDTO, operatorExternalId, IngestionFlowFileStatus.UPLOADED));

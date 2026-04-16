@@ -2,6 +2,7 @@ package it.gov.pagopa.pu.processecexutions.connector.workflowhub.client;
 
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.config.WorkflowHubApisHolder;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
+import it.gov.pagopa.pu.processecexutions.exception.InvalidValueException;
 import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
@@ -72,7 +73,7 @@ class IngestionFlowClientTest {
         "{\"code\":\"WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED\"}".getBytes(StandardCharsets.UTF_8),
         StandardCharsets.UTF_8));
 
-    Assertions.assertThrows(UnsupportedOperationException.class, () -> ingestionFlowClient.ingestFlowFile(
+    Assertions.assertThrows(InvalidValueException.class, () -> ingestionFlowClient.ingestFlowFile(
       ingestionFlowFileId, ingestionFlowFileType, accessToken));
   }
 

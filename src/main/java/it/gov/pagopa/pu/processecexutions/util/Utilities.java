@@ -29,20 +29,20 @@ public class Utilities {
 
   public static boolean validateDateFilters(LocalDateIntervalFilter dateFilter, String filterName) {
     if ((dateFilter.getFrom() != null ^ dateFilter.getTo() != null)) {
-      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] Both " + filterName + "From and " + filterName + "To must be set or both must be null");
+      throw new InvalidTimeRangeException("Both " + filterName + "From and " + filterName + "To must be set or both must be null");
     }
     if(isFromAfterTo(dateFilter.getFrom(), dateFilter.getTo())){
-      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] " + filterName + "To must be after " + filterName + "From");
+      throw new InvalidTimeRangeException(filterName + "To must be after " + filterName + "From");
     }
     return true;
   }
 
   public static boolean validateDateFilters(OffsetDateTimeIntervalFilter dateFilter, String filterName) {
     if ((dateFilter.getFrom() != null ^ dateFilter.getTo() != null)) {
-      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] Both " + filterName + "From and " + filterName + "To must be set or both must be null");
+      throw new InvalidTimeRangeException("Both " + filterName + "From and " + filterName + "To must be set or both must be null");
     }
     if(isFromAfterTo(dateFilter.getFrom(), dateFilter.getTo())){
-      throw new InvalidTimeRangeException("[INVALID_DATE_FILTER_INTERVAL] " + filterName + "To must be after " + filterName + "From");
+      throw new InvalidTimeRangeException(filterName + "To must be after " + filterName + "From");
     }
     return true;
   }
