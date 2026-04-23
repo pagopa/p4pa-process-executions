@@ -9,6 +9,7 @@ import it.gov.pagopa.pu.processecexutions.exception.InvalidParamException;
 import it.gov.pagopa.pu.processecexutions.exception.InvalidTimeRangeException;
 import it.gov.pagopa.pu.processecexutions.model.exportfile.*;
 import it.gov.pagopa.pu.processecexutions.service.ExportFileSaveService;
+import it.gov.pagopa.pu.processecexutions.util.ErrorCodeConstants;
 import it.gov.pagopa.pu.processecexutions.util.ExportConstants;
 import it.gov.pagopa.pu.processecexutions.util.SecurityUtils;
 import it.gov.pagopa.pu.processecexutions.util.Utilities;
@@ -31,7 +32,7 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
   private final Integer exportPaidMaxMonthsInterval;
   private final Integer exportArchivingMaxMonthsInterval;
   private final Integer classificationMaxMonthsInterval;
-  private static final String INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE = "[INVALID_DATE_FILTER_INTERVAL] The date interval between %s and %s cannot exceed %d months";
+  private static final String INVALID_DATE_TIME_RANGE_EXCEPTION_MESSAGE = "The date interval between %s and %s cannot exceed %d months";
   private static final String PAYMENT_DATE_TIME_FILTER_NAME = "paymentDateTime";
 
   public ExportFileControllerImpl(ExportFileSaveService service,
@@ -62,8 +63,8 @@ public class ExportFileControllerImpl implements ExportFileControllerApi {
     boolean hasInstallmentDates = isDateFilterConfigured(installmentUpdateDateTime, "installmentUpdateDateTime");
 
     if (hasPaymentDates == hasInstallmentDates) {
-      throw new InvalidParamException(
-        "[INVALID_DATE_FILTER_COMBINATION] You must provide only one of the following date ranges: either the payment date range (paymentDateTimeFrom and paymentDateTimeTo) or the installment update date range (installmentUpdateDateTimeFrom and installmentUpdateDateTimeTo). Providing both or neither is not allowed"
+      throw new InvalidParamException(ErrorCodeConstants.ERROR_CODE_INVALID_DATE_FILTER_COMBINATION,
+        "You must provide only one of the following date ranges: either the payment date range (paymentDateTimeFrom and paymentDateTimeTo) or the installment update date range (installmentUpdateDateTimeFrom and installmentUpdateDateTimeTo). Providing both or neither is not allowed"
       );
     }
 

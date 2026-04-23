@@ -3,6 +3,7 @@ package it.gov.pagopa.pu.processecexutions.service;
 import it.gov.pagopa.pu.processecexutions.connector.workflowhub.IngestionFlowFileService;
 import it.gov.pagopa.pu.processecexutions.dto.generated.IngestionFlowFileRequestDTO;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
+import it.gov.pagopa.pu.processecexutions.exception.NotFoundException;
 import it.gov.pagopa.pu.processecexutions.mapper.IngestionFlowFileRequestMapper;
 import it.gov.pagopa.pu.processecexutions.model.IngestionFlowFile;
 import it.gov.pagopa.pu.processecexutions.repository.IngestionFlowFileRepository;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.Optional;
 
@@ -205,7 +205,7 @@ class IngestionFlowFileRequestServiceTest {
     Mockito.when(repositoryMock.findById(id)).thenReturn(Optional.of(existingEntity));
 
     // When & Then
-    Assertions.assertThrows(ResourceNotFoundException.class, () ->
+    Assertions.assertThrows(NotFoundException.class, () ->
       service.handleUploaded(requestDTO, operatorExternalId, accessToken));
   }
 
@@ -221,7 +221,7 @@ class IngestionFlowFileRequestServiceTest {
     Mockito.when(repositoryMock.findById(id)).thenReturn(Optional.empty());
 
     // When & Then
-    Assertions.assertThrows(ResourceNotFoundException.class, () ->
+    Assertions.assertThrows(NotFoundException.class, () ->
       service.handleUploaded(requestDTO, operatorExternalId, accessToken));
   }
 }

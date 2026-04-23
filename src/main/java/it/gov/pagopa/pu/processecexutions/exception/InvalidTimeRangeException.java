@@ -1,7 +1,10 @@
 package it.gov.pagopa.pu.processecexutions.exception;
 
-public class InvalidTimeRangeException extends RuntimeException {
+import it.gov.pagopa.pu.processecexutions.util.ErrorCodeConstants;
+
+public class InvalidTimeRangeException extends BaseBusinessException {
+
   public InvalidTimeRangeException(String message) {
-    super(message);
+    super(ErrorCodeConstants.ERROR_CODE_INVALID_DATE_FILTER_INTERVAL, message);
   }
 }

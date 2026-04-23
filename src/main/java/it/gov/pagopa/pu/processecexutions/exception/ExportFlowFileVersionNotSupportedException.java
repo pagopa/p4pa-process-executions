@@ -1,7 +1,10 @@
 package it.gov.pagopa.pu.processecexutions.exception;
 
-public class ExportFlowFileVersionNotSupportedException extends RuntimeException {
+import it.gov.pagopa.pu.processecexutions.util.ErrorCodeConstants;
+
+public class ExportFlowFileVersionNotSupportedException extends BaseBusinessException {
+
   public ExportFlowFileVersionNotSupportedException(String message){
-    super(message);
+    super(ErrorCodeConstants.ERROR_CODE_INVALID_FILE_VERSION, message);
   }
 }
