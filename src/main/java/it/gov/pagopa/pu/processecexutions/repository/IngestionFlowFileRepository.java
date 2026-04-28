@@ -1,7 +1,6 @@
 package it.gov.pagopa.pu.processecexutions.repository;
 
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus;
 import it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum;
