@@ -65,7 +65,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     + "AND (:status IS NULL OR iff.status = :status) "
     + "AND (:operatorExternalId IS NULL OR iff.operatorExternalId = :operatorExternalId) ")
   Page<IngestionFlowFile> findByOrganizationIDFlowTypeCreateDate(@Parameter(required = true) @Param("organizationId") Long organizationId,
-    @Parameter(required = true, array = @ArraySchema(schema = @Schema(type = "string"))) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
+    @Parameter(required = true) @Param("ingestionFlowFileTypes") List<IngestionFlowFileTypeEnum> ingestionFlowFileTypes,
     @RequestParam(required = false) @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateFrom") LocalDateTime creationDateFrom,
     @RequestParam(required = false) @Parameter(schema = @Schema(type = "LocalDateTime")) @Param("creationDateTo") LocalDateTime creationDateTo,
     IngestionFlowFileStatus status,
