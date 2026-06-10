@@ -88,7 +88,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     """)
   Integer updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
 
-  Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
+  List<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
 
   @RestResource(exported = false)
   @Modifying
