@@ -26,6 +26,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
@@ -37,11 +38,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ServerErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,7 +62,7 @@ import static org.mockito.Mockito.doThrow;
 class ProcessExecutionsExceptionHandlerTest {
 
   public static final String DATA = "data";
-  public static final TestRequestBody BODY = new TestRequestBody("bodyData", null, "abc", LocalDateTime.now());
+  public static final TestRequestBody BODY = new TestRequestBody("bodyData", null, "abc", LocalDateTime.of(2026, Month.JUNE, 18, 12, 0));
 
   @Autowired
   private MockMvc mockMvc;
@@ -85,6 +88,7 @@ class ProcessExecutionsExceptionHandlerTest {
   @BeforeEach
   void init() {
     TestUtils.clearDefaultTimezone();
+    UtilitiesTest.setTraceId(traceId);
   }
 
   @RestController
@@ -109,11 +113,6 @@ class ProcessExecutionsExceptionHandlerTest {
   }
 
   private final String traceId = "TRACEID";
-
-  @BeforeEach
-  void setTraceId() {
-    UtilitiesTest.setTraceId(traceId);
-  }
 
   @AfterEach
   void clearTraceId() {
@@ -287,6 +286,19 @@ class ProcessExecutionsExceptionHandlerTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_GENERIC_ERROR"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("[PROCESS_EXECUTIONS_GENERIC_ERROR] 500 INTERNAL_SERVER_ERROR \"Error\""))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.traceId").value(traceId));
+  }
+
+  @Test
+  void handleHttpClientErrorTooManyRequestsException() throws Exception {
+    doThrow(HttpClientErrorException.create(HttpStatus.TOO_MANY_REQUESTS, "TooManyRequests", null, null, null))
+      .when(requestMappingHandlerAdapterSpy).handle(any(), any(), any());
+
+    performRequest(DATA, MediaType.APPLICATION_JSON)
+      .andExpect(MockMvcResultMatchers.status().isTooManyRequests())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("PROCESS_EXECUTIONS_TOO_MANY_REQUESTS"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("PROCESS_EXECUTIONS_TOO_MANY_REQUESTS"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("[PROCESS_EXECUTIONS_TOO_MANY_REQUESTS] 429 TooManyRequests"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.traceId").value(traceId));
   }
 

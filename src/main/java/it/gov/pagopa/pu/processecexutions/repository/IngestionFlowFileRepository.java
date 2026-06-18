@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RepositoryRestResource(path = "ingestion-flow-files")
 public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlowFile, Long> {
@@ -88,7 +87,7 @@ public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlow
     """)
   Integer updateProcessingIfNoOtherProcessing(@Param("ingestionFlowFileId") Long ingestionFlowFileId);
 
-  Optional<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
+  List<IngestionFlowFile> findByOrganizationIdAndFilePathNameAndFileName(Long organizationId, String filePathName, String fileName);
 
   @RestResource(exported = false)
   @Modifying
