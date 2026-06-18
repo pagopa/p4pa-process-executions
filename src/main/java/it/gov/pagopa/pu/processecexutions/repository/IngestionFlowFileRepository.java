@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RepositoryRestResource(path = "ingestion-flow-files")
 public interface IngestionFlowFileRepository extends JpaRepository<IngestionFlowFile, Long> {
