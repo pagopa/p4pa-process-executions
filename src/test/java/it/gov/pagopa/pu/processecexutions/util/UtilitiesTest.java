@@ -20,6 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UtilitiesTest {
 
+  public static void setTraceId(String traceId) {
+    setTraceId(traceId, null);
+  }
+  public static void setTraceId(String traceId, String spanId) {
+    MDC.put("traceId", traceId);
+    MDC.put("spanId", spanId);
+  }
+  public static void clearTraceIdContext(){
+    MDC.clear();
+  }
+
   @Test
   void testGetTraceId(){
     // Given
@@ -34,11 +45,18 @@ public class UtilitiesTest {
     clearTraceIdContext();
   }
 
-  public static void setTraceId(String traceId) {
-    MDC.put("traceId", traceId);
-  }
-  public static void clearTraceIdContext(){
-    MDC.clear();
+  @Test
+  void testGetSpanId(){
+    // Given
+    String expectedResult = "SPANID";
+    setTraceId("TRACEID", expectedResult);
+
+    // When
+    String result = Utilities.getSpanId();
+
+    // Then
+    Assertions.assertSame(expectedResult, result);
+    clearTraceIdContext();
   }
 
   @ParameterizedTest
@@ -206,9 +224,7 @@ public class UtilitiesTest {
     OffsetDateTime to = OffsetDateTime.now();
     OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(null, to);
 
-    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> {
-      Utilities.isDateFilterConfigured(filter, "testFilter");
-    });
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.isDateFilterConfigured(filter, "testFilter"));
 
     String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
     assertTrue(exception.getMessage().contains(expectedMessage));
@@ -219,9 +235,7 @@ public class UtilitiesTest {
     OffsetDateTime from = OffsetDateTime.now();
     OffsetDateTimeIntervalFilter filter = new OffsetDateTimeIntervalFilter(from, null);
 
-    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> {
-      Utilities.isDateFilterConfigured(filter, "testFilter");
-    });
+    Exception exception = assertThrows(InvalidTimeRangeException.class, () -> Utilities.isDateFilterConfigured(filter, "testFilter"));
 
     String expectedMessage = "Both testFilterFrom and testFilterTo must be set or both must be null";
     assertTrue(exception.getMessage().contains(expectedMessage));

@@ -17,6 +17,10 @@ public class Utilities {
     return MDC.get("traceId");
   }
 
+  public static String getSpanId(){
+    return MDC.get("spanId");
+  }
+
   public static boolean isValidIntervalBetweenOffsetDateTime(OffsetDateTime from, OffsetDateTime to, String filterName, ChronoUnit unit, long maxInterval) {
     validateDateFilters(new OffsetDateTimeIntervalFilter(from, to), filterName);
     return unit.between(from, to) <= maxInterval;
