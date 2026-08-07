@@ -171,7 +171,7 @@ configure<SourceSetContainer> {
 
 springBoot {
   buildInfo()
-  mainClass.value("it.gov.pagopa.pu.processecexutions.ProcessExecutionsApplication")
+  mainClass.value("it.gov.pagopa.pu.processexecutions.ProcessExecutionsApplication")
 }
 
 tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("openApiGeneratePROCESSEXECUTIONS") {
@@ -181,19 +181,19 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   generatorName.set("spring")
   inputSpec.set("$rootDir/openapi/p4pa-process-executions.openapi.yaml")
   outputDir.set("$projectDir/build/generated")
-  apiPackage.set("it.gov.pagopa.pu.processecexutions.controller.generated")
-  modelPackage.set("it.gov.pagopa.pu.processecexutions.dto.generated")
+  apiPackage.set("it.gov.pagopa.pu.processexecutions.controller.generated")
+  modelPackage.set("it.gov.pagopa.pu.processexecutions.dto.generated")
   typeMappings.set(
     mapOf(
-      "IngestionFlowFileType" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum",
-      "IngestionFlowFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileStatus",
-      "PaidExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.exportFile.PaidExportFileRequestDTO",
-      "ClassificationsExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.exportFile.ClassificationsExportFileRequestDTO",
-      "PaymentsReportingExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.exportFile.PaymentsReportingExportFileRequestDTO",
-      "ReceiptsArchivingExportFileRequestDTO" to "it.gov.pagopa.pu.processecexutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO",
-      "ExportFileType" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum",
-      "ExportFileStatusEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileStatus",
-      "ExportFileTypeVersions" to "it.gov.pagopa.pu.processecexutions.model.exportfile.ExportFileTypeVersions"
+      "IngestionFlowFileType" to "it.gov.pagopa.pu.processexecutions.enums.IngestionFlowFileTypeEnum",
+      "IngestionFlowFileStatusEnum" to "it.gov.pagopa.pu.processexecutions.enums.IngestionFlowFileStatus",
+      "PaidExportFileRequestDTO" to "it.gov.pagopa.pu.processexecutions.dto.exportFile.PaidExportFileRequestDTO",
+      "ClassificationsExportFileRequestDTO" to "it.gov.pagopa.pu.processexecutions.dto.exportFile.ClassificationsExportFileRequestDTO",
+      "PaymentsReportingExportFileRequestDTO" to "it.gov.pagopa.pu.processexecutions.dto.exportFile.PaymentsReportingExportFileRequestDTO",
+      "ReceiptsArchivingExportFileRequestDTO" to "it.gov.pagopa.pu.processexecutions.dto.exportFile.ReceiptsArchivingExportFileRequestDTO",
+      "ExportFileType" to "it.gov.pagopa.pu.processexecutions.enums.ExportFileTypeEnum",
+      "ExportFileStatusEnum" to "it.gov.pagopa.pu.processexecutions.enums.ExportFileStatus",
+      "ExportFileTypeVersions" to "it.gov.pagopa.pu.processexecutions.model.exportfile.ExportFileTypeVersions"
     )
   )
   additionalProperties.set(
@@ -237,8 +237,8 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   modelPackage.set("it.gov.pagopa.pu.workflowhub.dto.generated")
   importMappings.set(
     mapOf(
-      "ExportFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum",
-      "IngestionFlowFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum"
+      "ExportFileTypeEnum" to "it.gov.pagopa.pu.processexecutions.enums.ExportFileTypeEnum",
+      "IngestionFlowFileTypeEnum" to "it.gov.pagopa.pu.processexecutions.enums.IngestionFlowFileTypeEnum"
     )
   )
   configOptions.set(
@@ -274,8 +274,8 @@ tasks.register<org.openapitools.generator.gradle.plugin.tasks.GenerateTask>("ope
   modelPackage.set("it.gov.pagopa.pu.classification.dto.generated")
   importMappings.set(
     mapOf(
-      "ExportFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.ExportFileTypeEnum",
-      "IngestionFlowFileTypeEnum" to "it.gov.pagopa.pu.processecexutions.enums.IngestionFlowFileTypeEnum"
+      "ExportFileTypeEnum" to "it.gov.pagopa.pu.processexecutions.enums.ExportFileTypeEnum",
+      "IngestionFlowFileTypeEnum" to "it.gov.pagopa.pu.processexecutions.enums.IngestionFlowFileTypeEnum"
     )
   )
   configOptions.set(
