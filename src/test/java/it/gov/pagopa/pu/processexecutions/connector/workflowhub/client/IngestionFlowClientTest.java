@@ -3,7 +3,9 @@ package it.gov.pagopa.pu.processexecutions.connector.workflowhub.client;
 import it.gov.pagopa.pu.processexecutions.connector.workflowhub.config.WorkflowHubApisHolder;
 import it.gov.pagopa.pu.processexecutions.enums.IngestionFlowFileTypeEnum;
 import it.gov.pagopa.pu.processexecutions.exception.common.InvalidValueException;
-import it.gov.pagopa.pu.workflowhub.controller.generated.IngestionFlowApi;
+import it.gov.pagopa.pu.processexecutions.exception.common.RestInvokeInvalidValueException;
+import it.gov.pagopa.pu.workflowhub.client.generated.IngestionFlowApi;
+import it.gov.pagopa.pu.workflowhub.dto.generated.CategoryEnum;
 import it.gov.pagopa.pu.workflowhub.dto.generated.WorkflowCreatedDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -15,8 +17,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
-
-import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
@@ -69,9 +69,9 @@ class IngestionFlowClientTest {
     when(workflowHubApisHolderMock.getIngestionFlowApi(accessToken))
       .thenReturn(ingestionFlowApiMock);
     when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType))
-      .thenThrow(HttpClientErrorException.create(HttpStatus.BAD_REQUEST, "Bad request", null,
-        "{\"code\":\"WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED\"}".getBytes(StandardCharsets.UTF_8),
-        StandardCharsets.UTF_8));
+      .thenThrow(new RestInvokeInvalidValueException("APPNAME", HttpStatus.BAD_REQUEST,
+        CategoryEnum.WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED.getValue(),
+        "WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED", "ERRORMESSAGE", null));
 
     Assertions.assertThrows(InvalidValueException.class, () -> ingestionFlowClient.ingestFlowFile(
       ingestionFlowFileId, ingestionFlowFileType, accessToken));

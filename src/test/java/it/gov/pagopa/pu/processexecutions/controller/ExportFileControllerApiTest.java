@@ -43,6 +43,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class ExportFileControllerApiTest {
@@ -76,7 +77,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+    doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createClassificationsExportFile(requestDTO);
 
@@ -93,7 +94,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+    doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createPaidExportFile(requestDTO);
 
@@ -151,7 +152,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(exportFile).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+    doReturn(exportFile).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createPaidExportFile(requestDTO);
 
@@ -177,7 +178,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(exportFile).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+    doReturn(exportFile).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createPaidExportFile(requestDTO);
 
@@ -269,7 +270,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+    doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createPaymentsReportingExportFile(requestDTO);
 
@@ -375,7 +376,7 @@ class ExportFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
+    doReturn(t).when(serviceMock).save(Mockito.same(requestDTO), Mockito.same(operatorExternalId), Mockito.anyString());
 
     ResponseEntity<Void> result = controller.createReceiptsArchivingExportFile(requestDTO);
 

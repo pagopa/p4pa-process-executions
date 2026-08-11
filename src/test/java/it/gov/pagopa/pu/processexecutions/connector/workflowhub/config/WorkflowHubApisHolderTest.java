@@ -1,5 +1,6 @@
 package it.gov.pagopa.pu.processexecutions.connector.workflowhub.config;
 
+import it.gov.pagopa.pu.processexecutions.config.json.JsonConfig;
 import it.gov.pagopa.pu.processexecutions.connector.BaseApiHolderTest;
 import it.gov.pagopa.pu.processexecutions.enums.ExportFileTypeEnum;
 import it.gov.pagopa.pu.processexecutions.enums.IngestionFlowFileTypeEnum;
@@ -14,21 +15,28 @@ import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class WorkflowHubApisHolderTest extends BaseApiHolderTest {
   @Mock
   private RestTemplateBuilder restTemplateBuilderMock;
 
-  private WorkflowHubApisHolder workflowHubApisHolder;
+  private WorkflowHubApisHolder apisHolder;
+  private WorkflowHubApiClientConfig apiClientConfig;
 
   @BeforeEach
   void setUp() {
-    Mockito.when(restTemplateBuilderMock.build()).thenReturn(restTemplateMock);
-    Mockito.when(restTemplateMock.getUriTemplateHandler()).thenReturn(new DefaultUriBuilderFactory());
-    WorkflowHubApiClientConfig clientConfig = WorkflowHubApiClientConfig.builder()
+    when(restTemplateBuilderMock.build()).thenReturn(restTemplateMock);
+    when(restTemplateMock.getUriTemplateHandler()).thenReturn(new DefaultUriBuilderFactory());
+
+    apiClientConfig = WorkflowHubApiClientConfig.builder()
       .baseUrl("http://example.com")
+      .maxAttempts(3)
       .build();
-    workflowHubApisHolder = new WorkflowHubApisHolder(clientConfig, restTemplateBuilderMock);
+    apisHolder = new WorkflowHubApisHolder(apiClientConfig, restTemplateBuilderMock, new JsonConfig().objectMapperJackson3());
+
+    verifyHttpClientErrorJsonBodyHandlerConfiguration(apisHolder.getExportFileApi(null));
   }
 
   @AfterEach
@@ -40,20 +48,29 @@ class WorkflowHubApisHolderTest extends BaseApiHolderTest {
   }
 
   @Test
+  void testRetryConfiguration() {
+    assertRetry(apiClientConfig,
+      accessToken -> apisHolder.getIngestionFlowApi(accessToken)
+        .ingestFlowFile(1L, IngestionFlowFileTypeEnum.PAYMENTS_REPORTING),
+      new ParameterizedTypeReference<>() {}
+    );
+  }
+
+  @Test
   void whenGetIngestionFlowApiThenAuthenticationShouldBeSetInThreadSafeMode() throws InterruptedException {
     assertAuthenticationShouldBeSetInThreadSafeMode(
-      accessToken -> workflowHubApisHolder.getIngestionFlowApi(accessToken)
+      accessToken -> apisHolder.getIngestionFlowApi(accessToken)
         .ingestFlowFile(1L, IngestionFlowFileTypeEnum.PAYMENTS_REPORTING),
       new ParameterizedTypeReference<>() {},
-      workflowHubApisHolder::unload);
+      apisHolder::unload);
   }
 
   @Test
   void whenGetExportFileThenAuthenticationShouldBeSetInThreadSafeMode() throws InterruptedException {
     assertAuthenticationShouldBeSetInThreadSafeMode(
-      accessToken -> workflowHubApisHolder.getExportFileApi(accessToken)
+      accessToken -> apisHolder.getExportFileApi(accessToken)
         .exportFile(1L, ExportFileTypeEnum.PAID),
       new ParameterizedTypeReference<>() {},
-      workflowHubApisHolder::unload);
+      apisHolder::unload);
   }
 }

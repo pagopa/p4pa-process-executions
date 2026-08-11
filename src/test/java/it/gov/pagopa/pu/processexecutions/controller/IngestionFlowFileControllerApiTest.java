@@ -25,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class IngestionFlowFileControllerApiTest {
 
@@ -58,7 +60,7 @@ class IngestionFlowFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
+    when(serviceMock.handleUploaded(Mockito.same(requestDTO), Mockito.same(operatorExternalId),
             Mockito.anyString()))
       .thenReturn(t);
 
@@ -82,7 +84,7 @@ class IngestionFlowFileControllerApiTest {
     String operatorExternalId = "OPERATOREXTERNALID";
     SecurityUtilsTest.configureSecurityContext(operatorExternalId);
 
-    Mockito.when(serviceMock.handleReservation(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
+    when(serviceMock.handleReservation(Mockito.same(requestDTO), Mockito.same(operatorExternalId)))
       .thenReturn(ingestionFlowFile);
 
     // When
