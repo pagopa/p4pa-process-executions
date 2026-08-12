@@ -60,6 +60,7 @@ val httpCoreVersion = "5.4.2"
 val kafkaAppender = "0.2.0-RC2"
 val lz4JavaVersion = "1.11.1"
 val commonsLang3Version = "3.20.0"
+val podamVersion = "8.0.2.RELEASE"
 
 // Downgrading in order to handle List of enums in SpringDataRest exposed queries (see https://github.com/spring-projects/spring-data-commons/issues/3502)
 val hibernateCoreVersion = "7.1.18.Final"
@@ -102,6 +103,7 @@ dependencies {
   testImplementation("org.mockito:mockito-core")
   testImplementation("org.projectlombok:lombok")
   testImplementation("com.h2database:h2")
+  testImplementation ("uk.co.jemos.podam:podam:${podamVersion}")
 }
 
 tasks.withType<Test> {
