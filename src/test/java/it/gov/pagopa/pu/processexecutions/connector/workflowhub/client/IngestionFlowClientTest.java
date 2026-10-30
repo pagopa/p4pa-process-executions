@@ -71,7 +71,7 @@ class IngestionFlowClientTest {
     when(ingestionFlowApiMock.ingestFlowFile(ingestionFlowFileId, ingestionFlowFileType))
       .thenThrow(new RestInvokeInvalidValueException("APPNAME", HttpStatus.BAD_REQUEST,
         CategoryEnum.WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED.getValue(),
-        "WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED", "ERRORMESSAGE", null));
+        "WORKFLOW_INGESTION_FLOW_FILE_NOT_SUPPORTED", "ERRORMESSAGE", null, "BODY"));
 
     Assertions.assertThrows(InvalidValueException.class, () -> ingestionFlowClient.ingestFlowFile(
       ingestionFlowFileId, ingestionFlowFileType, accessToken));
